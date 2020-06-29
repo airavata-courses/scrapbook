@@ -67,10 +67,10 @@
     - '"bionic" in os_release.stdout'
     - need_dnssec_allow_downgrade.rc
 
-- name: Install python3
+- name: Install python and nfs-common
   raw:
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3-minimal
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3-minimal nfs-common
   become: true
   when:
     - need_bootstrap.rc != 0
