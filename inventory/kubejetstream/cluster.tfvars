@@ -80,4 +80,5 @@ bastion_allowed_remote_ips = ["0.0.0.0/0"]
 # more security
 k8s_allowed_remote_ips = ["0.0.0.0/0"]
 
+# have Kubernetes traffic use the internal IP
 use_access_ip = 0
