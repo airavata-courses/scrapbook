@@ -257,10 +257,10 @@ supplementary_addresses_in_ssl_keys: [149.0.0.0]
 ## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
 ## See https://github.com/kubernetes-sigs/kubespray/issues/2141
 ## Set this variable to true to get rid of this issue
-volume_cross_zone_attachment: false
+volume_cross_zone_attachment: true
 ## Add Persistent Volumes Storage Class for corresponding cloud provider (supported: in-tree OpenStack, Cinder CSI,
 ## AWS EBS CSI, Azure Disk CSI, GCP Persistent Disk CSI)
-persistent_volumes_enabled: false
+persistent_volumes_enabled: true
 
 ## Container Engine Acceleration
 ## Enable container acceleration feature, for example use gpu acceleration in containers
