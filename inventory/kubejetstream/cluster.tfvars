@@ -79,3 +79,5 @@ bastion_allowed_remote_ips = ["0.0.0.0/0"]
 # if you only access from a subset of IPs, set this accordingly for
 # more security
 k8s_allowed_remote_ips = ["0.0.0.0/0"]
+
+use_access_ip = 0
