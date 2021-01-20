@@ -24,6 +24,9 @@ number_of_etcd = 0
 # masters
 number_of_k8s_masters = 1
 
+# Uncomment and set a previously created IP (or list) for the master nodes
+# k8s_master_fips = ["149.0.0.0"]
+
 number_of_k8s_masters_no_etcd = 0
 
 number_of_k8s_masters_no_floating_ip = 0
