@@ -10,9 +10,11 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { HomeComponent } from './modules/home/home.component';
+import { RootComponent } from './modules/root/root.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent, RootComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
