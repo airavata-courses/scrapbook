@@ -26,5 +26,7 @@ $ npm start
 
 ## Team Member
 Jyoti Bhushan
+
 Chirag Shankar Indi
+
 Hrishikesh Paul
