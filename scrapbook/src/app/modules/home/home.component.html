@@ -1,41 +1,41 @@
-<div class="w-100 h-100">
-  <div class="d-flex justify-content-between align-content-center container-fluid px-xl-5 px-lg-5 px-md-5 px-sm-0 py-3">
+<div class="w-100 h-100 px-sm-3 ">
+  <div class="d-flex justify-content-between align-content-center container-fluid px-xl-5 px-lg-5 px-md-5 py-3">
     <div class="text-dark font-weight-bolder h4">scrapbook.</div>
     <div class="text-dark">
-      <span class="pr-4">About</span>
+      <a class="pr-4 text-dark text-decoration-none" (click)="scrollToElement(about)" href="#about">About</a>
       <span class="pr-4">Contact</span>
     </div>
   </div>
   <div class="w-100 h-75 mt-5 px-xl-5 px-lg-5 px-md-5 px-sm-0">
-    <div class="container-fluid d-flex align-items-center h-100">
-     <div class="row h-100">
+    <div class="container-fluid d-flex align-items-center">
+     <div class="row">
        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-        <div class="d-flex align-items-center text-left h-100">
+        <div class="d-flex align-items-center text-left h-100 mt-lg-5 pt-lg-5 mt-xl-5 pt-xl-5 mt-md-5 pt-md-5">
           <div>
             <p class="h1 font-weight-bolder"><span class="text-primary">Manage</span> and <span class="text-primary">share</span> your photos from <span class="text-primary">one place</span>.</p>
             <p class="mt-3 h5 font-weight-light">A comfortable way to upload, download and share photos.</p>
             <br>
             <br>
+
             <div class="mt-xl-5 mt-lg-5 mt-md-4 mt-sm-0 pt-xl-5 pt-lg-5 pt-md-4 pt-sm-5">
               <p class="font-weight-light">Start using scrapbook via,</p>
-
               <div>
-               <div class="my-4">
-                <button class="btn btn-outline-secondary text-dark">
+               <div class="my-3">
+                <button class="btn btn-md btn-outline-secondary text-dark">
                   <span class="btn-label">
                     <mat-icon svgIcon="iu" class="pr-2 iu-icon"></mat-icon>
                    </span>Indiana University
                 </button>
                </div>
-                <div class="my-4">
-                  <button class="btn btn-outline-secondary text-dark ">
+                <div class="my-3">
+                  <button class="btn btn-md btn-outline-secondary text-dark ">
                     <span class="btn-label">
                       <mat-icon svgIcon="google" class="pr-2"></mat-icon>
                      </span>Google
                   </button>
                 </div>
-               <div class="my-4">
-                <button class="btn btn-outline-secondary text-dark">
+               <div class="my-3">
+                <button class="btn btn-md btn-outline-secondary text-dark">
                   <span class="btn-label">
                     <fa-icon [icon]="faGithub" class="pr-2"></fa-icon>
                    </span>GitHub 
@@ -45,14 +45,54 @@
             </div>
           </div>
         </div>
-        
        </div>
-       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 ">
-         <div class="d-flex justify-content-center align-content-center h-100 x-xl-5 px-lg-5 px-md-2 px-sm-0 mt-5">
+       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-none d-md-block">
+         <div class="d-flex align-content-center h-100 x-xl-5 px-lg-5 px-md-2 px-sm-0 mt-5 text-center w-100">
           <img src="assets/landing/main.svg" class="w-100"/>
          </div> 
        </div>
      </div>
+    </div>
+  </div>
+
+  <div class="mt-lg-5 pt-lg-5 mt-xl-5 pt-xl-5 mt-md-5 pt-md-5"></div>
+
+  <div class="container-fluid mt-5 pt-5 px-xl-5 px-lg-5 px-md-5 " #about>
+    <div class="h1 font-weight-bold text-center text-dark">About</div>
+    <div class="text-center font-weight-light">Scrapbook is a cloud storage platform for user to store their photos.</div>
+    <!-- <div class="mt-5 pt-5"></div> -->
+
+    <div class="mt-5 pt-5 row text-center h-25">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-5">
+        <img src="assets/landing/about/login.svg" class="w-50"/>
+         <div class="mt-5">
+          <div class="h4">Secure Login</div>
+          <div class="px-5">
+            Securely login with your IU account, Google account or GitHub account.
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-5">
+        <img src="assets/landing/about/cloud.svg" class="w-50"/>
+        <div class="mt-5">
+          <div class="h4">Store and Share</div>
+          <div class="">Securely store, retrieve and share your photos through the cloud.</div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-5">
+        <img src="assets/landing/about/upload.svg" class="w-50"/>
+        <div class="mt-5">
+          <div class="h4">Upload Seamlessly</div>
+          <div class="">Upload photos in batches are store them in albums!</div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-5">
+        <img src="assets/landing/about/download.svg" class="w-50"/>
+        <div class="mt-5">
+          <div class="h4">Download Effortlessly</div>
+          <div class="">Save your albums and photos on your machine when you need them.</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
