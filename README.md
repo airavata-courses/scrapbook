@@ -23,3 +23,8 @@ $ cd scrapbook
 $ npm install
 $ npm start
 ```
+
+## Team Member
+Jyoti Bhushan
+Chirag Shankar Indi
+Hrishikesh Paul
