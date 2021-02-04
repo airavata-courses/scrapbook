@@ -15,10 +15,11 @@ import { MaterialModule } from './material.module';
 import { HomeComponent } from './modules/home/home.component';
 import { RootComponent } from './modules/root/root.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, RootComponent],
+  declarations: [AppComponent, HomeComponent, RootComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
