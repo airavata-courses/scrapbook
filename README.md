@@ -5,7 +5,7 @@ This application enables user to upload, manage images. One can also provide acc
 
 Technologies used: Angular 11, Typescript, Java 11, Python, SpringBoot, Google Kubernetes Engine, Apache Kafka, MongoDB, RestFul Webservices
 
-
+![architecture](/diagrams/architecture.png)
 
 ## Project Installation
 
@@ -23,3 +23,10 @@ $ cd scrapbook
 $ npm install
 $ npm start
 ```
+
+## Team Member
+Jyoti Bhushan
+
+Chirag Shankar Indi
+
+Hrishikesh Paul
