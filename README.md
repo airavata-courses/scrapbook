@@ -1,32 +1,43 @@
-# scrapbook
-Spring 2021 Project Team
+![banner](/assets/banner.png)
+---
 
-This application enables user to upload, manage images. One can also provide access to other users. It's a one stop solution for managing, sharing images (jpg,png,svg..), monitoring activities on folder level and many more.
+Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share imaages by introducing various roles. The users also have acces to an intuitive dashboard to view differnet metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
 
-Technologies used: Angular 11, Typescript, Java 11, Python, SpringBoot, Google Kubernetes Engine, Apache Kafka, MongoDB, RestFul Webservices
+> Napkin diagram goes here
 
-![architecture](/diagrams/architecture.png)
+
+## Technology Stack
+
+- Angular 11 (TypeScript)
+- SpringBook (Java 11)
+- Flask (Python)
+- MongoDB
+- Googel Cloud Storage
+- Apache Kafka
+- REST
 
 ## Project Installation
 
+### Repository 
 ```
 $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 ```
 
-## Front-end (Angular 11)
+## Documentation
+> Insert links to Wiki
 
-**Installation Guidelines**
+- User Stories
+- UML Diagrams
+- Workflow 
+- Mockups
 
-```
-$ cd scrapbook
-$ npm install
-$ npm start
-```
 
-## Team Member
-Jyoti Bhushan
+## Contributors 
 
-Chirag Shankar Indi
+- Chirag Shankar Indi
 
-Hrishikesh Paul
+- Hrishikesh Paul
+
+- Jyoti Bhushan
+
