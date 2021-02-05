@@ -21,4 +21,5 @@ export class AppComponent {
       this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/google.svg`)
     );
    }
+   
 }
