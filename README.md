@@ -39,8 +39,10 @@ $ cd scrapbook
 
 ## Team 
 
-- **Chirag Shankar Indi**: 
+- **Chirag Shankar Indi**: Chirag is a first year Master's student studying at Indiana University Bloomington, majoring in Computer Science with a focus on AI/ML. He has full time expeirence as a Software Engineer working with the High Performance Computing and Tehnical Infrastructure team at Shell, along with multiple internships in fields of Software Development, Machine Learning, and Networking.    
 
+   [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/chirag-indi/)
+   [<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />](https://github.com/chirag-indi)
 
 - **Hrishikesh Paul**: Hrishikesh is a final year Masters student, sturying Computer Science and specializing in Software/Frontend Engineering. His expeirence includes Full Stack Development using Angular, Vue, Node, Flask and MongoDB. Currently he is the Lead Software Engineer at [CNS](https://cns.iu.edu/), working with the NIH to build scalable and open source visualization tools for researchers and doctors.
 
