@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ProfileComponent } from 'src/app/components/profile/profile.component';
+import { Store, Select } from '@ngxs/store';
+import { FetchUserData } from 'src/app/actions/user.actions';
+import { UIStateModel, UIState } from 'src/app/stores/ui.state';
+import { Observable } from 'rxjs';
+import { CloseProfile } from 'src/app/actions/ui.actions';
 
 @Component({
   selector: 'app-root',
@@ -6,10 +13,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./root.component.scss']
 })
 export class RootComponent implements OnInit {
+  
+  @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
 
-  constructor() { }
+  constructor(public dialog: MatDialog, public store: Store) {
+    this.profile$.subscribe(status => {
+      if (status) this.openProfile()
+      else this.closeProfile()
+    })
+   }
 
   ngOnInit(): void {
+  }
+
+  openProfile() {
+    const config = new MatDialogConfig();
+    config.disableClose = false;
+    config.autoFocus = true;
+    config.id = 'ProfileDialog';
+    config.width = '300px';
+    config.backdropClass = 'backdrop'
+    
+    const profileDialog = this.dialog.open(ProfileComponent, config);
+    profileDialog.updatePosition({top: '80px', right: '50px'})
+    this.store.dispatch(new FetchUserData('id'));
+    profileDialog.afterClosed().subscribe(_ => {
+      this.store.dispatch(new CloseProfile)
+    })
+  }
+
+  closeProfile() {
+    const profileDialog = this.dialog.getDialogById('ProfileDialog');
+    
+    if (profileDialog) {
+      this.store.dispatch(new CloseProfile)
+      profileDialog.close()
+    }
   }
 
 }

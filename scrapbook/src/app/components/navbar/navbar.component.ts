@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { Store } from '@ngxs/store';
+import { OpenProfile } from 'src/app/actions/ui.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +10,13 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 })
 export class NavbarComponent implements OnInit {
   faUserCircle = faUserCircle;
-  constructor() { }
+  constructor(public store: Store) { }
 
   ngOnInit(): void {
+  }
+
+  openProfile() {
+    this.store.dispatch(new OpenProfile)
   }
 
 }
