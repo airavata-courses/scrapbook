@@ -3,7 +3,9 @@
 
 Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share images by introducing various roles. The users also have acces to an intuitive dashboard to view different metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
 
-> Napkin diagram goes here
+![banner](/assets/napkin_diagram.png)
+
+---
 
 
 ## Technology Stack
@@ -29,19 +31,26 @@ $ cd scrapbook
 ```
 
 ## Documentation
-> Insert links to Wiki
 
-- User Stories
-- UML Diagrams
-- Workflow 
-- Mockups
+- [User Stories](https://github.com/airavata-courses/scrapbook/wiki/User-Stories)
+- [User Workflow & UML Diagrams](https://github.com/airavata-courses/scrapbook/wiki/User-Workflows-and-Use-Case-Diagram)
+- [Mockups](https://github.com/airavata-courses/scrapbook/wiki/Mockups)
 
 
-## Contributors 
+## Team 
 
-- Chirag Shankar Indi
+- **Chirag Shankar Indi**: 
 
-- Hrishikesh Paul
 
-- Jyoti Bhushan
+- **Hrishikesh Paul**: Hrishikesh is a final year Masters student, sturying Computer Science and specializing in Software/Frontend Engineering. His expeirence includes Full Stack Development using Angular, Vue, Node, Flask and MongoDB. Currently he is the Lead Software Engineer at [CNS](https://cns.iu.edu/), working with the NIH to build scalable and open source visualization tools for researchers and doctors.
 
+   [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/hrishikeshpaul/)
+   [<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />](https://github.com/hrishikeshpaul)
+
+
+- **Jyoti Bhushan**:
+
+
+## Contributing
+
+To contribute, please read our [Git Workflow guide](https://github.com/airavata-courses/scrapbook/wiki/Git-Workflow).
