@@ -1,7 +1,7 @@
 ![banner](/assets/banners/banner_primary.png)
 ---
 
-Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share imaages by introducing various roles. The users also have acces to an intuitive dashboard to view differnet metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
+Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share images by introducing various roles. The users also have acces to an intuitive dashboard to view different metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
 
 > Napkin diagram goes here
 
@@ -9,10 +9,10 @@ Scrapbook is a micro-service architecture based application that enables users t
 ## Technology Stack
 
 - Angular 11 (TypeScript)
-- SpringBook (Java 11)
+- SpringBoot (Java 11)
 - Flask (Python)
 - MongoDB
-- Googel Cloud Storage
+- Google Cloud Storage
 - Apache Kafka
 - REST
 
