@@ -1,13 +1,16 @@
-<div>
+<div class="h-100 w-100">
   <app-navbar></app-navbar>
-  <mat-drawer-container autosize>
-    <mat-drawer #drawer mode="side" [opened]="true" >
-     qwrqwr
-    </mat-drawer>
-  
-    <div class="example-sidenav-content">
-     
-    </div>
-  
-  </mat-drawer-container>
+  <div class="root w-100 h-100">
+    <mat-drawer-container class="h-100 w-100" autosize>
+      <mat-drawer #drawer  mode="side" opened="true">
+       <app-sidenav></app-sidenav>
+        
+      </mat-drawer>
+    
+      <div class="example-sidenav-content">
+        <app-album-list></app-album-list>
+      </div>
+    
+    </mat-drawer-container>
+  </div>
 </div>
