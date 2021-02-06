@@ -25,15 +25,16 @@ import { UIState } from './stores/ui.state';
 import { UserState } from './stores/user.state';
 import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
-
+import { AlbumComponent } from './components/album/album.component';
+import {DataState} from './stores/data.state';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxsModule.forRoot([UIState, UserState], { developmentMode: !environment.production }),
+    NgxsModule.forRoot([UIState, UserState, DataState], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: environment.production,
     }),

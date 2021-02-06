@@ -18,6 +18,13 @@ html, body { height: 100%;}
 body { margin: 0; font-family: 'Poppins', sans-serif; }
 button:focus {outline: none !important;}
 
+.text-grey {
+  color: #A2A4C1;
+}
+
+.bg-grey {
+  background-color: #A2A4C1;
+}
 /* SCROLL BAR */
 ::-webkit-scrollbar {
   width: 2px;
@@ -64,14 +71,17 @@ label:focus,
     box-shadow: none !important;
 }
 
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.42;
-  border-radius: 15px;
+:host ::ng-deep .mat-checkbox-indeterminate,
+.mat-checkbox-checked {
+    &.mat-primary .mat-checkbox-background {
+        background-color: #737CEB !important;
+    }
+    &.mat-accent .mat-checkbox-background {
+        background-color: #737CEB !important;
+    }
+    &.mat-warn .mat-checkbox-background {
+        background-color: #737CEB !important;
+    }
 }
 
 .backdrop {
@@ -80,4 +90,20 @@ label:focus,
 
 .mat-dialog-container {
   box-shadow: 2px 3px 10px #e6e6e6;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-20 {
+  width: 20%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-30 {
+  width: 30%;
 }

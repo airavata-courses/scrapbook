@@ -21,13 +21,11 @@ export class AppComponent {
   
   constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private router: Router, private dialog: MatDialog, private store: Store) {
     this.matIconRegistry.addSvgIcon(
-      'iu',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/iu.svg`)
+      'iu', this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/iu.svg`)
     );
 
     this.matIconRegistry.addSvgIcon(
-      'google',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/google.svg`)
+      'google', this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/google.svg`)
     );
 
     this.profile$.subscribe(status => {

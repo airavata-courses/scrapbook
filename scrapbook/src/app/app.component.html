@@ -1,5 +1,5 @@
-
-<div class="h-100 w-100">
+<router-outlet *ngIf="router.url==='/'"></router-outlet>
+<div class="h-100 w-100" *ngIf="router.url !=='/'">
   <app-navbar></app-navbar>
   <div class="root w-100 h-100">
     <mat-drawer-container class="h-100 w-100" autosize>
@@ -10,9 +10,6 @@
     
       <div class="example-sidenav-content">
         <router-outlet></router-outlet>
-
-        <!-- <app-home *ngIf="router.url=== '/home'"></app-home>
-        <app-starred *ngIf="router.url=== '/starred'"></app-starred> -->
       </div>
     
     </mat-drawer-container>
