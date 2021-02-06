@@ -37,3 +37,39 @@ button:focus {outline: none !important;}
 .mat-drawer-side {
   border: none;
 }
+
+.mat-form-field-wrapper {
+ padding: 0 !important;
+}
+
+.mat-form-field-infix {
+  border: none !important;
+}
+
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;
+}

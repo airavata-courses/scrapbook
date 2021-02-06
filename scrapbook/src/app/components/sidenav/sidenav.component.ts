@@ -24,7 +24,7 @@ export class SidenavComponent implements OnInit {
     {
       name: 'Dashboard',
       icon: faChartLine
-    }
+    },
   ]
 
   selectedMenu = 'Home';

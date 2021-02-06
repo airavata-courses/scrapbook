@@ -1,7 +1,29 @@
-<div class="bg-white w-100 py-3 position-fixed navbar px-0">
-  <div class="px-5 d-flex justify-content-between align-content-center">
+<div class="bg-white w-100 position-fixed navbar px-0">
+  <div class="px-5 d-flex justify-content-between align-items-center w-100">
     <div>
-      <a class="text-dark font-weight-bolder h4 text-decoration-none" href="/">scrapbook.</a>
+      <a class="text-dark font-weight-bolder h4 text-decoration-none" href="/home">scrapbook.</a>
     </div>
+    <div class="d-flex align-items-center">
+      <app-search class="d-inline-block pr-5"></app-search>
+      <div class="d-inline-block pr-4">
+        <button mat-icon-button>
+          <mat-icon class="text-dark"  style="transform: scale(1.1);">person_add</mat-icon>
+        </button>
+      </div>
+
+      <div class="d-inline-block pr-4">
+        <button mat-icon-button>
+          <mat-icon class="text-dark" style="transform: scale(1.1);">notifications</mat-icon>
+        </button>
+      </div>
+
+      <div class="d-inline-block">
+        <button mat-icon-button>
+          <mat-icon class="text-dark"  style="transform: scale(1.1);">account_circle</mat-icon>
+        </button>
+      </div>
+      
+    </div>
+
   </div>
 </div>

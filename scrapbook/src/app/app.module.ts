@@ -19,10 +19,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { AlbumListComponent } from './modules/album-list/album-list.component';
+import { SearchComponent } from './modules/search/search.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
