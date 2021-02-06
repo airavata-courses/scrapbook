@@ -23,10 +23,12 @@ import { SearchComponent } from './modules/search/search.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UIState } from './stores/ui.state';
 import { UserState } from './stores/user.state';
+import { HomeComponent } from './modules/home/home.component';
+import { StarredComponent } from './modules/starred/starred.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

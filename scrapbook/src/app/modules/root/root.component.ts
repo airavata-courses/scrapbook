@@ -6,6 +6,7 @@ import { FetchUserData } from 'src/app/actions/user.actions';
 import { UIStateModel, UIState } from 'src/app/stores/ui.state';
 import { Observable } from 'rxjs';
 import { CloseProfile } from 'src/app/actions/ui.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class RootComponent implements OnInit {
   
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
 
-  constructor(public dialog: MatDialog, public store: Store) {
+  constructor(public dialog: MatDialog, public store: Store, public router: Router) {
     this.profile$.subscribe(status => {
       if (status) this.openProfile()
       else this.closeProfile()

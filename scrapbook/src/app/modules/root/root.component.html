@@ -1,4 +1,4 @@
-<div class="h-100 w-100">
+<!-- <div class="h-100 w-100">
   <app-navbar></app-navbar>
   <div class="root w-100 h-100">
     <mat-drawer-container class="h-100 w-100" autosize>
@@ -8,9 +8,10 @@
       </mat-drawer>
     
       <div class="example-sidenav-content">
-        <app-album-list></app-album-list>
+        <app-home *ngIf="router.url=== '/home'"></app-home>
+        <app-starred *ngIf="router.url=== '/starred'"></app-starred>
       </div>
     
     </mat-drawer-container>
   </div>
-</div>
+</div> -->
