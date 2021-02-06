@@ -32,10 +32,13 @@ $ cd scrapbook
 
 ## Documentation
 
+- [Wiki](https://github.com/airavata-courses/scrapbook/wiki)
 - [User Stories](https://github.com/airavata-courses/scrapbook/wiki/User-Stories)
 - [User Workflow & UML Diagrams](https://github.com/airavata-courses/scrapbook/wiki/User-Workflows-and-Use-Case-Diagram)
-- [Mockups](https://github.com/airavata-courses/scrapbook/wiki/Mockups)
 
+## Project Milestones
+
+- [Project Milestone 1](https://github.com/airavata-courses/scrapbook/wiki/Project-1)
 
 ## Team 
 
