@@ -7,6 +7,9 @@ import { UIStateModel, UIState } from 'src/app/stores/ui.state';
 import { Observable } from 'rxjs';
 import { CloseProfile } from 'src/app/actions/ui.actions';
 import { Router } from '@angular/router';
+import { AlbumState } from 'src/app/stores/album.state';
+import { CloseAlbumInfo } from 'src/app/actions/album.actions';
+import { InfoComponent } from 'src/app/components/info/info.component';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +19,21 @@ import { Router } from '@angular/router';
 export class RootComponent implements OnInit {
   
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
+  @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
 
   constructor(public dialog: MatDialog, public store: Store, public router: Router) {
     this.profile$.subscribe(status => {
       if (status) this.openProfile()
       else this.closeProfile()
     })
+
+   
    }
 
   ngOnInit(): void {
   }
+
+
 
   openProfile() {
     const config = new MatDialogConfig();

@@ -9,7 +9,7 @@
   <div>
     <div *ngFor="let i of [1,2,3,4,5]">
       <div class="py-3" style="border-bottom: 1px solid #ececec;">
-        <app-album></app-album>
+        <app-album (showAlbumInfo)="showAlbumInfo($event)"></app-album>
       </div>
     </div>
   </div>

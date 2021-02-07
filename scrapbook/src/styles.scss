@@ -92,7 +92,7 @@ label:focus,
 }
 
 .mat-dialog-container {
-  box-shadow: 2px 3px 10px #e6e6e6;
+  box-shadow: 2px 3px 10px #1c1c1c2c;
 }
 
 .w-40 {
@@ -123,4 +123,20 @@ label:focus,
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.card {
+  border: none;
+}
+.card .card-header, .card-footer{
+  background-color: transparent;
+  border: 0;
+}
+
+.btn {
+  border-radius: 10px;
+}
+
+.mat-button.no-hover ::ng-deep .mat-button-focus-overlay {
+  background: none;
 }
