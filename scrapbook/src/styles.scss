@@ -86,6 +86,8 @@ label:focus,
     }
 }
 
+::ng-deep .mat-checkbox-frame {border-color: orange;}
+
 .backdrop {
   background-color:transparent;
 }
