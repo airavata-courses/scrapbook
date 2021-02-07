@@ -141,3 +141,7 @@ label:focus,
 .mat-button.no-hover ::ng-deep .mat-button-focus-overlay {
   background: none;
 }
+
+::ng-deep .mat-step-header {
+  pointer-events: none !important;
+}
