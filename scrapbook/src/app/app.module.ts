@@ -32,6 +32,7 @@ import { AlbumState } from './stores/album.state';
 import { UploadComponent } from './components/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
+
 @NgModule({
   declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent],
   imports: [
