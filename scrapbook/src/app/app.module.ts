@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 import { NgxsModule } from '@ngxs/store';
@@ -31,10 +33,11 @@ import { InfoComponent } from './components/info/info.component';
 import { AlbumState } from './stores/album.state';
 import { UploadComponent } from './components/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { FiltersComponent } from './components/filters/filters.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,6 +47,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
     FontAwesomeModule,

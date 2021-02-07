@@ -37,3 +37,23 @@ export class CloseUpload {
   static readonly type = '[CLOSE] Upload Modal';
   constructor() {}
 }
+
+export class OpenFilters {
+  static readonly type = '[OPEN] Filters';
+  constructor() {}
+}
+
+export class CloseFilters {
+  static readonly type = '[CLOSE] Filters';
+  constructor() {}
+}
+
+export class OpenLoading {
+  static readonly type = '[OPEN] Loading';
+  constructor() {}
+}
+
+export class CloseLoading {
+  static readonly type = '[CLOSE] Loading';
+  constructor() {}
+}

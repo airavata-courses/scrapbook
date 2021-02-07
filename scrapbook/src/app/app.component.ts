@@ -8,12 +8,13 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FetchUserData } from './actions/user.actions';
-import { CloseProfile, CloseUpload } from './actions/ui.actions';
+import { CloseProfile, CloseUpload, CloseFilters } from './actions/ui.actions';
 import { InfoComponent } from './components/info/info.component';
 import { CloseAlbumInfo } from './actions/album.actions';
 import { AlbumState } from './stores/album.state';
 import { registerIcons } from './static/registerIcons';
 import { UploadComponent } from './components/upload/upload.component';
+import { FiltersComponent } from './components/filters/filters.component';
 
 @Component({
   selector: 'app-root',
@@ -22,9 +23,13 @@ import { UploadComponent } from './components/upload/upload.component';
 })
 export class AppComponent {
   title = 'scrapbook';
+
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
-  @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
+  @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
+
+  @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
+
 
   constructor(
     private matIconRegistry: MatIconRegistry,
@@ -49,9 +54,41 @@ export class AppComponent {
       if (status) this.openUploadModal();
       else this.closeUploadModal();
     });
+
+    this.filters$.subscribe((status) => {
+      if (status) this.openFilters();
+      else this.closeFilters();
+    })
   }
 
   ngOnInit(): void {}
+
+  openFilters() {
+    const config = new MatDialogConfig();
+    config.disableClose = false;
+    config.autoFocus = true;
+    config.id = 'filterModal';
+    config.width = '650px';
+    config.autoFocus = false;
+    config.backdropClass = 'backdrop';
+
+    const filterDialog = this.dialog.open(FiltersComponent, config);
+    // apply filters code goes here
+    filterDialog.updatePosition({ top: '80px', left: '260px' });
+
+    filterDialog.afterClosed().subscribe((_) => {
+      this.store.dispatch(new CloseFilters());
+    });
+  }
+
+  closeFilters() {
+    const filterModal = this.dialog.getDialogById('filterModal');
+
+    if (filterModal) {
+      this.store.dispatch(new CloseFilters());
+      filterModal.close();
+    }
+  }
 
   openUploadModal() {
     const config = new MatDialogConfig();

@@ -1,0 +1,8 @@
+.radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .mat-form-field-infix {
+  color: black;
+}

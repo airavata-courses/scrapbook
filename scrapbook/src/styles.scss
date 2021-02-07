@@ -93,10 +93,15 @@ label:focus,
   background-color:transparent;
 }
 
-.mat-dialog-container {
+.mat-dialog-container:not(#filterModal) {
   box-shadow: 2px 3px 10px #1c1c1c2c;
   border-radius: 30px !important;
 }
+
+#filterModal {
+  box-shadow: 2px 3px 10px #1c1c1c2c;
+}
+
 
 .w-40 {
   width: 40%;
@@ -146,4 +151,17 @@ label:focus,
 
 ::ng-deep .mat-step-header {
   pointer-events: none !important;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color:#737CEB; 
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle{
+  color: white;
+  background-color:#737CEB ;
+}
+
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color:#737CEB;
 }

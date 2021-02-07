@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters } from '../actions/ui.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -8,6 +8,8 @@ export class UIStateModel {
   accessRequestOpen: boolean;
   filterOpen: boolean;
   uploadOpen: boolean;
+  error: boolean;
+  loading: boolean;
 }
 
 @State<UIStateModel>({
@@ -17,7 +19,9 @@ export class UIStateModel {
     notificationsOpen: false,
     accessRequestOpen: false,
     filterOpen: false,
-    uploadOpen: false
+    uploadOpen: false,
+    error: false,
+    loading: true
   }
 })
 @Injectable()
@@ -32,6 +36,11 @@ export class UIState {
   @Selector()
   static getUploadModalStatus(state: UIStateModel) {
     return state.uploadOpen;
+  }
+
+  @Selector() 
+  static getFiltersStatus(state: UIStateModel) {
+    return state.filterOpen;
   }
 
   @Action(OpenProfile)
@@ -63,6 +72,23 @@ export class UIState {
     setState({
       ...getState(),
       uploadOpen: false
+    })
+  }
+
+  @Action(OpenFilters)
+  openFilters({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      filterOpen: true
+    })
+  }
+
+  @Action(CloseFilters)
+  closeFilters({getState, setState}: StateContext<UIStateModel>) {
+    // make service call to fetch data according to filters
+    setState({
+      ...getState(),
+      filterOpen: false
     })
   }
 
