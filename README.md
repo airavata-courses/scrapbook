@@ -18,6 +18,10 @@ Scrapbook is a micro-service architecture based application that enables users t
 - Apache Kafka
 - RESTful Webservices
 
+## System Architecture
+
+![banner](/assets/architecture.png)
+
 ## Mockups
 
 Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/wiki/Mockups) to see our mockup designs.
