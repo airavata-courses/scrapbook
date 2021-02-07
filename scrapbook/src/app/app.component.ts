@@ -19,7 +19,7 @@ export class AppComponent {
   title = 'scrapbook';
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   
-  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private router: Router, private dialog: MatDialog, private store: Store) {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, public router: Router, private dialog: MatDialog, private store: Store) {
     this.matIconRegistry.addSvgIcon(
       'iu', this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/landing/iu.svg`)
     );

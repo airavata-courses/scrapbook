@@ -15,7 +15,7 @@ $theme-colors: (
 
 
 html, body { height: 100%;}
-body { margin: 0; font-family: 'Poppins', sans-serif; }
+body { margin: 0; font-family: 'Poppins', sans-serif;  min-width: 1280px !important;}
 button:focus {outline: none !important;}
 
 .text-grey {
@@ -104,6 +104,20 @@ label:focus,
   width: 10%;
 }
 
+.w-15 {
+  width: 15%;
+}
+
 .w-30 {
   width: 30%;
+}
+
+.w-35 {
+  width: 35%;
+}
+
+.desc {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
