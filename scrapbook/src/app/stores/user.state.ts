@@ -26,19 +26,14 @@ export class UserState {
   @Action(FetchUserData)
   fetchUserData({getState, setState}: StateContext<UserStateModel>, {id}: FetchUserData) {
     // make call 
-    setTimeout(() => {
-      setState({
-        ...getState(),
-        userData: {
-          name: 'Hrishikesh Paul',
-          photo: '',
-          id: '1',
-          email: 'hrpaul@iu.edu'
-        }
-      })
-    }, 2000);
+    setState({
+      ...getState(),
+      userData: {
+        name: 'Hrishikesh Paul',
+        photo: '',
+        id: '1',
+        email: 'hrpaul@iu.edu'
+      }
+    })
   }
-
-
-
 }
