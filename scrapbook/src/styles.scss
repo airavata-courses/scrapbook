@@ -15,7 +15,6 @@ $theme-colors: (
 $custom-typography: mat-typography-config(
   $font-family: '"Poppins", sans-serif'
 );
-@include mat-core($custom-typography);
 
 html, body { height: 100%; }
 body { margin: 0; min-width: 1280px !important;}

@@ -11,7 +11,7 @@
     <mat-horizontal-stepper #stepper linear class="h-100">
 
       <mat-step label="Upload" [completed]="false" [editable]="false" class="h-100">
-        <div class="custom-dropzone pt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
+        <div class="custom-dropzone mt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
           <ngx-dropzone-label>
             <div>
               <h3 class="font-weight-normal">Click here to upload images or just drag and drop them here!</h3>
