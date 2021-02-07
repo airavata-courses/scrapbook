@@ -24,6 +24,8 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatStepperModule} from '@angular/material/stepper';
+
 
 
 
@@ -53,7 +55,8 @@ const MatModules = [
   MatBottomSheetModule,
   MatSlideToggleModule,
   DragDropModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatStepperModule
 ];
 
 @NgModule({

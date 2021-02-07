@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Store } from '@ngxs/store';
-import { OpenProfile } from 'src/app/actions/ui.actions';
+import { OpenProfile, OpenUpload } from 'src/app/actions/ui.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +16,10 @@ export class NavbarComponent implements OnInit {
   }
 
   openProfile() {
-    this.store.dispatch(new OpenProfile)
+    this.store.dispatch(new OpenProfile);
+  }
+  onUploadModalOpen() {
+    this.store.dispatch(new OpenUpload);
   }
 
 }

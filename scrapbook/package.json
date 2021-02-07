@@ -30,6 +30,7 @@
     "@ngxs/store": "^3.7.1",
     "bootstrap": "^4.6.0",
     "milligram-scss": "^1.4.1",
+    "ngx-dropzone": "^3.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

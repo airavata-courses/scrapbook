@@ -1,12 +1,13 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload } from '../actions/ui.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
   notificationsOpen: boolean;
   accessRequestOpen: boolean;
   filterOpen: boolean;
+  uploadOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -15,7 +16,8 @@ export class UIStateModel {
     profileOpen: false,
     notificationsOpen: false,
     accessRequestOpen: false,
-    filterOpen: false
+    filterOpen: false,
+    uploadOpen: false
   }
 })
 @Injectable()
@@ -25,6 +27,11 @@ export class UIState {
   @Selector()
   static getProfileStatus(state: UIStateModel) {
     return state.profileOpen;
+  }
+
+  @Selector()
+  static getUploadModalStatus(state: UIStateModel) {
+    return state.uploadOpen;
   }
 
   @Action(OpenProfile)
@@ -40,6 +47,22 @@ export class UIState {
     setState({
       ...getState(),
       profileOpen: false
+    })
+  }
+
+  @Action(OpenUpload)
+  openUpload({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      uploadOpen: true
+    })
+  }
+
+  @Action(CloseUpload)
+  closeUpload({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      uploadOpen: false
     })
   }
 

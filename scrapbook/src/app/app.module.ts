@@ -16,7 +16,7 @@ import { LandingComponent } from './modules/landing/landing.component';
 import { RootComponent } from './modules/root/root.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './components/footer/footer.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponent } from './modules/navbar/navbar.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { AlbumListComponent } from './modules/album-list/album-list.component';
 import { SearchComponent } from './modules/search/search.component';
@@ -29,9 +29,11 @@ import { AlbumComponent } from './components/album/album.component';
 import {DataState} from './stores/data.state';
 import { InfoComponent } from './components/info/info.component';
 import { AlbumState } from './stores/album.state';
+import { UploadComponent } from './components/upload/upload.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,7 +46,7 @@ import { AlbumState } from './stores/album.state';
     BrowserAnimationsModule,
     MaterialModule,
     FontAwesomeModule,
-    
+    NgxDropzoneModule
   ],
   providers: [],
   bootstrap: [AppComponent],

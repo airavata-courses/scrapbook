@@ -1,0 +1,40 @@
+<div class="card text-dark px-1">
+  <div class="card-header h5 d-flex w-100 justify-content-between align-items-center p-0">
+    <div>Upload</div>
+    <div>
+      <button mat-icon-button (click)="onClose()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="card-body px-0">
+    <mat-horizontal-stepper>
+
+      <mat-step label="Upload">
+        <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
+          <ngx-dropzone-label>
+            <div>
+              <h2>My custom dropzone</h2>
+            </div>
+          </ngx-dropzone-label>
+          <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+          </ngx-dropzone-image-preview>
+        </div>
+      </mat-step>
+    
+      <mat-step label="Select Album">
+        Step 2 content
+      </mat-step>
+    
+      <mat-step label="Finalize">
+        You are now done.
+      </mat-step>
+      
+    </mat-horizontal-stepper>
+    
+  </div>
+  <div class="card-footer text-right p-0">
+    <a class="btn btn-primary">Next</a>
+  </div>
+</div>

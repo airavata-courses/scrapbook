@@ -27,3 +27,13 @@ export class CloseAccessrequest {
   static readonly type = '[CLOSE] Access Request';
   constructor() {}
 }
+
+export class OpenUpload {
+  static readonly type = '[OPEN] Upload Modal';
+  constructor() {}
+}
+
+export class CloseUpload {
+  static readonly type = '[CLOSE] Upload Modal';
+  constructor() {}
+}

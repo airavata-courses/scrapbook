@@ -8,10 +8,12 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FetchUserData } from './actions/user.actions';
-import { CloseProfile } from './actions/ui.actions';
+import { CloseProfile, CloseUpload } from './actions/ui.actions';
 import { InfoComponent } from './components/info/info.component';
 import { CloseAlbumInfo } from './actions/album.actions';
 import { AlbumState } from './stores/album.state';
+import { registerIcons } from './static/registerIcons';
+import { UploadComponent } from './components/upload/upload.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +24,7 @@ export class AppComponent {
   title = 'scrapbook';
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
+  @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
 
   constructor(
     private matIconRegistry: MatIconRegistry,
@@ -30,19 +33,7 @@ export class AppComponent {
     private dialog: MatDialog,
     private store: Store
   ) {
-    this.matIconRegistry.addSvgIcon(
-      'iu',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(
-        `../assets/landing/iu.svg`
-      )
-    );
-
-    this.matIconRegistry.addSvgIcon(
-      'google',
-      this.domSanitizer.bypassSecurityTrustResourceUrl(
-        `../assets/landing/google.svg`
-      )
-    );
+    registerIcons(matIconRegistry, domSanitizer);
 
     this.profile$.subscribe((status) => {
       if (status) this.openProfile();
@@ -53,9 +44,41 @@ export class AppComponent {
       if (status) this.openInfoModal();
       else this.closeInfoModal();
     });
+
+    this.upload$.subscribe((status) => {
+      if (status) this.openUploadModal();
+      else this.closeUploadModal();
+    });
   }
 
   ngOnInit(): void {}
+
+  openUploadModal() {
+    const config = new MatDialogConfig();
+    config.disableClose = false;
+    config.autoFocus = true;
+    config.id = 'UploadModal';
+    config.width = '800px';
+    config.autoFocus = false;
+
+    const uploadDialog = this.dialog.open(UploadComponent, config);
+    uploadDialog.componentInstance.close.subscribe((data) => {
+      this.closeUploadModal();
+    });
+
+    uploadDialog.afterClosed().subscribe((_) => {
+      this.store.dispatch(new CloseUpload());
+    });
+  }
+
+  closeUploadModal() {
+    const uploadModal = this.dialog.getDialogById('UploadModal');
+
+    if (uploadModal) {
+      this.store.dispatch(new CloseUpload());
+      uploadModal.close();
+    }
+  }
 
   openInfoModal() {
     const config = new MatDialogConfig();
@@ -64,7 +87,7 @@ export class AppComponent {
     config.id = 'InfoModal';
     config.width = '600px';
     config.autoFocus = false;
-    
+
     const infoDialog = this.dialog.open(InfoComponent, config);
     infoDialog.componentInstance.infoClose.subscribe((data) => {
       this.closeInfoModal();
@@ -76,11 +99,11 @@ export class AppComponent {
   }
 
   closeInfoModal() {
-    const InfoModal = this.dialog.getDialogById('InfoModal');
+    const infoModal = this.dialog.getDialogById('InfoModal');
 
-    if (InfoModal) {
+    if (infoModal) {
       this.store.dispatch(new CloseAlbumInfo());
-      InfoModal.close();
+      infoModal.close();
     }
   }
 
