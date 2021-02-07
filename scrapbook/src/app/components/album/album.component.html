@@ -6,7 +6,7 @@
         <mat-checkbox class="pr-4"></mat-checkbox>
         <fa-icon [icon]="faTh" size="2x" class="text-grey"></fa-icon>
         <div class="pl-3 desc">
-          <div class="h6 m-0">Name of the album</div>
+          <div class="h6 m-0"><a href="" class="text-dark">Name of the album</a></div>
           <div class="text-muted desc" style="font-size: 10pt;">Short description of the albumShort description of the
             album about what photos could possibly be in the album</div>
         </div>
@@ -39,18 +39,20 @@
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
           <span class="text-muted px-2">+ 3</span>
         </div>
-        <div class="d-inline text-right ">
-          <button mat-icon-button>
+        <div>
+          <button mat-icon-button class="mr-3">
             <mat-icon>lock</mat-icon>
           </button>
-          <button mat-icon-button [matMenuTriggerFor]="options" aria-label="Album Options" class="d-inline">
+          <button mat-icon-button [matMenuTriggerFor]="options" aria-label="Album Options" >
             <mat-icon>more_vert</mat-icon>
           </button>
         </div>
       </div>
       <mat-menu #options>
-        <menu mat-menu-item>Profile</menu>
-        <menu mat-menu-item>Account</menu>
+        <menu mat-menu-item>Info</menu>
+        <menu mat-menu-item>Star</menu>
+        <menu mat-menu-item>Download</menu>
+        <menu mat-menu-item>Open</menu>
       </mat-menu>
 
       <div>
