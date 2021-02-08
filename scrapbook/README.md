@@ -8,4 +8,4 @@ Clone the repo
 
 `npm install`
 
-`ng serve -o`
+`npm start`
