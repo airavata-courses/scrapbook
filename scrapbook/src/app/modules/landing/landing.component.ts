@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { ViewportScroller } from '@angular/common';
 import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { GoogleLogin, PutUserInSession } from 'src/app/actions/user.actions';
+import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-landing',
@@ -12,7 +14,15 @@ import { Router } from '@angular/router';
 export class LandingComponent implements OnInit, AfterViewInit {
   faGithub = faGithub;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: Store, public authService: SocialAuthService) {
+    this.authService.authState.subscribe(authState => {
+      if (authState.authToken) {
+        store.dispatch(new PutUserInSession(authState)).subscribe(_ => {
+          router.navigate(['/home'])
+        })
+      }
+    })
+  }
 
   ngOnInit(): void {}
 
@@ -38,6 +48,10 @@ export class LandingComponent implements OnInit, AfterViewInit {
   }
 
   onLogin() {
-    this.router.navigate(['/home'])
+    // this.router.navigate(['/home'])
+  }
+
+  onGoogleLogin() {
+    this.store.dispatch(new GoogleLogin());
   }
 }

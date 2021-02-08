@@ -7,11 +7,15 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { SocialLoginModule } from 'angularx-social-login';
 
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { LandingComponent } from './modules/landing/landing.component';
@@ -34,6 +38,7 @@ import { AlbumState } from './stores/album.state';
 import { UploadComponent } from './components/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FiltersComponent } from './components/filters/filters.component';
+import { LoginProviders } from './login.module';
 
 
 @NgModule({
@@ -44,17 +49,24 @@ import { FiltersComponent } from './components/filters/filters.component';
     HttpClientModule,
     NgxsModule.forRoot([UIState, UserState, DataState, AlbumState], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({
+    
       disabled: environment.production,
     }),
-    NgxsLoggerPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot({
+    }),
+    NgxsStoragePluginModule.forRoot(),
+    NgxsResetPluginModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
     FontAwesomeModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+    LoginProviders
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

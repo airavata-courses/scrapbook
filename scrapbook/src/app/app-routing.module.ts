@@ -4,6 +4,7 @@ import { LandingComponent } from './modules/landing/landing.component';
 import { RootComponent } from './modules/root/root.component';
 import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -12,11 +13,13 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'starred',
-    component: StarredComponent
+    component: StarredComponent,
+    canActivate: [AuthGuardService]
   }
 ];
 

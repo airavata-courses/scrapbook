@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { UserState } from 'src/app/stores/user.state';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Logout } from 'src/app/actions/user.actions';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +15,7 @@ export class ProfileComponent implements OnInit {
   
   userData: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public store: Store) {
     this.userData$.subscribe((data) => {
       this.userData = data;
     });
@@ -23,6 +24,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {}
 
   logout() {
-    this.router.navigate(['/'])
+      this.store.dispatch(new Logout()).subscribe(_ => {
+        this.router.navigate(['/'])
+      })
   }
 }

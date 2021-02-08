@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   }
 
   openFilters() {
-    this.store.dispatch(new OpenFilters);
+    this.store.dispatch(new OpenFilters());
   }
 
 }

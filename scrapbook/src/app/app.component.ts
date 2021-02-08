@@ -15,6 +15,7 @@ import { AlbumState } from './stores/album.state';
 import { registerIcons } from './static/registerIcons';
 import { UploadComponent } from './components/upload/upload.component';
 import { FiltersComponent } from './components/filters/filters.component';
+import { StateClear } from 'ngxs-reset-plugin';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,9 @@ export class AppComponent {
     private dialog: MatDialog,
     private store: Store
   ) {
+    // this.store.dispatch(
+    //   new StateClear()
+    // );
     registerIcons(matIconRegistry, domSanitizer);
 
     this.profile$.subscribe((status) => {
@@ -155,7 +159,6 @@ export class AppComponent {
 
     const profileDialog = this.dialog.open(ProfileComponent, config);
     profileDialog.updatePosition({ top: '80px', right: '50px' });
-    this.store.dispatch(new FetchUserData('id'));
     profileDialog.afterClosed().subscribe((_) => {
       this.store.dispatch(new CloseProfile());
     });
