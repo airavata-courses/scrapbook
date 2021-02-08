@@ -9,18 +9,12 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 const connectMongoDB = require('./config/database.js')
-
+connectMongoDB();
 
 var app = express();
 app.use(cors());
 
-connectMongoDB();
-
-
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

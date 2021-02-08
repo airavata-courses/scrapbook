@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var User = require('../models/users.js')
 
 
@@ -18,7 +17,7 @@ router.post('/login', (req, res) => {
   User.findOne({email: email}, (err, foundUser) => {
     if(err) {
       console.log(err)
-      res.status(404).send(err);
+      res.status(500).send(err);
     }
 
     if(!foundUser) {
@@ -33,7 +32,6 @@ router.post('/login', (req, res) => {
         } else {
           res.status(201).send(newUser);
         }
-        
       })
     } else {
       res.status(200).send(foundUser);
