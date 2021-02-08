@@ -3,25 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-const mongoose = require("mongoose")
+const connectMongoDB = require('./config/database.js')
 
 
 var app = express();
+app.use(cors());
 
-mongoose.connect("mongodb://localhost:27017/scrapbookUserService", {
-  useNewUrlParser: "true",
-})
+connectMongoDB();
 
-mongoose.connection.on("error", err => {
-  console.log("err", err)
-})
-mongoose.connection.on("connected", (err, res) => {
-  console.log("mongoose is connected")
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
