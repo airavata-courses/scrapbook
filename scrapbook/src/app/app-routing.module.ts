@@ -17,11 +17,13 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [AuthGuardService]
       },
       {
         path: 'starred',
-        component: StarredComponent
+        component: StarredComponent,
+        canActivate: [AuthGuardService]
       }
     ]
     // canActivate: [AuthGuardService]

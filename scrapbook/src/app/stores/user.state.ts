@@ -10,16 +10,12 @@ import {
 import { User } from '../models/user.model';
 import { StateReset } from 'ngxs-reset-plugin';
 
-import { SocialAuthService } from 'angularx-social-login';
-import {
-  GoogleLoginProvider,
-} from 'angularx-social-login';
-
 import { UIState } from './ui.state';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 export class UserStateModel {
   userData: any;
@@ -33,9 +29,8 @@ export class UserStateModel {
 })
 @Injectable()
 export class UserState {
-  private zone: NgZone
 
-  constructor(private authService: SocialAuthService, public router: Router, public userService: UserService) {
+  constructor(public router: Router, public userService: UserService, public gas: AuthService) {
   }
 
   @Selector()
@@ -50,30 +45,29 @@ export class UserState {
 
   @Action(GoogleLogin)
   googleLogin({ dispatch, setState, getState, patchState }: StateContext<UserStateModel>) {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-    
+    this.gas.loginWithGoogle();
   }
 
   @Action(PutUserInSession)
   putUserIntoSession({ setState, getState }: StateContext<UserStateModel>, { user }: PutUserInSession) {
-    let u: User = {
+    let loggedInUser: User = {
       name: user.name,
-      token: user.authToken,
+      token: user.idToken,
       email: user.email,
       photo: user.photoUrl,
       id: user.id,
     };
-    localStorage.setItem('scrapbook-token', u.token);
+    localStorage.setItem('scrapbook-token', loggedInUser.token);
     
     setState({
       ...getState(),
-      userData: u,
+      userData: loggedInUser,
     })
   }
 
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
-    this.authService.signOut()
+    // this.authService.signOut()
     localStorage.setItem('scrapbook-token', '');
     dispatch(new StateReset(UIState))
     setState({

@@ -24,8 +24,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {}
 
   logout() {
-      this.store.dispatch(new Logout()).subscribe(_ => {
-        this.router.navigate(['/'])
-      })
+      this.store.dispatch(new Logout());
   }
 }

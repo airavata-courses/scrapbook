@@ -22,9 +22,6 @@ export class AppComponent {
     private domSanitizer: DomSanitizer,
     public router: Router,
   ) {
-    // this.store.dispatch(
-    //   new StateClear()
-    // );
     registerIcons(matIconRegistry, domSanitizer);
   }
 

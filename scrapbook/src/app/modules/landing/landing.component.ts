@@ -4,7 +4,6 @@ import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GoogleLogin, PutUserInSession } from 'src/app/actions/user.actions';
-import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-landing',
@@ -14,14 +13,8 @@ import { SocialAuthService } from 'angularx-social-login';
 export class LandingComponent implements OnInit, AfterViewInit {
   faGithub = faGithub;
 
-  constructor(private router: Router, private store: Store, public authService: SocialAuthService) {
-    this.authService.authState.subscribe(authState => {
-      if (authState.authToken) {
-        store.dispatch(new PutUserInSession(authState)).subscribe(_ => {
-          router.navigate(['/home'])
-        })
-      }
-    })
+  constructor(private router: Router, private store: Store, ) {
+
   }
 
   ngOnInit(): void {}
