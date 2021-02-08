@@ -12,14 +12,24 @@ const routes: Routes = [
     component: LandingComponent
   },
   {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [AuthGuardService]
+    path: '',
+    component: RootComponent,
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent
+      },
+      {
+        path: 'starred',
+        component: StarredComponent
+      }
+    ]
+    // canActivate: [AuthGuardService]
   },
   {
     path: 'starred',
-    component: StarredComponent,
-    canActivate: [AuthGuardService]
+    component: RootComponent,
+    // canActivate: [AuthGuardService]
   }
 ];
 
