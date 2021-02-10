@@ -10,3 +10,4 @@ $ mvn clean install
 $ cd target
 
 $ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> <jar name with extension>
+
