@@ -23,6 +23,14 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
+
 
 
 // Importing required Material Modules
@@ -50,12 +58,18 @@ const MatModules = [
   MatSliderModule,
   MatBottomSheetModule,
   MatSlideToggleModule,
-  DragDropModule
+  DragDropModule,
+  MatBadgeModule,
+  MatStepperModule,
+  MatRadioModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
 @NgModule({
   imports: MatModules,
-  exports: MatModules
+  exports: MatModules,
+  providers: [MatDatepickerModule, MatNativeDateModule]
 })
 
 
