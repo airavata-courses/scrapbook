@@ -11,7 +11,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 ## Technology Stack
 
 - Angular 11 (TypeScript)
-- SpringBoot (Java 11)
+- SpringBoot (Java 15)
 - Flask (Python)
 - MongoDB
 - Google Cloud Storage
