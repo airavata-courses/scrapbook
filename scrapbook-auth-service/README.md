@@ -1,5 +1,11 @@
-`pip install -r requirements.txt`
+## Dependency
 
-`source env/bin/activate`
+- Python3 +
 
-`python app.py`
+### How to run
+
+- `source env/bin/activate`
+
+- `pip install -r requirements.txt`
+
+- `python app.py`
