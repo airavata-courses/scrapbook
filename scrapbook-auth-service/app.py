@@ -11,6 +11,14 @@ CORS(app)
 
 @app.route('/login', methods=["GET"])
 def veifyToken():
+    """
+    Route to verify token form google.
+    Decode the token to see the issuer, then verify it with te respective issuer.
+
+    @params - token
+    @return - 200 if valid token, 401 if invalid token
+    """
+
     try:
         token = request.args.get('token')
         iss = deocdeJWT(token)
