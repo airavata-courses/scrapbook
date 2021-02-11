@@ -11,11 +11,12 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "module": "es2020",
+    "module": "es2015",
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "types": ["gapi.auth2"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false

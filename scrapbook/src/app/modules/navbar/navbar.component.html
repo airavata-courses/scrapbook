@@ -1,0 +1,38 @@
+<div class="bg-white w-100 position-fixed navbar px-0">
+  <div class="px-5 d-flex justify-content-between align-items-center w-100">
+    <div style="width: 250px;">
+      <a class="text-dark font-weight-bolder h4 text-decoration-none pr-5" href="/home">scrapbook.</a>
+    </div>
+    <div class="d-flex align-items-center w-100 justify-content-between">
+      <app-search class="d-inline-block pr-5"></app-search>
+
+      <div>
+        <div class="d-inline-block pr-4">
+          <button class="btn btn-primary font-weight-normal" (click)="onUploadModalOpen()">
+            Upload
+          </button>
+        </div>
+        
+        <div class="d-inline-block pr-4">
+          <button mat-icon-button>
+            <mat-icon class="text-dark"  style="transform: scale(1.1);">person_add</mat-icon>
+          </button>
+        </div>
+  
+        <div class="d-inline-block pr-4">
+          <button mat-icon-button>
+            <mat-icon class="text-dark" style="transform: scale(1.1);">notifications</mat-icon>
+          </button>
+        </div>
+  
+        <div class="d-inline-block">
+          <button mat-icon-button (click)="openProfile()">
+            <mat-icon class="text-dark"  style="transform: scale(1.1);">account_circle</mat-icon>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+</div>
