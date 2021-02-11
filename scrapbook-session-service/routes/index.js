@@ -20,7 +20,6 @@ router.put('/reset/:id', (req, res, next) => {
     if (err) {
       res.status(500).send(err)
     } else {
-      console.log('here')
       res.status(203).send(updatedSession)
     }
   })
