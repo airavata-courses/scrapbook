@@ -12,26 +12,26 @@ router.post("/set", function (req, res, next) {
 
 /**
  * Route to reset the session timestamp.
- * First removes the user and then adds them back.
+ * Accepts ID of the session in the URL
  */
-router.put('/reset', (req, res, next) => {
-  const { userID, token } = req.body;
-  Session.remove({userID: userID}, (err, removed) => {
+router.put('/reset/:id', (req, res, next) => {
+  const id = req.params.id;
+  Session.findOneAndUpdate({_id: id}, {createdAt: new Date()}, (err, updatedSession) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send(err)
     } else {
-      if(removed.ok === 1) {
-        res.status(401).send('User not in session');
-      } else {
-        addUserToSession(res, userID, token);
-      }
+      console.log('here')
+      res.status(203).send(updatedSession)
     }
   })
 })
 
-router.delete('/remove', (req, res, next) => {
-  const { userID } = req.body;
-  Session.remove({userID: userID}, (err, removed) => {
+/**
+ * Route to remove the user from session
+ */
+router.delete('/remove/:id', (req, res, next) => {
+  const id = req.params.id;
+  Session.remove({_id: id}, (err, removed) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -40,6 +40,9 @@ router.delete('/remove', (req, res, next) => {
   })
 })
 
+/** 
+ * Function to create a session based on the emailID and the token
+ */
 function addUserToSession(res, userID, token) {
   new Session({
     userID: userID,
@@ -49,7 +52,7 @@ function addUserToSession(res, userID, token) {
       console.log(err);
       res.status(500).send(err);
     } else {
-      res.status(200).send('User successfully added in session');
+      res.status(200).send(newSession);
     }
   })
 }
