@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/login', methods=["GET"])
+@app.route('/auth', methods=["GET"])
 def veifyToken():
     """
     Route to verify token form google.
