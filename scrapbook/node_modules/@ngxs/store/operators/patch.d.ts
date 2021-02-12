@@ -1,0 +1,10 @@
+import { StateOperator } from '@ngxs/store';
+export declare type PatchSpec<T> = {
+    [P in keyof T]?: T[P] | StateOperator<NonNullable<T[P]>>;
+};
+declare type PatchValues<T> = {
+    readonly [P in keyof T]?: T[P] extends (...args: any[]) => infer R ? R : T[P];
+};
+declare type PatchOperator<T> = <U extends PatchValues<T>>(existing: Readonly<U>) => U;
+export declare function patch<T>(patchObject: PatchSpec<T>): PatchOperator<T>;
+export {};
