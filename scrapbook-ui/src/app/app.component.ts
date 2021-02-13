@@ -27,6 +27,7 @@ import { CloseLoading, OpenLoading } from './actions/ui.actions';
 export class AppComponent {
   title = 'scrapbook';
   @Select(UIState.getLoading) loading$: Observable<boolean>;
+  @Select(UIState.getPageErr) pe$: Observable<string>;
 
   constructor(
     private matIconRegistry: MatIconRegistry,
@@ -47,6 +48,13 @@ export class AppComponent {
 
     this.router.events.subscribe((e : RouterEvent) => {
       this.navigationInterceptor(e);
+    })
+
+    this.pe$.subscribe(val => {
+      console.log(val)
+      if (val === '401' || val === '404' || val === '500') {
+        this.router.navigate(['/error'])
+      }
     })
   }
 

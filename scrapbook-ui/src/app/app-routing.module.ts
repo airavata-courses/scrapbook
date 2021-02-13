@@ -5,6 +5,7 @@ import { RootComponent } from './modules/root/root.component';
 import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
     path: 'starred',
     component: RootComponent,
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent
   }
 ];
 

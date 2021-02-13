@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(public store: Store) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new FetchUserData(''))
+    // this.store.dispatch(new FetchUserData(''))
   }
 
 }
