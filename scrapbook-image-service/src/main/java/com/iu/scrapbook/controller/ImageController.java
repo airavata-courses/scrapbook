@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -23,11 +21,7 @@ import java.util.List;
 public class ImageController {
 
     @Autowired
-    private  ImageService ImageServiceImpl;
-
-    public ImageController(ImageService imageService) {
-        this.ImageServiceImpl = imageService;
-    }
+    private  ImageService imageService;
 
     /**
      *
@@ -36,7 +30,7 @@ public class ImageController {
      */
     @PostMapping
     public ResponseEntity<Image> create(@RequestBody Image image){
-        return ResponseEntity.status(HttpStatus.CREATED).body(ImageServiceImpl.create(image));
+        return ResponseEntity.status(HttpStatus.CREATED).body(imageService.create(image));
     }
 
     /**
@@ -46,7 +40,7 @@ public class ImageController {
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Image>> retrieve(@RequestParam("user") String userId){
-        return ResponseEntity.ok(ImageServiceImpl.retrieveAll(userId));
+        return ResponseEntity.ok(imageService.retrieveAll(userId));
     }
     
 }

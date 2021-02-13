@@ -26,7 +26,6 @@ public class Album {
     private Long size;
     private Instant createdDate;
     private Instant modifiedDate;
-    private String extension;
-    private Instant createdBy;
-    private Instant modifiedBy;
+    private String createdBy;
+    private String modifiedBy;
 }
