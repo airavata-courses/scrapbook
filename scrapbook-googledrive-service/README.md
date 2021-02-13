@@ -1,4 +1,8 @@
 # Getting Started
+This microservice is responsible for communication with google drive. It exposes API for
+upload/download image, create album, upload image to album etc.
+
+server port : 9090
 
 ###Technologies used:
 Java 15
