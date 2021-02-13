@@ -26,12 +26,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       }
     ]
-    // canActivate: [AuthGuardService]
   },
   {
     path: 'starred',
     component: RootComponent,
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService]
   }
 ];
 
