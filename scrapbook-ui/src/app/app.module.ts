@@ -40,10 +40,11 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FiltersComponent } from './components/filters/filters.component';
 import { LoginProviders } from './login.module';
 import { TokenInterceptor } from './token.interceptor';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
