@@ -1,0 +1,1 @@
+AUTH_SERIVCE_URL = 'http://localhost:5000'
