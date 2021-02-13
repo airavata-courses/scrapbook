@@ -1,13 +1,10 @@
 package com.iu.scrapbook.document;
 
-import com.google.api.client.util.DateTime;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * @author jbhushan
