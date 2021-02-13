@@ -5,10 +5,9 @@ import com.iu.scrapbook.repository.ImageRepository;
 import com.iu.scrapbook.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -26,23 +25,13 @@ public class ImageController {
     @Autowired
     private ImageRepository imageRepository;
 
-    @PostMapping(path ="/save")
+    @PostMapping
     public ResponseEntity<Image> create(@RequestBody Image image){
-
-       ResponseEntity<Image> responseEntity = null;
-//        Image image = null;
-//        try {
-//            image = imageService.uploadImage(file,userId, null);
-//            responseEntity = new ResponseEntity<Image>(image,HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-        return responseEntity;
+        return ResponseEntity.ok(imageService.create(image));
     }
     
 //    @GetMapping
-//    public ResponseEntity<List<Image>> create(){
+//    public ResponseEntity<List<Image>> retrieve(){
 //        return ResponseEntity.ok(imageRepository.findAll());
 //    }
     
