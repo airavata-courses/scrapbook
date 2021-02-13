@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading } from '../actions/ui.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -21,7 +21,7 @@ export class UIStateModel {
     filterOpen: false,
     uploadOpen: false,
     error: false,
-    loading: true
+    loading: false
   }
 })
 @Injectable()
@@ -41,6 +41,11 @@ export class UIState {
   @Selector() 
   static getFiltersStatus(state: UIStateModel) {
     return state.filterOpen;
+  }
+
+  @Selector() 
+  static getLoading(state: UIStateModel) {
+    return state.loading;
   }
 
   @Action(OpenProfile)
@@ -89,6 +94,22 @@ export class UIState {
     setState({
       ...getState(),
       filterOpen: false
+    })
+  }
+
+  @Action(OpenLoading)
+  openLoading({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      loading: true
+    })
+  }
+
+  @Action(CloseLoading)
+  closeLoading({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      loading: false
     })
   }
 
