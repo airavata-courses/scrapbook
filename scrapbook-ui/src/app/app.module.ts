@@ -39,12 +39,13 @@ import { UploadComponent } from './components/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FiltersComponent } from './components/filters/filters.component';
 import { LoginProviders } from './login.module';
-import { TokenInterceptor } from './token.interceptor';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

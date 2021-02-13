@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
-import { OpenProfile, CloseProfile } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, SetPageError } from '../actions/ui.actions';
 import {
   FetchUserData,
   GoogleLogin,
@@ -68,7 +68,6 @@ export class UserState {
 
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
-    // this.authService.signOut()
     localStorage.setItem('scrapbook-token', '');
     dispatch(new StateReset(UIState))
     setState({
@@ -85,6 +84,13 @@ export class UserState {
         console.log(res)
       }),
       catchError((e) => {
+        if (e.status === 401) {
+          dispatch(new SetPageError('401'))
+        } else if (e.status === 500) {
+          dispatch(new SetPageError('500'))
+        } else {
+          dispatch(new SetPageError('500'))
+        }
         return of('')
       })
     )
