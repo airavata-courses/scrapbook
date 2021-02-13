@@ -34,9 +34,7 @@ public class ImageController {
     }
 
     /**
-     * @Operation
-     *
-     * @return flux of images
+     * @return list of images
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Image>> retrieve(@RequestParam("user") String userId){

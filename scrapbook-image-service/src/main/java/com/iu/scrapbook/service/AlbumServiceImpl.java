@@ -27,5 +27,10 @@ public class AlbumServiceImpl implements AlbumService{
         return albumRepository.save(album);
     }
 
+    @Override
+    public List<Album> retrieveALl(String userId) {
+        return albumRepository.findByCreatedBy(userId);
+    }
+
 
 }

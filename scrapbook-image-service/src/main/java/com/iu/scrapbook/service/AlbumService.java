@@ -12,4 +12,6 @@ public interface AlbumService {
 
     Album create(Album album);
 
+    List<Album> retrieveALl(String userId);
+
 }

@@ -5,10 +5,9 @@ import com.iu.scrapbook.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -31,6 +30,15 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<Album> create(@RequestBody Album album){
         return ResponseEntity.status(HttpStatus.CREATED).body(albumService.create(album));
+    }
+
+    /**
+     *
+     * @return album created
+     */
+    @GetMapping
+    public ResponseEntity<List<Album>> retrieveAll(@RequestParam("user") String userId){
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.retrieveALl(userId));
     }
     
 }
