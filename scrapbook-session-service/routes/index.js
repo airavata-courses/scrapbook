@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 var Session = require("../models/session.js");
+var redis = require('../config/redis');
+
+const redisClient = redis.client;
 
 /**
  * Route to set the user session. Accepts the UserID and token in the request body
