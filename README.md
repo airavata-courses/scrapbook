@@ -34,6 +34,23 @@ $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 ```
 
+### How to Run
+
+Start a service either by going to their respective folders or using the start script
+
+**Start Script** (for linux based systems)
+
+```shell
+$ ./start.sh <arg> 
+$
+$ # Arg Values:
+$ # ui   : scrapbook-ui
+$ # auth : scrapbook-auth-service
+$ # user : scrapbook-user-service
+$ # sess : scrapbook-session-serice
+$ # gw   : scrapbook-gateway-service
+```
+
 ## Documentation
 
 - [Wiki](https://github.com/airavata-courses/scrapbook/wiki)

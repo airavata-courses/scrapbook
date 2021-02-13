@@ -1,3 +1,4 @@
 .DS_Store
 
 scrapbook-user-service/node_modules
+scrapbook-session-service/node_modules
