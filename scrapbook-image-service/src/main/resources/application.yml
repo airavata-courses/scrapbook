@@ -5,4 +5,4 @@ spring:
 google:
   service:
     account:
-      key: classpath:keys/test.json
+      key: classpath:keys/sb.json

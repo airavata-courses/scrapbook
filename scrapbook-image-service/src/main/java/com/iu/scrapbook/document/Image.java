@@ -1,12 +1,11 @@
 package com.iu.scrapbook.document;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.google.api.client.util.DateTime;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -15,12 +14,18 @@ import java.util.UUID;
 @Document
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
 
     @Id
-    private UUID id;
+    private String id;
+    private String googleDriveId;
     private String name;
-    private String size;
+    private Long size;
+    private String mimeType;
+    private Instant createdDate;
+    private Instant modifiedDate;
+    private String extension;
 }
