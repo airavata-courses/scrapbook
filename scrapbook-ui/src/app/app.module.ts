@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SocialLoginModule } from 'angularx-social-login';
@@ -39,6 +39,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FiltersComponent } from './components/filters/filters.component';
 import { LoginProviders } from './login.module';
+import { TokenInterceptor } from './token.interceptor';
 
 
 @NgModule({
@@ -65,7 +66,12 @@ import { LoginProviders } from './login.module';
     SocialLoginModule
   ],
   providers: [
-    LoginProviders
+    LoginProviders,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

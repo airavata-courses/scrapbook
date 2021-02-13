@@ -82,7 +82,7 @@ export class UserState {
     // make call
     return this.userService.fetchUserData(email).pipe(
       tap((res: any) => {
-
+        console.log(res)
       }),
       catchError((e) => {
         return of('')
