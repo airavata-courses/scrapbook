@@ -1,8 +1,3 @@
 spring:
   application:
     name: ImageService
-
-google:
-  service:
-    account:
-      key: classpath:keys/sb.json

@@ -42,24 +42,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.25.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-drive</artifactId>
-			<version>v3-rev130-1.25.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
-<!--		<dependency>-->
-<!--			<groupId>com.google.oauth-client</groupId>-->
-<!--			<artifactId>google-oauth-client-jetty</artifactId>-->
-<!--			<version>1.31.4</version>-->
-<!--		</dependency>-->
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
