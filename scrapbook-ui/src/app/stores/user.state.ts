@@ -39,7 +39,7 @@ export class UserState {
   }
 
   @Selector()
-  static getUserToken(state: UserStateModel){
+  static getUserToken(state: UserStateModel){  
     return state.userData.token;
   }
 
@@ -50,12 +50,13 @@ export class UserState {
 
   @Action(PutUserInSession)
   putUserIntoSession({ setState, getState }: StateContext<UserStateModel>, { user }: PutUserInSession) {
+    console.log('here User: ', user)
     let loggedInUser: User = {
       name: user.name,
-      token: user.idToken,
       email: user.email,
-      photo: user.photoUrl,
-      id: user.id,
+      photo: user.photo,
+      token: user.token,
+      _id: user._id,
     };
     localStorage.setItem('scrapbook-token', loggedInUser.token);
     
