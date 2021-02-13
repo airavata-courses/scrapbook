@@ -9,5 +9,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface ImageService {
 
-    public Image uploadImage(MultipartFile image) throws Exception;
+    public Image uploadImage(MultipartFile image, String userId, String albumName) throws Exception;
 }

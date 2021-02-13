@@ -4,6 +4,7 @@ import com.google.api.client.util.DateTime;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -17,9 +18,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Image {
 
-    @Id
+    @MongoId
     private String id;
     private String googleDriveId;
     private String name;
@@ -28,4 +31,6 @@ public class Image {
     private Instant createdDate;
     private Instant modifiedDate;
     private String extension;
+    private String createdBy;
+    private String modifiedBy;
 }
