@@ -12,7 +12,7 @@ var User = require('../models/user.js')
  * If the user is not found, then add the user and return a 201 status and the user.
  */
 router.post('/login', (req, res) => {
-  const {name, email, photo} = req.body
+  const {name, email, photo, token} = req.body
 
   User.findOne({email: email}, (err, foundUser) => {
     if(err) {
@@ -24,7 +24,8 @@ router.post('/login', (req, res) => {
       new User({
         name: name,
         email: email,
-        photo: photo
+        photo: photo,
+        token: token
       }).save((err, newUser) => {
         if(err) {
           console.log(err.message)

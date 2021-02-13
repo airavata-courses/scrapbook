@@ -1,28 +1,28 @@
-from flask import Blueprint, request
+import requests
+from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
+
+from config import USER_SERVICE_URL__DEV
 
 authenticate_user_api = Blueprint('authenticate_user_api', __name__)
 
 
 @authenticate_user_api.route('/login', methods=["POST"])
-def authenticateUser():
+def login():
     """
-    Route from the login button to retriveing user info from the user service.
+    Route from the login button to retrieving user info from the user service.
 
     @params - POST request that Google returns to Client sent to port 8080
     @return - need to populate depending on user case
     """
 
     try:
-        # is_valid is a True/False values which is returned by the auth_service function in service_utils.py
         user = request.json
-        print(user)
-        is_token_valid = auth.authenticateToken(user['token'])
+        auth.authenticateToken(user['token'])
 
-        if is_token_valid:
-            print("token valid")
+        response = requests.post(f'{USER_SERVICE_URL__DEV}/users/login', json=user)
+        response.raise_for_status()
+        return response.json(), response.status_code
 
-        return 'ok'
-    except Exception as err:
-        print(err)
-        return '', 401
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code

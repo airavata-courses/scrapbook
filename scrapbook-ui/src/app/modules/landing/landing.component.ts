@@ -3,7 +3,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { GoogleLogin, PutUserInSession } from 'src/app/actions/user.actions';
+import { GoogleLogin } from 'src/app/actions/user.actions';
 
 @Component({
   selector: 'app-landing',
@@ -13,8 +13,8 @@ import { GoogleLogin, PutUserInSession } from 'src/app/actions/user.actions';
 export class LandingComponent implements OnInit, AfterViewInit {
   faGithub = faGithub;
 
-  constructor(private router: Router, private store: Store, ) {
-
+  constructor(private router: Router, private store: Store) {
+    
   }
 
   ngOnInit(): void {}
