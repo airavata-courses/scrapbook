@@ -1,5 +1,16 @@
 # Getting Started
 
+###Technologies used:
+Java 15
+
+SpringBoot 2.4
+
+RESTful API
+
+MongoDB
+
+Google drive APIs
+
 ### Project Installation
 $ git clone https://github.com/airavata-courses/scrapbook.git
 

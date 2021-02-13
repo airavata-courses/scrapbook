@@ -1,3 +1,8 @@
 spring:
   application:
     name: ImageService
+
+google:
+  service:
+    account:
+      key: classpath:keys/test.json
