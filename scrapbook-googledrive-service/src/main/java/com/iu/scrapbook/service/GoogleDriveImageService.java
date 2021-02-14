@@ -14,4 +14,6 @@ public interface GoogleDriveImageService {
 
     OutputStream downloadImage(String googleId, String userId) throws Exception;
 
+    Boolean deleteImage(String googleId, String userId) throws Exception;
+
 }

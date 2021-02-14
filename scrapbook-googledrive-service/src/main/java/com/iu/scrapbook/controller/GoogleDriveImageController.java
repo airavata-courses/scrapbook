@@ -2,16 +2,14 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.dto.Image;
 import com.iu.scrapbook.service.GoogleDriveImageService;
+import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.OutputStream;
-
 
 /**
  * This controller contains all APIs related to image
@@ -63,11 +61,23 @@ public class GoogleDriveImageController {
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService
                     .downloadImage(googleId,userId));
+        }catch(Exception e){
+            e.printStackTrace();
+            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return responseEntity;
+    }
+
+    @DeleteMapping(path="/{googleid}")
+    public ResponseEntity<Boolean> deleteImage(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+        ResponseEntity<Boolean> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.ok(googleDriveImageService
+                    .deleteImage(googleId,userId));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return responseEntity;
     }
-
     
 }

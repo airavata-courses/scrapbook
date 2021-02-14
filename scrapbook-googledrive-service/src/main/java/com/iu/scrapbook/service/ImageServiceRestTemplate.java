@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * This class is responsible foe getting latest access token from amadeus
@@ -59,5 +60,9 @@ public class ImageServiceRestTemplate {
     public <T> ResponseEntity<T> post(String url, T body, Class<T> response){
         return restTemplate.postForEntity(imageServiceUrl+url,
                 body, response);
+    }
+
+    public void delete(String url){
+         restTemplate.delete(imageServiceUrl+url);
     }
 }

@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This service is responsible for communicating for google drive
@@ -75,5 +77,15 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
         OutputStream outputStream = new ByteArrayOutputStream();
         googleDriveConfig.getDrive().files().get(googleId).executeMediaAndDownloadTo(outputStream);
         return outputStream;
+    }
+
+    @Override
+    public Boolean deleteImage(String googleId, String userId) throws Exception {
+
+        // Mark inactive in google drive
+        imageServiceRestTemplate.delete("/image/"+googleId+"?user="+userId);
+        // delete from drive
+        googleDriveConfig.getDrive().files().delete(googleId).execute();
+        return true;
     }
 }
