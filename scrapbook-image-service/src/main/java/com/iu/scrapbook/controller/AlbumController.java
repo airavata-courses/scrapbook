@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/album")
-@CrossOrigin(origins = "*",allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class AlbumController {
 
     @Autowired

@@ -22,7 +22,7 @@ import java.util.MissingResourceException;
 @RestController
 @Slf4j
 @RequestMapping("/image")
-@CrossOrigin(origins = "*",allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class ImageController {
 
     @Autowired
