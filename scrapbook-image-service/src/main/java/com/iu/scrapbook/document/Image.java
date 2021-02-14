@@ -30,6 +30,6 @@ public class Image {
     private String extension;
     private String createdBy;
     private String modifiedBy;
-    private boolean active;
+    private Boolean active;
     private Album album;
 }

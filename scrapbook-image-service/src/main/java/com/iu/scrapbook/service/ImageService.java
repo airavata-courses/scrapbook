@@ -16,5 +16,9 @@ public interface ImageService {
 
     List<Image> retrieveAll(String userId);
 
+    Image retrieveImageDetails(String googleId, String userId) throws Exception;
+
+    void delete(String googleId, String userId);
+
 
 }
