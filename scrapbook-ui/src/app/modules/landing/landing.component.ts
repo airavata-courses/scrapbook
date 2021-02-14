@@ -4,6 +4,7 @@ import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GoogleLogin } from 'src/app/actions/user.actions';
+import { ClearPageError } from 'src/app/actions/ui.actions';
 
 @Component({
   selector: 'app-landing',
@@ -14,7 +15,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   faGithub = faGithub;
 
   constructor(private router: Router, private store: Store) {
-    
+    this.store.dispatch(new ClearPageError());
   }
 
   ngOnInit(): void {}

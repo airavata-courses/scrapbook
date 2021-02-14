@@ -57,3 +57,13 @@ export class CloseLoading {
   static readonly type = '[CLOSE] Loading';
   constructor() {}
 }
+
+export class SetPageError {
+  static readonly type = '[SET] Page Error';
+  constructor(public err: string) {}
+}
+
+export class ClearPageError {
+  static readonly type = '[CLEAR] Page Error';
+  constructor() {}
+}

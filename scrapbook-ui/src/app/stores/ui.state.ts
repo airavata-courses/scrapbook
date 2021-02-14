@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError } from '../actions/ui.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -10,6 +10,7 @@ export class UIStateModel {
   uploadOpen: boolean;
   error: boolean;
   loading: boolean;
+  pageError: string;
 }
 
 @State<UIStateModel>({
@@ -21,7 +22,8 @@ export class UIStateModel {
     filterOpen: false,
     uploadOpen: false,
     error: false,
-    loading: true
+    loading: false,
+    pageError: ''
   }
 })
 @Injectable()
@@ -41,6 +43,16 @@ export class UIState {
   @Selector() 
   static getFiltersStatus(state: UIStateModel) {
     return state.filterOpen;
+  }
+
+  @Selector() 
+  static getLoading(state: UIStateModel) {
+    return state.loading;
+  }
+
+  @Selector() 
+  static getPageErr(state: UIStateModel) {
+    return state.pageError;
   }
 
   @Action(OpenProfile)
@@ -89,6 +101,38 @@ export class UIState {
     setState({
       ...getState(),
       filterOpen: false
+    })
+  }
+
+  @Action(OpenLoading)
+  openLoading({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      loading: true
+    })
+  }
+
+  @Action(CloseLoading)
+  closeLoading({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      loading: false
+    })
+  }
+
+  @Action(SetPageError)
+  setPageError({getState, setState}: StateContext<UIStateModel>, {err}: SetPageError) {
+    setState({
+      ...getState(),
+      pageError: err
+    })
+  }
+
+  @Action(ClearPageError)
+  clearPageError({getState, setState}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      pageError: ''
     })
   }
 

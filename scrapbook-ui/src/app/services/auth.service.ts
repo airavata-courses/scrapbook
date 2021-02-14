@@ -8,6 +8,7 @@ import { GATEWAY_URL } from '../static/url';
 import { User } from '../models/user.model';
 import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { OpenLoading } from '../actions/ui.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthService {
     this.googleAuthService.authState.subscribe(
       (user) => {
         const {name, photoUrl, idToken, email } = user;
-
+        this.store.dispatch(new OpenLoading());
         this.logUserIn({name: name, photo: photoUrl, token: idToken, email: email}).toPromise().then( (user: any) => {
           this.store.dispatch(new PutUserInSession(user));
           this.ngZone.run(() => this.router.navigate(['/home']));
