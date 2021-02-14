@@ -70,5 +70,11 @@ public class ImageController {
             responseEntity = ResponseEntity.notFound().build();
         }return responseEntity;
     }
+
+    @DeleteMapping(path="/{googleid}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> delete(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+        imageService.delete(googleId, userId);
+        return ResponseEntity.ok(true);
+    }
     
 }

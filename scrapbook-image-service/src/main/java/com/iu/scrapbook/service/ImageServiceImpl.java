@@ -6,11 +6,16 @@ import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.MissingResourceException;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * This service is responsible for communicating for google drive and MongoDB
@@ -29,6 +34,9 @@ public class ImageServiceImpl implements ImageService{
 
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public Image create(Image image) {
@@ -62,6 +70,12 @@ public class ImageServiceImpl implements ImageService{
             throw new Exception("Image not found");
         }
         return image;
+    }
+
+    @Override
+    public void delete(String googleDriveId, String userId) {
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
+                update("active", false), Image.class);
     }
 
 }

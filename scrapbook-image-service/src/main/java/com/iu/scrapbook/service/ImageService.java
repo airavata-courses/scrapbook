@@ -18,5 +18,7 @@ public interface ImageService {
 
     Image retrieveImageDetails(String googleId, String userId) throws Exception;
 
+    void delete(String googleId, String userId);
+
 
 }
