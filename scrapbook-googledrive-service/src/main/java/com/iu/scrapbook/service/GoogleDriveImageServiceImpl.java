@@ -20,7 +20,7 @@ import java.time.Instant;
  * @author jbhushan
  */
 @Component
-public class GoogleDriveServiceImpl implements GoogleDriveService {
+public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
 
     @Autowired
     private GoogleDriveConfig googleDriveConfig;
@@ -29,7 +29,7 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     private ImageServiceRestTemplate imageServiceRestTemplate;
 
     @Override
-    public Image uploadImage(MultipartFile image, String userId, String albumName) throws Exception {
+    public Image uploadImage(MultipartFile image, String userId, String albumGoogleId) throws Exception {
 
         // Normalize file name
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
@@ -53,7 +53,12 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
                 .build();
 
         // call image-service to store image information into mongoDB
-        ResponseEntity<Image> response = imageServiceRestTemplate.post("/image",i, Image.class);
+        ResponseEntity<Image> response = null;
+        if(albumGoogleId != null){
+            response = imageServiceRestTemplate.post("/image/"+albumGoogleId,i, Image.class);
+        } else {
+            response = imageServiceRestTemplate.post("/image",i, Image.class);
+        }
         return response.getBody();
     }
 }

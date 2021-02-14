@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author jbhushan
  */
-public interface GoogleDriveService {
+public interface GoogleDriveImageService {
 
     public Image uploadImage(MultipartFile image, String userId, String albumName) throws Exception;
 }
