@@ -2,6 +2,7 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.dto.Image;
 import com.iu.scrapbook.service.GoogleDriveImageService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,11 @@ public class GoogleDriveImageController {
     @Autowired
     private GoogleDriveImageService googleDriveImageService;
 
+    @Operation(summary = "Upload image to google drive", description = "This API is responsible for uploading image " +
+            "to google drive.")
     @PostMapping(path ="/upload",consumes = "multipart/form-data")
     public ResponseEntity<Image> create(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("user") String userId){
+                                        @RequestParam("userid") String userId){
 
        ResponseEntity<Image> responseEntity = null;
         Image image = null;
@@ -39,9 +42,18 @@ public class GoogleDriveImageController {
         return responseEntity;
     }
 
-    @PostMapping(path ="/upload/{album}",consumes = "multipart/form-data")
+    /**
+     * @param file
+     *          image to upload
+     * @param userId
+     *          logged in user id
+     * @return Image object containing all required information
+     */
+    @Operation(summary = "Upload image to album", description = "This API is responsible for uploading image " +
+            "to given album name on the google drive. It also communicates with image-service to update database i.e. MongoDB")
+    @PostMapping(path ="/upload/{albumname}",consumes = "multipart/form-data")
     public ResponseEntity<Image> uploadImageToAlbum(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("user") String userId, @PathVariable("album") String album){
+                                                    @RequestParam("userid") String userId, @PathVariable("albumname") String album){
 
         ResponseEntity<Image> responseEntity = null;
         Image image = null;
@@ -54,9 +66,11 @@ public class GoogleDriveImageController {
         }
         return responseEntity;
     }
-    
-    @GetMapping(path="/{googleid}")
-    public ResponseEntity<OutputStream> downloadImage(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+
+    @Operation(summary = "Download image from google drive", description = "This API is responsible for downloading image " +
+            "for given googleDriveId from google drive.")
+    @GetMapping(path="/{googledriveid}")
+    public ResponseEntity<OutputStream> downloadImage(@PathVariable("googledriveid") String googleId, @RequestParam("user") String userId){
         ResponseEntity<OutputStream> responseEntity = null;
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService
@@ -68,8 +82,10 @@ public class GoogleDriveImageController {
         return responseEntity;
     }
 
-    @DeleteMapping(path="/{googleid}")
-    public ResponseEntity<Boolean> deleteImage(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+    @Operation(summary = "Delete image from google drive", description = "This API is responsible for deleting image " +
+            "for given googleDriveId from google drive. It communicates with image-service to set this image as inactive in database")
+    @DeleteMapping(path="/{googledriveid}")
+    public ResponseEntity<Boolean> deleteImage(@PathVariable("googledriveid") String googleId, @RequestParam("user") String userId){
         ResponseEntity<Boolean> responseEntity = null;
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService

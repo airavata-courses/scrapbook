@@ -2,6 +2,7 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.dto.Album;
 import com.iu.scrapbook.service.GoogleDriveAbumService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,11 @@ public class GoogleDriveAlbumController {
     @Autowired
     private GoogleDriveAbumService googleDriveAbumService;
 
-    @PostMapping(path="/{name}")
-    public ResponseEntity<Album> createAlbum(@PathVariable("name") String albumName,
-                                        @RequestParam("user") String userId){
+    @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
+            "to google drive with given album name.")
+    @PostMapping(path="/{albumname}")
+    public ResponseEntity<Album> createAlbum(@PathVariable("albumname") String albumName,
+                                        @RequestParam("userid") String userId){
 
        ResponseEntity<Album> responseEntity = null;
         Album album = null;
