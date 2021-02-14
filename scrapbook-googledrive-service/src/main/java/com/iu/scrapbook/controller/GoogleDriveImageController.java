@@ -3,10 +3,14 @@ package com.iu.scrapbook.controller;
 import com.iu.scrapbook.dto.Image;
 import com.iu.scrapbook.service.GoogleDriveImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.OutputStream;
 
 
 /**
@@ -49,6 +53,18 @@ public class GoogleDriveImageController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return responseEntity;
+    }
+    
+    @GetMapping(path="/{googleid}")
+    public ResponseEntity<OutputStream> downloadImage(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+        ResponseEntity<OutputStream> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.ok(googleDriveImageService
+                    .downloadImage(googleId,userId));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return responseEntity;
     }
