@@ -1,4 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Album } from 'src/app/models/album.model';
+import { Image } from 'src/app/models/image.model';
+
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-info',
@@ -6,9 +11,11 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
-  
+  moment = moment;
   @Output() infoClose: EventEmitter<any> = new EventEmitter<any>();
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { 
+    console.log(data)
+  }
 
   ngOnInit(): void {
   }

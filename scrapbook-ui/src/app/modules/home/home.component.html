@@ -1,5 +1,5 @@
 <div class="w-100 h-100 px-5">
   <p class="h5 font-weight-bold text-dark">All Albums</p>
   <br>
-  <app-album-list></app-album-list>
+  <app-album-list [albums]="userAlbums$ | async"></app-album-list>
 </div>

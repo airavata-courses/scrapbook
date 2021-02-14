@@ -6,29 +6,28 @@
         <mat-checkbox class="pr-4" color="primary"></mat-checkbox>
         <fa-icon [icon]="faTh" size="2x" class="text-grey"></fa-icon>
         <div class="pl-3 desc">
-          <div class="h6 m-0"><a href="" class="text-dark">Name of the album</a></div>
-          <div class="text-muted desc" style="font-size: 10pt;">Short description of the albumShort description of the
-            album about what photos could possibly be in the album</div>
+          <div class="h6 m-0"><a href="" class="text-dark">{{album.name}}</a></div>
+          <div class="text-muted desc" style="font-size: 8pt;">{{album.createdBy}}</div>
         </div>
       </div>
     </div>
 
     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
       <div class="desc pr-4">
-        <div class="h6 m-0 font-weight-normal" style="font-size: 10pt;">5:15PM, Feb 6, 2021</div>
-        <div class="text-muted font-italic" style="font-size: 10pt;">By Hrishikesh Paul</div>
+        <div class="h6 m-0 font-weight-normal" style="font-size: 10pt;">{{moment(album.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div>
+        <div class="text-muted font-italic" style="font-size: 10pt;">By {{album.modifiedBy}}</div>
       </div>
     </div>
 
     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
       <div class="desc">
-        <div class="h6 m-0 font-weight-normal">5 GB</div>
+        <div class="h6 m-0 font-weight-normal">{{album.size ? album.size + ' GB': '0 GB'}}</div>
       </div>
     </div>
 
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-      <div class="h-100 w-100 d-flex justify-content-between align-items-center">
-        <div>
+      <div class="h-100 w-100 d-flex justify-content-end align-items-center">
+        <!-- <div>
           <img src="https://picsum.photos/id/121/200/300"
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
           <img src="https://picsum.photos/id/500/200/300"
@@ -38,11 +37,11 @@
           <img src="https://picsum.photos/id/700/200/300"
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
           <span class="text-muted px-2">+ 3</span>
-        </div>
+        </div> -->
         <div>
-          <button mat-icon-button class="mr-3" [matMenuTriggerFor]="accessReq" aria-label="Request Access" >
+          <!-- <button mat-icon-button class="mr-3" [matMenuTriggerFor]="accessReq" aria-label="Request Access" >
             <mat-icon>lock</mat-icon>
-          </button>
+          </button> -->
           <button mat-icon-button [matMenuTriggerFor]="options" aria-label="Album Options" >
             <mat-icon>more_vert</mat-icon>
           </button>

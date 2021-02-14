@@ -4,11 +4,14 @@ import { OpenProfile, CloseProfile } from '../actions/ui.actions';
 import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap } from 'rxjs/operators';
+import { Album } from '../models/album.model';
+import { Image } from '../models/image.model';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
+  albumInfoModalData: Album | Image;
   imageInfoOpen: boolean;
-  allUserAlbums: Array<any>;
+  allAlbumsOfUser: Array<Album>;
 }
 
 @State<AlbumStateModel>({
@@ -16,7 +19,8 @@ export class AlbumStateModel {
   defaults: {
     albumInfoOpen: false,
     imageInfoOpen: false,
-    allUserAlbums: []
+    albumInfoModalData: {},
+    allAlbumsOfUser: []
   }
 })
 @Injectable()
@@ -28,11 +32,24 @@ export class AlbumState {
     return state.albumInfoOpen;
   }
 
+  @Selector()
+  static getAlbumnInfoModalData(state: AlbumStateModel) {
+    return state.albumInfoModalData;
+  }
+
+  @Selector()
+  static getAllAlbumsOfUser(state: AlbumStateModel) {
+    return state.allAlbumsOfUser;
+  }
+
   @Action(OpenAlbumInfo)
   openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId}:OpenAlbumInfo) {
+    const state = getState();
+    
     setState({
-      ...getState(),
-      albumInfoOpen: true
+      ...state,
+      albumInfoOpen: true,
+      albumInfoModalData: state.allAlbumsOfUser.find(a => a.id === albumId)
     })
   }
 
@@ -48,8 +65,11 @@ export class AlbumState {
     const state = getState();
 
     return this.albumService.getAlbumsOfUser(id).pipe(
-      tap((response) => {
-        console.log(response)
+      tap((response: Album[]) => {
+         setState({
+           ...state,
+           allAlbumsOfUser: response
+         })
       })
     )
   }

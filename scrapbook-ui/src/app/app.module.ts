@@ -31,7 +31,7 @@ import { UIState } from './stores/ui.state';
 import { UserState } from './stores/user.state';
 import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
-import { AlbumComponent } from './components/album/album.component';
+import { AlbumListItemComponent } from './components/album-list-item/album-list-item.component';
 import {DataState} from './stores/data.state';
 import { InfoComponent } from './components/info/info.component';
 import { AlbumState } from './stores/album.state';
@@ -45,7 +45,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -3,15 +3,14 @@ import { Image } from './image.model';
 
 
 export interface Album {
-  id: string;
-  name: string;
-  description: string;
-  size: number;
-  createdDate: string;
-  lastEditDate: string;
-  owner: string;
-  lastEditUser: string;
-  access: string;
-  collaborators: Array<User>;
-  images: Array<Image>;
+  active?: true
+  createdBy?: string
+  createdDate?: string;
+  googleDriveId?: string;
+  id?: string;
+  images?: Array<Image> | null;
+  modifiedBy?: string;
+  modifiedDate?: string;
+  name?: string;
+  size?: number | null;
   }

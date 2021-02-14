@@ -15,6 +15,7 @@ import { UploadComponent } from './../../components/upload/upload.component';
 import { FiltersComponent } from './../../components/filters/filters.component';
 import { StateClear } from 'ngxs-reset-plugin';
 import { UIState } from 'src/app/stores/ui.state';
+import { Album } from 'src/app/models/album.model';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class RootComponent {
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
+  @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
 
 
   constructor(
@@ -128,6 +130,7 @@ export class RootComponent {
     config.id = 'InfoModal';
     config.width = '600px';
     config.autoFocus = false;
+    config.data = this.store.selectSnapshot(AlbumState.getAlbumnInfoModalData);
 
     const infoDialog = this.dialog.open(InfoComponent, config);
     infoDialog.componentInstance.infoClose.subscribe((data) => {
