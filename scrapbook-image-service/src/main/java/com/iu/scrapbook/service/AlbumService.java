@@ -18,4 +18,6 @@ public interface AlbumService {
 
     void deleteByGoogleDriveId(String id);
 
+    Album addImageToAlbum(Album album,Image image);
+
 }

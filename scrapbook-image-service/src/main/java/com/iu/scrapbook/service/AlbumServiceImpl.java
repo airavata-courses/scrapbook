@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,19 @@ public class AlbumServiceImpl implements AlbumService{
     public void deleteByGoogleDriveId(String googleDriveId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Album.class);
+    }
+
+    @Override
+    public Album addImageToAlbum(Album album, Image image) {
+       // Album album= albumRepository.findByGoogleDriveId(googleDriveId);
+        List<Image> images = album.getImages();
+        if(images == null){
+            images = new ArrayList<Image>();
+        }
+        images.add(image);
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(album.getGoogleDriveId())),
+                update("images", images), Album.class);
+        return album;
     }
 
 
