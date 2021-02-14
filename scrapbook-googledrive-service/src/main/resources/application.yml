@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: GoogleDriveService
+
+google:
+  service:
+    account:
+      key: classpath:keys/scrapbook.json
+
+server:
+  port: 9090
