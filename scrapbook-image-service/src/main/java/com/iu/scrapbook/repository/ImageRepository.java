@@ -2,11 +2,21 @@ package com.iu.scrapbook.repository;
 
 import com.iu.scrapbook.document.Image;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.UUID;
+import java.util.List;
+
 
 /**
  * @author jbhushan
  */
-public interface ImageRepository extends MongoRepository<Image, UUID> {
+@Repository
+public interface ImageRepository extends MongoRepository<Image, String> {
+
+    List<Image> findByCreatedBy(String createdBy);
+
+    Image save(Image image);
 }
