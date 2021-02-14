@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * @author jbhushan
@@ -17,19 +18,17 @@ import java.time.Instant;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Image {
+public class Album {
 
     @MongoId
     private String id;
     private String googleDriveId;
     private String name;
     private Long size;
-    private String mimeType;
     private Instant createdDate;
     private Instant modifiedDate;
-    private String extension;
     private String createdBy;
     private String modifiedBy;
     private boolean active;
-    private Album album;
+    private List<Image> images;
 }

@@ -1,0 +1,23 @@
+package com.iu.scrapbook.repository;
+
+import com.iu.scrapbook.document.Album;
+import com.iu.scrapbook.document.Image;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+
+/**
+ * @author jbhushan
+ */
+@Repository
+public interface AlbumRepository extends MongoRepository<Album, String> {
+
+    List<Album> findByCreatedByAndActive(String createdBy, Boolean active);
+
+    Album findByGoogleDriveId(String id);
+
+}
