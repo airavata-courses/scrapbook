@@ -5,6 +5,7 @@ upload/download image, create album, upload image to album etc.
 server port : 9090
 
 ###Technologies used:
+
 Java 15
 
 SpringBoot 2.4
@@ -12,6 +13,8 @@ SpringBoot 2.4
 RESTful API
 
 Google drive APIs
+
+Swagger : for documentation
 
 ### Project Installation
 $ git clone https://github.com/airavata-courses/scrapbook.git
