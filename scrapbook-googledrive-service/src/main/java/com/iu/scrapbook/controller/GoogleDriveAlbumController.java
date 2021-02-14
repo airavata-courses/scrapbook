@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/album")
-@CrossOrigin(origins = "*",allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class GoogleDriveAlbumController {
 
     @Autowired

@@ -19,7 +19,7 @@ import java.io.OutputStream;
  */
 @RestController
 @RequestMapping("/image")
-@CrossOrigin(origins = "*",allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class GoogleDriveImageController {
 
     @Autowired
