@@ -10,8 +10,12 @@ import java.util.List;
  */
 public interface AlbumService {
 
-    Album create(Album album);
+    Album save(Album album);
 
     List<Album> retrieveALl(String userId);
+
+    void deleteAll(String userId);
+
+    void deleteByGoogleDriveId(String id);
 
 }

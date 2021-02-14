@@ -28,4 +28,5 @@ public class Album {
     private Instant modifiedDate;
     private String createdBy;
     private String modifiedBy;
+    private boolean active;
 }

@@ -29,7 +29,17 @@ public class AlbumController {
      */
     @PostMapping
     public ResponseEntity<Album> create(@RequestBody Album album){
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.create(album));
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.save(album));
+    }
+
+    /**
+     *
+     * @param album
+     * @return album updated
+     */
+    @PutMapping
+    public ResponseEntity<Album> update(@RequestBody Album album){
+        return ResponseEntity.ok(albumService.save(album));
     }
 
     /**
@@ -39,6 +49,18 @@ public class AlbumController {
     @GetMapping
     public ResponseEntity<List<Album>> retrieveAll(@RequestParam("user") String userId){
         return ResponseEntity.status(HttpStatus.CREATED).body(albumService.retrieveALl(userId));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<List<Album>> delete(@RequestParam("user") String userId){
+        albumService.deleteAll(userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/{googleDriveId}")
+    public ResponseEntity<List<Album>> deleteById(@PathVariable("googleDriveId") String googleDriveId){
+        albumService.deleteByGoogleDriveId(googleDriveId);
+        return ResponseEntity.ok().build();
     }
     
 }
