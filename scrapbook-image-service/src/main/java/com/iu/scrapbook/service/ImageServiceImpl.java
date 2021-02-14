@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -44,13 +45,23 @@ public class ImageServiceImpl implements ImageService{
         image.setActive(true);
         image.setAlbum(album);
         image = imageRepository.insert(image);
-        albumService.addImageToAlbum(album,image);
+        // update album
+        album = albumService.addImageToAlbum(album,image);
         return image;
     }
 
     @Override
     public List<Image> retrieveAll(String userId) {
         return imageRepository.findByCreatedBy(userId);
+    }
+
+    @Override
+    public Image retrieveImageDetails(String googleId, String userId) throws Exception{
+        Image image = imageRepository.findByGoogleDriveIdAndCreatedBy(googleId,userId);
+        if(image == null){
+            throw new Exception("Image not found");
+        }
+        return image;
     }
 
 }

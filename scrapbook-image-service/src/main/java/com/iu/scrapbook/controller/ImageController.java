@@ -56,5 +56,19 @@ public class ImageController {
     public ResponseEntity<List<Image>> retrieve(@RequestParam("user") String userId){
         return ResponseEntity.ok(imageService.retrieveAll(userId));
     }
+
+    /**
+     * @return list of images
+     */
+    @GetMapping(path="/{googleid}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Image> retrieve(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+        ResponseEntity<Image> responseEntity = null;
+        try {
+            Image image = imageService.retrieveImageDetails(googleId, userId);
+            responseEntity = ResponseEntity.ok(image);
+        }catch(Exception e){
+            responseEntity = ResponseEntity.notFound().build();
+        }return responseEntity;
+    }
     
 }

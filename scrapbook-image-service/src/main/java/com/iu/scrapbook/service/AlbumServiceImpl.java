@@ -8,6 +8,8 @@ import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
+import com.mongodb.client.result.UpdateResult;
+import com.mongodb.internal.bulk.UpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -64,7 +66,7 @@ public class AlbumServiceImpl implements AlbumService{
 
     @Override
     public Album addImageToAlbum(Album album, Image image) {
-       // Album album= albumRepository.findByGoogleDriveId(googleDriveId);
+       // album= albumRepository.findByGoogleDriveId(googleDriveId);
         List<Image> images = album.getImages();
         if(images == null){
             images = new ArrayList<Image>();
