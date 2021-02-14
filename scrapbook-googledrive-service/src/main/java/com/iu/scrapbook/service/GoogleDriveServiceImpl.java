@@ -5,6 +5,7 @@ import com.google.api.services.drive.model.File;
 import com.iu.scrapbook.config.GoogleDriveConfig;
 import com.iu.scrapbook.dto.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,9 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
 
     @Autowired
     private GoogleDriveConfig googleDriveConfig;
+
+    @Autowired
+    private ImageServiceRestTemplate imageServiceRestTemplate;
 
     @Override
     public Image uploadImage(MultipartFile image, String userId, String albumName) throws Exception {
@@ -48,8 +52,8 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
                 .createdBy(userId).modifiedBy(userId)
                 .build();
 
-        // TODO: jyoti
         // call image-service to store image information into mongoDB
-        return i;
+        ResponseEntity<Image> response = imageServiceRestTemplate.post("/image",i, Image.class);
+        return response.getBody();
     }
 }
