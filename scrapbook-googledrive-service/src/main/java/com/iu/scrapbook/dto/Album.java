@@ -3,6 +3,7 @@ package com.iu.scrapbook.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * @author jbhushan
@@ -22,7 +23,8 @@ public class Album {
     private Long size;
     private Instant createdDate;
     private Instant modifiedDate;
-    private String extension;
-    private Instant createdBy;
-    private Instant modifiedBy;
+    private String createdBy;
+    private String modifiedBy;
+    private boolean active;
+    private List<Image> images;
 }
