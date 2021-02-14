@@ -17,3 +17,8 @@ export class SelectAlbums {
   static readonly type = '[SELECT] Albums';
   constructor(public albumId: string){} 
 }
+
+export class FetchAllAlbumsOfUser {
+  static readonly type = '[FETCH] Fetch All Albums Of User';
+  constructor(public id: string) {}
+}
