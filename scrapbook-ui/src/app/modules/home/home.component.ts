@@ -6,7 +6,7 @@ import { UserState } from 'src/app/stores/user.state';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { Album } from 'src/app/models/album.model';
-import { Router } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { AlbumListService } from '../album-list/album-list.service';
 import { AlbumViewService } from '../album-view/album-view.service';
 
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) { 
     this.userAlbums$.subscribe(data => {
       if (data) {
+        console.log(data)
         this.albumListService.data$.next(data);
       }
     })
@@ -35,7 +36,13 @@ export class HomeComponent implements OnInit {
         this.albumViewService.album$.next(data);
        }
     })
-    // 
+    
+    router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const splitRoute = event.url.split('/')
+        const albumId = splitRoute[splitRoute.length - 1];this.store.dispatch(new PutAlbumInView(albumId))
+      }
+    })
     
   }
 
