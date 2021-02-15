@@ -10,7 +10,7 @@
   <div class="card-body px-0">
     <mat-horizontal-stepper #stepper linear>
       <mat-step label="Select Album" [completed]="false" [editable]="false" class="">
-        <div>
+        <div class="pt-4">
           <div class="h6 text-dark">Select an existing album</div>
           <div class="mt-4 d-flex flex-wrap">
             <div *ngFor="let album of albums" class="mr-3 my-2">
@@ -33,7 +33,9 @@
       </mat-step>
 
       <mat-step label="Upload" [completed]="false" [editable]="false">
-        <input class="form-control" #fileInput type="file" [multiple]="false"/>
+        <div class="pt-4">
+          <input class="form-control btn-light px-3 file" #fileInput type="file" [multiple]="false"/>
+        </div>
         <!-- <div class="custom-dropzone mt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
           <ngx-dropzone-label>
             <div>
@@ -53,6 +55,6 @@
   </div>
   <div class="card-footer text-right p-0">
     <button class="btn btn-light mr-3" *ngIf="currentStep > 0" (click)="goBack()">Back</button>
-    <button class="btn btn-primary" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" >{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
+    <button class="btn btn-primary" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" [disabled]="getNextBtnStatus()">{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
   </div>
 </div>

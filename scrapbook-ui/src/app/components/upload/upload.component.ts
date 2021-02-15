@@ -17,6 +17,7 @@ import { CreateAlbum, Upload } from 'src/app/actions/album.actions';
 export class UploadComponent implements OnInit, AfterViewInit {
   faLayerGroup = faLayerGroup;
   albums: Album[];
+  public uploadResult?: any;
   @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>()
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("stepper", { static: false }) private stepper: MatStepper;
@@ -25,7 +26,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   selectedAlbum = '';
   newAlbum: string;
-  files: File[] = [];
+  files: File[] = []
   currentStep = 0;
 
   constructor(public store: Store) { 
@@ -77,7 +78,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   getNextBtnStatus() {
     switch(this.currentStep) {
       case 1: 
-        if (this.files.length > 0) return false; break;
+        return false; break;
       
       case 0:
         if(this.selectedAlbum.length > 0) return false; break
@@ -106,15 +107,15 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.close.emit();
   }
 
-  public uploadResult?: any;
+  
 
   async uploadFile(fileInput: any) {
-    let files: File[] = fileInput.files;
-    if (files.length < 1) {
+    this.files.push(fileInput.files);
+    if (this.files.length < 1) {
       return;
     }
 
-    let file = files[0];
+    let file = this.files[0];
     const idx = this.albums.findIndex(a => a.id === this.selectedAlbum)
     const googleDriveId = this.albums[idx].googleDriveId
     this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
