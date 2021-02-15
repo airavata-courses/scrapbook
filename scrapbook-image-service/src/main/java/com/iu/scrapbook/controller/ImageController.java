@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.MissingResourceException;
 
-
 /**
  * This controller contains all APIs related to image
  *
@@ -64,12 +63,22 @@ public class ImageController {
     }
 
     /**
+     * @return list of images
+     */
+    @Operation(summary = "Retrieve all active images", description = "This API is responsible for retrieving" +
+            "all active images from database.")
+    @GetMapping(path="/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Image>> retrieveAll(){
+        return ResponseEntity.ok(imageService.retrieveAll());
+    }
+
+    /**
      * @return image
      */
     @Operation(summary = "Retrieve image for given user and googleDriveId", description = "This API is responsible for retrieving" +
             "image from database for given user and googleDriveId.")
     @GetMapping(path="/{googleid}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Image> retrieve(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+    public ResponseEntity<Image> retrieve(@PathVariable("googleid") String googleId, @RequestParam("userid") String userId){
         ResponseEntity<Image> responseEntity = null;
         try {
             Image image = imageService.retrieveImageDetails(googleId, userId);
@@ -82,7 +91,7 @@ public class ImageController {
     @Operation(summary = "Delete image for given user and google id", description = "This API is responsible for deleting" +
             "image from database for given user and googleDriveId.")
     @DeleteMapping(path="/{googleid}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> delete(@PathVariable("googleid") String googleId, @RequestParam("user") String userId){
+    public ResponseEntity<Boolean> delete(@PathVariable("googleid") String googleId, @RequestParam("userid") String userId){
         imageService.delete(googleId, userId);
         return ResponseEntity.ok(true);
     }

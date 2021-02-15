@@ -12,8 +12,10 @@ import com.mongodb.client.result.UpdateResult;
 import com.mongodb.internal.bulk.UpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -50,6 +52,16 @@ public class AlbumServiceImpl implements AlbumService{
     @Override
     public List<Album> retrieveALl(String userId) {
         return albumRepository.findByCreatedByAndActive(userId,true);
+    }
+
+    @Override
+    public Album retrieveAlbum(String googleDriveId, String userId) {
+        return albumRepository.findByGoogleDriveIdAndCreatedBy(googleDriveId,userId);
+    }
+
+    @Override
+    public List<Album> retrieveALl() {
+        return albumRepository.findByActive(true);
     }
 
     @Override

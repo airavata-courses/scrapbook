@@ -23,7 +23,7 @@ public class Image {
     private String id;
     private String googleDriveId;
     private String name;
-    private Long size;
+    private int size;
     private String mimeType;
     private Instant createdDate;
     private Instant modifiedDate;

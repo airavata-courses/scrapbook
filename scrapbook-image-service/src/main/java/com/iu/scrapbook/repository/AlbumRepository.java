@@ -1,13 +1,10 @@
 package com.iu.scrapbook.repository;
 
 import com.iu.scrapbook.document.Album;
-import com.iu.scrapbook.document.Image;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -18,6 +15,10 @@ public interface AlbumRepository extends MongoRepository<Album, String> {
 
     List<Album> findByCreatedByAndActive(String createdBy, Boolean active);
 
+    List<Album> findByActive(Boolean active);
+
     Album findByGoogleDriveId(String id);
+
+    Album findByGoogleDriveIdAndCreatedBy(String googleDriveId, String userId);
 
 }
