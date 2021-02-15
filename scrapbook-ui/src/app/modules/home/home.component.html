@@ -1,5 +1,11 @@
 <div class="w-100 h-100 px-5">
-  <p class="h5 font-weight-bold text-dark">All Albums</p>
+  <div *ngIf="this.router.url === '/home'; else nav">
+    <p class="h5 font-weight-bold text-dark">All Albums</p>
+ </div>
+  <ng-template #nav>
+    <p class="h6 font-weight-bold text-dark"><a (click)="router.navigate(['/home'])" class="link cursor text-dark a">All Albums</a> > {{albumName}} </p>
+  </ng-template>
+    
   <br>
   
   <router-outlet></router-outlet>

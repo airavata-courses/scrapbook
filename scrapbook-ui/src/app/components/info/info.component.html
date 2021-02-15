@@ -34,6 +34,12 @@
         <div class="h6 font-weight-normal">{{moment(data.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div>
       </div>
     </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <label class="text-muted">Size</label>
+        <div class="h6 font-weight-normal">{{data.size ? Math.round(data.size/1024) + ' KB': '0 B'}}</div>
+      </div>
+    </div>
 
     <div class="row mt-3">
       <div class="col-12">

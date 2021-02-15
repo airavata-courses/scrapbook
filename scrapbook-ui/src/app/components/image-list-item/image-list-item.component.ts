@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import * as moment from 'moment'
 import { Image } from 'src/app/models/image.model';
 import { faFileImage } from "@fortawesome/free-solid-svg-icons";
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-image-list-item',
   templateUrl: './image-list-item.component.html',

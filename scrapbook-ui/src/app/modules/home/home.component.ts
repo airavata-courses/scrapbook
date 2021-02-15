@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
   @Select(AlbumState.getAllAlbumsOfUser) userAlbums$: Observable<Album[]>;
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
 
+  albumName: string;
+
   constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) { 
     this.userAlbums$.subscribe(data => {
       if (data) {
@@ -28,7 +30,10 @@ export class HomeComponent implements OnInit {
     })
     
     this.albumInView$.subscribe(data => {
-       if (data)  this.albumViewService.album$.next(data);
+       if (data) {
+        this.albumName = data.name;
+        this.albumViewService.album$.next(data);
+       }
     })
     // 
     
