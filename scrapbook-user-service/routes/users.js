@@ -41,4 +41,22 @@ router.post('/login', (req, res) => {
   })
 });
 
+/** 
+ * GET Request
+ * @param req - body contains userid
+ * 
+ * Find an user from the database.
+ */
+router.get('/:id', (req, res) => {
+  const userid = req.params.id
+
+  User.findOne({_id: userid}, (err, user) => {
+    if (err) {
+      res.status(400).send(err)
+    } else {
+      res.status(200).send(user)
+    }
+  })
+});
+
 module.exports = router;

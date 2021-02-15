@@ -1,15 +1,15 @@
-const redis = require('redis');
-const redisPort = 6379;
-const client = redis.createClient(redisPort);
+// const redis = require('redis');
+// const redisPort = 6379;
+// const client = redis.createClient(redisPort);
 
-function init() {
+// function init() {
   
-  client.on("error", (err) => {
-    console.log(err);
-  });
-}
+//   client.on("error", (err) => {
+//     console.log(err);
+//   });
+// }
 
-module.exports = {
-  init: init,
-  client: client
-};
+// module.exports = {
+//   init: init,
+//   client: client
+// };
