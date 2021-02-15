@@ -59,8 +59,18 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
+    public List<Image> retrieveAll(String albumGDriveId, String userId) {
+        return imageRepository.findByAlbumGoogleDriveIdAndCreatedByAndActive(albumGDriveId,userId,true);
+    }
+
+    @Override
     public List<Image> retrieveAll(String userId) {
-        return imageRepository.findByCreatedBy(userId);
+        return imageRepository.findByCreatedByAndActive(userId,true);
+    }
+
+    @Override
+    public List<Image> retrieveAll() {
+        return imageRepository.findByActive(true);
     }
 
     @Override

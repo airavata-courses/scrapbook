@@ -13,9 +13,13 @@ import java.util.List;
 @Repository
 public interface ImageRepository extends MongoRepository<Image, String> {
 
-    List<Image> findByCreatedBy(String createdBy);
+    List<Image> findByCreatedByAndActive(String createdBy,Boolean active);
+
+    List<Image> findByActive(Boolean active);
 
     Image save(Image image);
 
     Image findByGoogleDriveIdAndCreatedBy(String id, String userId);
+
+    List<Image> findByAlbumGoogleDriveIdAndCreatedByAndActive(String gId, String createdBy,Boolean active);
 }

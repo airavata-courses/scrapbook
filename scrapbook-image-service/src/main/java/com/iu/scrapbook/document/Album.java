@@ -24,7 +24,7 @@ public class Album {
     private String id;
     private String googleDriveId;
     private String name;
-    private Long size;
+    private int size;
     private Instant createdDate;
     private Instant modifiedDate;
     private String createdBy;

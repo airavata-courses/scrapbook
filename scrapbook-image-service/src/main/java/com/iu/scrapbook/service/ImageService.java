@@ -14,7 +14,11 @@ public interface ImageService {
 
     Image create(Image image, String albumId) throws MissingResourceException;
 
+    List<Image> retrieveAll(String albumGDriveId, String userId);
+
     List<Image> retrieveAll(String userId);
+
+    List<Image> retrieveAll();
 
     Image retrieveImageDetails(String googleId, String userId) throws Exception;
 

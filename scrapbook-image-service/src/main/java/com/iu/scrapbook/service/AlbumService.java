@@ -14,6 +14,10 @@ public interface AlbumService {
 
     List<Album> retrieveALl(String userId);
 
+    Album retrieveAlbum(String googleDriveId, String userId);
+
+    List<Album> retrieveALl();
+
     void deleteAll(String userId);
 
     void deleteByGoogleDriveId(String id);
