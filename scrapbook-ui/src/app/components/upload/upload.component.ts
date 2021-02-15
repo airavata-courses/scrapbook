@@ -1,6 +1,13 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { MatStep, MatStepper } from '@angular/material/stepper';
 import { pluck } from "rxjs/operators";
+import { Album } from 'src/app/models/album.model';
+import { Select, Store } from '@ngxs/store';
+import { AlbumState } from 'src/app/stores/album.state';
+import { Observable } from 'rxjs';
+import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
+import { CreateAlbum, Upload } from 'src/app/actions/album.actions';
+
 
 @Component({
   selector: 'app-upload',
@@ -8,14 +15,28 @@ import { pluck } from "rxjs/operators";
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit, AfterViewInit {
-  
+  faLayerGroup = faLayerGroup;
+  albums: Album[];
+  public uploadResult?: any;
+  @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>()
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("stepper", { static: false }) private stepper: MatStepper;
+  
+  @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
 
-  files: File[] = [];
+  selectedAlbum = '';
+  newAlbum: string;
+  files: File[] = []
   currentStep = 0;
 
-  constructor() { }
+  constructor(public store: Store) { 
+    this.allAlbumsOfUser$.subscribe(aaou => {
+      if (aaou.length)  {
+        this.newAlbum = ''
+        this.albums = aaou
+      }
+    })
+  }
 
   ngOnInit(): void {}
   
@@ -24,7 +45,24 @@ export class UploadComponent implements OnInit, AfterViewInit {
       .pipe(pluck('selectedIndex'))
       .subscribe((res: number) => {
         this.currentStep = res;
+
+        if (res === 1) {
+          this.albumSelection();
+        }
+
+        if (res === 2) {
+          console.log(this.files)
+        }
       })
+  }
+
+  createAlbum() {
+    this.selectedAlbum = this.newAlbum;
+    this.store.dispatch(new CreateAlbum(this.newAlbum)) 
+  }
+
+  albumSelection() {
+    this.getAllUsersAlbums.emit()
   }
 
   goNext() {
@@ -39,14 +77,26 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   getNextBtnStatus() {
     switch(this.currentStep) {
-      case 0: 
-        if (this.files.length > 0) return false; break;
+      case 1: 
+        return false; break;
+      
+      case 0:
+        if(this.selectedAlbum.length > 0) return false; break
     }
     return true
   }
 
-  onSelect(event) {
+  async onSelect(event) {
     this.files.push(...event.addedFiles);
+    for(let file of this.files) {
+      // const fileData = await this.readFile(file);
+      // const name = this.albums.find(a => a.id === this.selectedAlbum).name
+      // // change this to selectedAlbum (it is the ID)
+      // this.store.dispatch(new Upload({content: fileData, name: file.name}, name))
+
+
+
+    }
   }
   
   onRemove(event) {
@@ -55,6 +105,20 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   onClose() {
     this.close.emit();
+  }
+
+  
+
+  async uploadFile(fileInput: any) {
+    this.files.push(fileInput.files);
+    if (this.files.length < 1) {
+      return;
+    }
+
+    let file = this.files[0];
+    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum)
+    const googleDriveId = this.albums[idx].googleDriveId
+    this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
   }
 
 }

@@ -1,16 +1,17 @@
 <div class="w-100">
   <div class="w-100 d-flex align-items-center text-muted">
     <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">Name</div>
-    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">Last Edit</div>
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">Last Modified</div>
     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">Size</div>
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">Collaborators</div>
   </div>
   <hr>
+  
   <div>
-    <!-- <div *ngFor="let i of [1,2,3,4,5]">
+    <div *ngFor="let album of albums; let i = index">
       <div class="py-3" style="border-bottom: 1px solid #ececec;">
-        <app-album (showAlbumInfo)="showAlbumInfo($event)"></app-album>
+        <app-album-list-item (showAlbumInfo)="showAlbumInfo($event)" [album]="album"></app-album-list-item>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>

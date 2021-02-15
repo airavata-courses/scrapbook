@@ -1,18 +1,17 @@
+import { Album } from './album.model';
+
 export interface Image {
-  name: string;
-  image: string;
+  active: boolean;
+  album: Album
+  createdBy: string;
   createdDate: string;
-  size: number;
-  metaData: MetaData;
+  extension: string;
+  googleDriveId: string;
+  id: string;
+  mimeType: string;
+  modifiedBy: string;
   modifiedDate: string;
-  owner: string;
+  name: string;
+  size: 124729
 }
 
-export interface MetaData {
-  focalLength: string;
-  iso: number;
-  shutterSpeed: number;
-  camera: string;
-  location: string;
-  colorSpace: string;
-}

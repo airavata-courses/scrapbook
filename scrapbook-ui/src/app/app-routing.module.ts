@@ -6,6 +6,8 @@ import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { AlbumViewComponent } from './modules/album-view/album-view.component';
+import { AlbumListComponent } from './modules/album-list/album-list.component';
 
 const routes: Routes = [
   {
@@ -19,19 +21,26 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-        canActivate: [AuthGuardService]
+        canActivate: [AuthGuardService],
+        children: [
+          {
+            path: ':album',
+            component: AlbumViewComponent
+          },
+          {
+            path: '',
+            component: AlbumListComponent
+          },
+          
+        ]
       },
+      
       {
         path: 'starred',
         component: StarredComponent,
         canActivate: [AuthGuardService]
       }
     ]
-  },
-  {
-    path: 'starred',
-    component: RootComponent,
-    canActivate: [AuthGuardService]
   },
   {
     path: 'error',

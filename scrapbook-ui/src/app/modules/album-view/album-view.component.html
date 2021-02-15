@@ -1,0 +1,18 @@
+<div class="w-100 h-100">
+
+  <div class="w-100 d-flex align-items-center text-muted">
+    <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">Name</div>
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">Owner</div>
+    <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">Size</div>
+    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">Last Modified</div>
+  </div>
+  <hr>
+  
+  <div>
+    <div *ngFor="let image of album.images; let i = index">
+      <div class="py-3" style="border-bottom: 1px solid #ececec;">
+        <app-image-list-item (showImageInfo)="showImageIngo($event)" [image]="image"></app-image-list-item>
+      </div>
+    </div>
+  </div>
+</div>

@@ -31,7 +31,7 @@ import { UIState } from './stores/ui.state';
 import { UserState } from './stores/user.state';
 import { HomeComponent } from './modules/home/home.component';
 import { StarredComponent } from './modules/starred/starred.component';
-import { AlbumComponent } from './components/album/album.component';
+import { AlbumListItemComponent } from './components/album-list-item/album-list-item.component';
 import {DataState} from './stores/data.state';
 import { InfoComponent } from './components/info/info.component';
 import { AlbumState } from './stores/album.state';
@@ -42,10 +42,12 @@ import { LoginProviders } from './login.module';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { AlbumViewComponent } from './modules/album-view/album-view.component';
+import { ImageListItemComponent } from './components/image-list-item/image-list-item.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

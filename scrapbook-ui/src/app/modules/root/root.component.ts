@@ -8,13 +8,15 @@ import { Router } from '@angular/router';
 import { ProfileComponent } from './../../components/profile/profile.component';
 import { CloseProfile, CloseUpload, CloseFilters } from '../../actions/ui.actions';
 import { InfoComponent } from '../../components/info/info.component';
-import { CloseAlbumInfo } from './../../actions/album.actions';
+import { CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from './../../actions/album.actions';
 import { AlbumState } from './../../stores/album.state';
 import { registerIcons } from './../../static/registerIcons';
 import { UploadComponent } from './../../components/upload/upload.component';
 import { FiltersComponent } from './../../components/filters/filters.component';
 import { StateClear } from 'ngxs-reset-plugin';
 import { UIState } from 'src/app/stores/ui.state';
+import { Album } from 'src/app/models/album.model';
+import { UserState } from 'src/app/stores/user.state';
 
 @Component({
   selector: 'app-root',
@@ -23,12 +25,16 @@ import { UIState } from 'src/app/stores/ui.state';
 })
 export class RootComponent {
   title = 'scrapbook';
+  user: any;
+  
+  @Select(UserState.getUserData) userData$: Observable<any>;
 
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
+  @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
 
 
   constructor(
@@ -42,6 +48,10 @@ export class RootComponent {
     //   new StateClear()
     // );
     registerIcons(matIconRegistry, domSanitizer);
+
+    this.userData$.subscribe((userData) => {
+      if (userData) this.user = userData;
+    })
 
     this.profile$.subscribe((status) => {
       if (status) this.openProfile();
@@ -103,6 +113,10 @@ export class RootComponent {
     config.autoFocus = false;
 
     const uploadDialog = this.dialog.open(UploadComponent, config);
+
+    uploadDialog.componentInstance.getAllUsersAlbums.subscribe((data: any) => {
+      this.store.dispatch(new FetchAllAlbumsOfUser(this.user._id))
+    })
     uploadDialog.componentInstance.close.subscribe((data) => {
       this.closeUploadModal();
     });
@@ -128,6 +142,7 @@ export class RootComponent {
     config.id = 'InfoModal';
     config.width = '600px';
     config.autoFocus = false;
+    config.data = this.store.selectSnapshot(AlbumState.getAlbumnInfoModalData);
 
     const infoDialog = this.dialog.open(InfoComponent, config);
     infoDialog.componentInstance.infoClose.subscribe((data) => {

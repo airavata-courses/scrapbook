@@ -8,10 +8,35 @@
     </div>
   </div>
   <div class="card-body px-0">
-    <mat-horizontal-stepper #stepper linear class="h-100">
+    <mat-horizontal-stepper #stepper linear>
+      <mat-step label="Select Album" [completed]="false" [editable]="false" class="">
+        <div class="pt-4">
+          <div class="h6 text-dark">Select an existing album</div>
+          <div class="mt-4 d-flex flex-wrap">
+            <div *ngFor="let album of albums" class="mr-3 my-2">
+              <div class="bg-light p-3 d-flex align-items-center album-card" [ngClass]="{'active': album.id === selectedAlbum}" (click)="selectedAlbum === album.id ? selectedAlbum = '' : selectedAlbum = album.id">
+                <fa-icon [icon]="faLayerGroup" size="1x" class="text-grey"></fa-icon>
+                <span class="pl-3" style="overflow: hidden;
+                white-space: nowrap; text-overflow: ellipsis;">{{album.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <mat-step label="Upload" [completed]="false" [editable]="false" class="h-100">
-        <div class="custom-dropzone mt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
+        <div class="mt-5">
+          <div class="h6 text-dark">Create an album</div>
+          <div class="mt-4 d-flex align-items-center">
+            <input class="form-control border-0 bg-light w-75 mr-3 py-2" placeholder="Album name..." [(ngModel)]="newAlbum" >
+            <button class="btn btn-primary" (click)="createAlbum()">Add</button>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step label="Upload" [completed]="false" [editable]="false">
+        <div class="pt-4">
+          <input class="form-control btn-light px-3 file" #fileInput type="file" [multiple]="false"/>
+        </div>
+        <!-- <div class="custom-dropzone mt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
           <ngx-dropzone-label>
             <div>
               <h3 class="font-weight-normal">Click here to upload images or just drag and drop them here!</h3>
@@ -20,22 +45,16 @@
           <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
             <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
           </ngx-dropzone-image-preview>
-        </div>
+        </div> -->
       </mat-step>
     
-      <mat-step label="Select Album" [completed]="false" [editable]="false">
-        Step 2 content
-      </mat-step>
-    
-      <mat-step label="Finalize">
-        You are now done.
-      </mat-step>
+      
       
     </mat-horizontal-stepper>
     
   </div>
   <div class="card-footer text-right p-0">
     <button class="btn btn-light mr-3" *ngIf="currentStep > 0" (click)="goBack()">Back</button>
-    <button class="btn btn-primary" (click)="goNext()" [disabled]="getNextBtnStatus()">Next</button>
+    <button class="btn btn-primary" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" [disabled]="getNextBtnStatus()">{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
   </div>
 </div>

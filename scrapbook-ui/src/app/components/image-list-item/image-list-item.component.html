@@ -4,31 +4,31 @@
     <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">
       <div class="d-flex align-items-center pr-4">
         <mat-checkbox class="pr-4" color="primary"></mat-checkbox>
-        <fa-icon [icon]="faTh" size="2x" class="text-grey"></fa-icon>
+        <fa-icon [icon]="faFileImage" size="2x" class="text-grey"></fa-icon>
         <div class="pl-3 desc">
-          <div class="h6 m-0"><a href="" class="text-dark">Name of the album</a></div>
-          <div class="text-muted desc" style="font-size: 10pt;">Short description of the albumShort description of the
-            album about what photos could possibly be in the album</div>
+          <div class="h6 m-0"><a class="text-dark a" (click)="showImage()">{{image.name}}</a></div>
         </div>
       </div>
     </div>
 
     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
       <div class="desc pr-4">
-        <div class="h6 m-0 font-weight-normal" style="font-size: 10pt;">5:15PM, Feb 6, 2021</div>
-        <div class="text-muted font-italic" style="font-size: 10pt;">By Hrishikesh Paul</div>
+        <!-- <div class="h6 m-0 font-weight-normal" style="font-size: 10pt;">{{moment(image.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div> -->
+        <div class="text-muted font-italic" style="font-size: 10pt;">{{image.createdBy}}</div>
       </div>
     </div>
 
     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
       <div class="desc">
-        <div class="h6 m-0 font-weight-normal">5 GB</div>
+        <div class="h6 m-0 font-weight-normal">{{image.size ? Math.round(image.size/1024) + ' KB': '0 B'}}</div>
       </div>
     </div>
 
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
       <div class="h-100 w-100 d-flex justify-content-between align-items-center">
-        <div>
+        <div class="text-muted desc">{{image.modifiedBy}}</div>
+
+        <!-- <div>
           <img src="https://picsum.photos/id/121/200/300"
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
           <img src="https://picsum.photos/id/500/200/300"
@@ -38,24 +38,24 @@
           <img src="https://picsum.photos/id/700/200/300"
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
           <span class="text-muted px-2">+ 3</span>
-        </div>
+        </div> -->
         <div>
-          <button mat-icon-button class="mr-3" [matMenuTriggerFor]="accessReq" aria-label="Request Access" >
+          <!-- <button mat-icon-button class="mr-3" [matMenuTriggerFor]="accessReq" aria-label="Request Access" >
             <mat-icon>lock</mat-icon>
-          </button>
+          </button> -->
           <button mat-icon-button [matMenuTriggerFor]="options" aria-label="Album Options" >
             <mat-icon>more_vert</mat-icon>
           </button>
         </div>
       </div>
       <mat-menu #options>
-        <menu mat-menu-item (click)="onShowAlbumInfo()">Info</menu>
+        <menu mat-menu-item (click)="onShowImageInfo()">Info</menu>
         <menu mat-menu-item>Star</menu>
         <menu mat-menu-item>Download</menu>
         <menu mat-menu-item>Open</menu>
       </mat-menu>
       <mat-menu #accessReq>
-        <menu mat-menu-item (click)="onShowAlbumInfo()">Request Access</menu>
+        <!-- <menu mat-menu-item (click)="onShowAlbumInfo()">Request Access</menu> -->
       </mat-menu>
 
       <div>
