@@ -5,6 +5,8 @@ import sys
 import requests
 
 from routes.auth import authenticate_user_api
+from routes.session import logout_user_api
+
 
 # Defines the Flask app
 app = Flask(__name__)
@@ -13,6 +15,7 @@ CORS(app)
 
 app.register_blueprint(authenticate_user_api)
 
+app.register_blueprint(logout_user_api)
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8081, debug=True)
