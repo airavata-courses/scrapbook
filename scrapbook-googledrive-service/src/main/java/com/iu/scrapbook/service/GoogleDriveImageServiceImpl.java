@@ -44,7 +44,7 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
 
         File file = new File();
         file.setName(fileName);
-        java.io.File f = new java.io.File("src/main/resources/targetFile.tmp");
+        java.io.File f = new java.io.File("targetFile.tmp");
         try (OutputStream os = new FileOutputStream(f)) {
             os.write(image.getBytes());
         }

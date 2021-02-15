@@ -30,6 +30,8 @@ elif [ "$1" == "help" ]; then
   echo "user : scrapbook-user-service"
   echo "sess : scrapbook-session-serice"
   echo "gw   : scrapbook-gateway-service"
+  echo "img  : scrapbook-image-service"
+  echo "gs   : scrapboook-google-drive-service"
   echo ""
   echo ":)"
 fi

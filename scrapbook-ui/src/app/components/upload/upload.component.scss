@@ -1,7 +1,27 @@
-::ng-deep .mat-horizontal-stepper-content {
-  height: 75% !important;
+// ::ng-deep .mat-horizontal-stepper-content {
+//   height: 75% !important;
+// }
+
+// .custom-dropzone {
+//   height: 325px;
+// }
+
+ul > li {
+  display: inline-block;
+  /* You can also add some margins here to make it look prettier */
+  zoom:1;
+  *display:inline;
+  /* this fix is needed for IE7- */
+}
+.album-card{
+  border-radius: 8px;
+  cursor: pointer;
+}
+.album-card:hover:not(.active) {
+  background-color: lighten($color: #c2c2c2, $amount: 20%) !important;
+  
 }
 
-.custom-dropzone {
-  height: 325px;
+.active {
+  background-color: lighten($color: #c2c2c2, $amount: 10%) !important;
 }
