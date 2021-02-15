@@ -11,6 +11,7 @@ export class UIStateModel {
   error: boolean;
   loading: boolean;
   pageError: string;
+  navigationStack: Array<string>;
 }
 
 @State<UIStateModel>({
@@ -23,7 +24,8 @@ export class UIStateModel {
     uploadOpen: false,
     error: false,
     loading: false,
-    pageError: ''
+    pageError: '',
+    navigationStack: []
   }
 })
 @Injectable()

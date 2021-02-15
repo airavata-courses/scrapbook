@@ -64,11 +64,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.getAllUsersAlbums.emit()
   }
 
-  async sendFiles() {
-
-    this.store.dispatch(new Upload(this.files, this.selectedAlbum))
-  }
-
   goNext() {
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
@@ -120,8 +115,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
 
     let file = files[0];
-    const googleDriveId = this.albums.find(a => a.id === this.selectedAlbum).googleDriveId
-    this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId))
+    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum)
+    const googleDriveId = this.albums[idx].googleDriveId
+    this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
   }
 
 }

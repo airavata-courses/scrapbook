@@ -5,7 +5,7 @@ export class FetchAllAlbums {
 
 export class OpenAlbumInfo {
   static readonly type = '[OPEN] Album Info';
-  constructor(public albumId: string) {}
+  constructor(public albumId: string, public type?: string) {}
 }
 
 export class CloseAlbumInfo {
@@ -30,5 +30,11 @@ export class CreateAlbum {
 
 export class Upload {
   static readonly type = '[UPLOAD] Images to Album';
-  constructor(public files: any, public id: string) {}
+  constructor(public files: any, public id: string, public idx: number) {}
 }
+
+export class PutAlbumInView {
+  static readonly type = 'PUT ALBUM INTO VIEW';
+  constructor(public id: any) {}
+}
+

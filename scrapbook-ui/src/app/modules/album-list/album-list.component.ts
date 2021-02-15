@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { OpenAlbumInfo } from 'src/app/actions/album.actions';
 import { Album } from 'src/app/models/album.model';
+import { AlbumListService } from './album-list.service';
 
 @Component({
   selector: 'app-album-list',
@@ -10,8 +11,15 @@ import { Album } from 'src/app/models/album.model';
 })
 export class AlbumListComponent implements OnInit {
   
-  @Input() albums: Album[];
-  constructor(private store: Store) { }
+  // @Input() albums: Album[];
+  albums: Album[];
+  constructor(private store: Store, public albumListService: AlbumListService) {
+    this.albumListService.data$.subscribe(data => {
+      if (data) {
+        this.albums = data;
+      }
+    })
+   }
 
   ngOnInit(): void {
   }

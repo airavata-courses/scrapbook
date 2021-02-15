@@ -8,8 +8,9 @@
       </mat-drawer>
     
       <div class="example-sidenav-content">
-        <app-home *ngIf="router.url=== '/home'"></app-home>
-        <app-starred *ngIf="router.url=== '/starred'"></app-starred>
+        <router-outlet></router-outlet>
+        <!-- <app-home *ngIf="router.url.startsWith('/home')"></app-home>
+        <app-starred *ngIf="router.url=== '/starred'"></app-starred> -->
       </div>
     
     </mat-drawer-container>
