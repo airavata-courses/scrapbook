@@ -72,7 +72,7 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
     }
 
     @Override
-    public byte[] downloadImage(String googleId, String userId) throws Exception {
+    public byte[] downloadImage(String googleId) throws Exception {
 
       //  ResponseEntity<Image> responseEntity = imageServiceRestTemplate.get("/image/"+googleId+"?user="+userId, Image.class);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

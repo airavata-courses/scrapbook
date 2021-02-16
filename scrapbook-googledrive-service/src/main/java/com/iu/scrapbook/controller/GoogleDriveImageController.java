@@ -73,11 +73,11 @@ public class GoogleDriveImageController {
     @Operation(summary = "Download image from google drive", description = "This API is responsible for downloading image " +
             "for given googleDriveId from google drive.")
     @GetMapping(path="/{googledriveid}",  produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> downloadImage(@PathVariable("googledriveid") String googleId, @RequestParam("userid") String userId){
+    public ResponseEntity<byte[]> downloadImage(@PathVariable("googledriveid") String googleId){
         ResponseEntity<byte[]> responseEntity = null;
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService
-                    .downloadImage(googleId,userId));
+                    .downloadImage(googleId));
         }catch(Exception e){
             e.printStackTrace();
             responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
