@@ -60,6 +60,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public List<Image> retrieveAll(String albumGDriveId, String userId) {
+        //imageRepository.
         return imageRepository.findByAlbumGoogleDriveIdAndCreatedByAndActive(albumGDriveId,userId,true);
     }
 

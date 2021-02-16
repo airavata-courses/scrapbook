@@ -6,18 +6,26 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
+import com.iu.scrapbook.service.exception.GoogleDriveException;
+import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.internal.bulk.UpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +43,13 @@ public class AlbumServiceImpl implements AlbumService{
     private AlbumRepository albumRepository;
 
     @Autowired
+    private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Value("${scrapbook.googledrive.service.album.baseurl}")
+    private String baseUrl;
 
     @Override
     public Album save(Album album) {
@@ -47,6 +61,30 @@ public class AlbumServiceImpl implements AlbumService{
             // Todo: jyoti <Edit>
         }
       return null;
+    }
+
+    @Override
+    public Album createAlbum(CreateAlbumRequest request, String userId) throws GoogleDriveException {
+        List<Album> albums = albumRepository.findByNameAndCreatedBy(request.getName(),userId);
+        String albumName = null;
+        if(albums.size() > 0){
+            albumName = request.getName() +"("+albums.size()+")";
+        }
+
+        Album album = Album.builder().name(albumName == null?request.getName():albumName).active(true)
+                .size(0).description(request.getDescription()).createdBy(userId).modifiedBy(userId).build();
+
+        //adding the query params to the URL
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("userid", userId);
+        ResponseEntity<Album> response = googleDriveServiceRestTemplate.post(uriBuilder.toUriString(),album,Album.class);
+
+        if(response.getStatusCode().equals(HttpStatus.CREATED)){
+            album = mongoTemplate.insert(response.getBody());
+        } else {
+            throw new GoogleDriveException();
+        }
+        return album;
     }
 
     @Override
@@ -79,7 +117,7 @@ public class AlbumServiceImpl implements AlbumService{
     @Override
     public Album addImageToAlbum(Album album, Image image) {
        // album= albumRepository.findByGoogleDriveId(googleDriveId);
-        List<Image> images = album.getImages();
+        List<Image> images = null;
         if(images == null){
             images = new ArrayList<Image>();
         }

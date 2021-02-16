@@ -2,10 +2,13 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
+import com.iu.scrapbook.service.exception.GoogleDriveException;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/album")
 @CrossOrigin(origins = "*",allowedHeaders = "*")
+@Slf4j
 public class AlbumController {
 
     @Autowired
@@ -37,9 +41,28 @@ public class AlbumController {
      */
     @Operation(summary = "Create album to database", description = "This API is responsible for creating album " +
             "into database. It stores all information related to album ")
-    @PostMapping
+  //  @PostMapping
     public ResponseEntity<Album> create(@RequestBody Album album){
         return ResponseEntity.status(HttpStatus.CREATED).body(albumService.save(album));
+    }
+
+
+    @Operation(summary = "Create album to database and in google drive", description = "This API is responsible for creating album " +
+            "into database. It stores all information related to album ")
+    @PostMapping
+    public ResponseEntity<Album> create(@RequestBody CreateAlbumRequest createAlbumRequest,
+                                        @RequestParam("userid") String userId){
+        log.info("Request for creating album "+createAlbumRequest.getName());
+        ResponseEntity<Album> responseEntity = null;
+        try {
+            Album album = albumService.createAlbum(createAlbumRequest,userId);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(album);
+        } catch (GoogleDriveException e) {
+            log.error("Exception in google drive service: "+e.getMessage());
+            e.printStackTrace();
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return responseEntity;
     }
 
     /**

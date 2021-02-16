@@ -6,3 +6,9 @@ spring:
       database: image-service
       repositories:
         enabled: true
+
+scrapbook:
+  googledrive:
+    service:
+      album:
+        baseurl: http://localhost:9090/album
