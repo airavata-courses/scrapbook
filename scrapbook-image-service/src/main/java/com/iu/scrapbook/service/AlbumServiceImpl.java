@@ -87,8 +87,8 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
-    public Album retrieveAlbum(String googleDriveId, String userId) {
-        return albumRepository.findByGoogleDriveIdAndCreatedBy(googleDriveId,userId);
+    public Album retrieveAlbum(String googleDriveId) {
+        return albumRepository.findByGoogleDriveId(googleDriveId);
     }
 
     @Override
