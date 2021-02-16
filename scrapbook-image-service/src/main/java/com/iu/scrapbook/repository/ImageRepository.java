@@ -23,4 +23,7 @@ public interface ImageRepository extends MongoRepository<Image, String> {
     Image findByGoogleDriveIdAndCreatedBy(String id, String userId);
 
     List<Image> findByAlbumGoogleDriveIdAndCreatedByAndActive(String gId, String createdBy,Boolean active);
+
+    List<Image> findByAlbumGoogleDriveIdAndActive(String gId,Boolean active);
+
 }
