@@ -92,9 +92,9 @@ public class AlbumController {
     @Operation(summary = "Retrieve album from database for given userId and googleDriveId", description = "This API is responsible for " +
             "retrieving album for given user and and googleDriveId from the database.")
     @GetMapping("/{googledriveid}")
-    public ResponseEntity<Album> retrieveAll(@RequestParam("userid") String userId,@PathVariable("googledriveid") String googleDriveId){
+    public ResponseEntity<Album> retrieveAlbum(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
-                body(albumService.retrieveAlbum(googleDriveId,userId));
+                body(albumService.retrieveAlbum(googleDriveId));
     }
 
     /**
@@ -104,9 +104,9 @@ public class AlbumController {
     @Operation(summary = "Retrieve all images from database for given album and userId", description = "This API is responsible for " +
             "retrieving all images for given user and album from the database.")
     @GetMapping("/{googledriveid}/image")
-    public ResponseEntity<List<Image>> retrieveAllImages(@RequestParam("userid") String userId, @PathVariable("googledriveid") String googleDriveId){
+    public ResponseEntity<List<Image>> retrieveAllImages(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
-                body(imageService.retrieveAll(googleDriveId,userId));
+                body(imageService.retrieveAllImages(googleDriveId));
     }
 
     @Operation(summary = "Delete all albums from database for given userId", description = "This API is responsible for " +

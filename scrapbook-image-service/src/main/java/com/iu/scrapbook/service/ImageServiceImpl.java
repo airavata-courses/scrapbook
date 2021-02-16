@@ -61,14 +61,24 @@ public class ImageServiceImpl implements ImageService{
         // update album
         List<Image> images = imageRepository.findByAlbumGoogleDriveIdAndActive(albumId,true);
         Long size = images.stream().mapToLong(i->i.getSize()).sum();
-        album.setSize(size);
-        albumRepository.save(album);
+        //album.setSize(size);
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(albumId)),
+                update("size", size), Album.class);
+
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(image.getGoogleDriveId())),
+                update("album", album), Image.class);
+       // albumRepository.save(album);
         return image;
     }
 
     @Override
     public List<Image> retrieveAll(String albumGDriveId, String userId) {
         return imageRepository.findByAlbumGoogleDriveIdAndCreatedByAndActive(albumGDriveId,userId,true);
+    }
+
+    @Override
+    public List<Image> retrieveAllImages(String albumGDriveId) {
+        return imageRepository.findByAlbumGoogleDriveIdAndActive(albumGDriveId,true);
     }
 
     @Override
@@ -82,8 +92,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public Image retrieveImageDetails(String googleId, String userId) throws Exception{
-        Image image = imageRepository.findByGoogleDriveIdAndCreatedBy(googleId,userId);
+    public Image retrieveImageDetails(String googleId) throws Exception{
+        Image image = imageRepository.findByGoogleDriveId(googleId);
         if(image == null){
             throw new Exception("Image not found");
         }

@@ -18,7 +18,7 @@ public interface AlbumService {
 
     List<Album> retrieveALl(String userId);
 
-    Album retrieveAlbum(String googleDriveId, String userId);
+    Album retrieveAlbum(String googleDriveId);
 
     List<Album> retrieveALl();
 
