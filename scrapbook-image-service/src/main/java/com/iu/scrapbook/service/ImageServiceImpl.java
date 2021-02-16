@@ -40,8 +40,8 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private MongoOperations mongoOperations;
+//    @Autowired
+//    private MongoOperations mongoOperations;
 
     @Override
     public Image create(Image image) {
