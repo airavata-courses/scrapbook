@@ -12,7 +12,7 @@ public interface GoogleDriveImageService {
 
     Image uploadImage(MultipartFile image, String userId, String albumName) throws Exception;
 
-    byte[] downloadImage(String googleId, String userId) throws Exception;
+    byte[] downloadImage(String googleId) throws Exception;
 
     Boolean deleteImage(String googleId, String userId) throws Exception;
 

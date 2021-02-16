@@ -24,7 +24,7 @@ public class GoogleDriveAlbumController {
 
     @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
             "to google drive with given album name.")
-    @PostMapping(path="/{albumname}")
+   // @PostMapping(path="/{albumname}")
     public ResponseEntity<Album> createAlbum(@PathVariable("albumname") String albumName,
                                         @RequestParam("userid") String userId){
 
@@ -42,7 +42,7 @@ public class GoogleDriveAlbumController {
 
     @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
             "to google drive with given album name.")
-    @PostMapping
+   @PostMapping
     public ResponseEntity<Album> createAlbum(@RequestBody Album album,
                                              @RequestParam("userid") String userId){
 
