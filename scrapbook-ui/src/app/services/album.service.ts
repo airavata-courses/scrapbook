@@ -15,12 +15,12 @@ export class AlbumService {
 
   createAlbum(name: string, id: string) {
     let params = new HttpParams().set('userid', id);
-    return this.http.post(`${GOOGLE_DRIVE_SERVICE_URL}/album/${name}?userid=${id}`, {});
+    return this.http.post(`${IMAGE_SERVICE_URL}/album?userid=${id}`, {name: name, description: 'this is a new album called' + name});
   }
 
   uploadFiles(file: any, id: string , userid: string) {
     const formData = new FormData();
-    formData.append('file', file.file)
+    formData.append('file', file.file[0])
     formData.append('userid', userid)
 
     let headers = new HttpHeaders();
