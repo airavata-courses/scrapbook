@@ -8,15 +8,15 @@ def checkUserSession():
     """
     Writing a python decorator to resuse to check if the user is in session
 
-    @params - POST request that Google returns to Client sent to port 8080
-    @return - True or False depending on what response the auth server returns
+    @params - Checks if the user is currently in session and updates the timeout value in the database
+    @return - 200 or 401
     """
     def _checkUserSession(req):
         @wraps(req)
         def __checkUserSession(*args, **kwargs):
             
             try:
-                #print(request, file = sys.stderr)
+                #reset user session
                 sessionId = request.values.get('id')
                 response = requests.put(f'{SESSION_SERVICE_URL__DEV}/reset/{sessionId}')
                 response.raise_for_status()

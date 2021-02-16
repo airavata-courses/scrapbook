@@ -18,7 +18,7 @@ app.register_blueprint(authenticate_user_api)
 
 app.register_blueprint(logout_user_api)
 
-app.register_blueprint(album_user_api)
+#app.register_blueprint(album_user_api)
 
 
 if __name__ == '__main__':

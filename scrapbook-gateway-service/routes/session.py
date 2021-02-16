@@ -20,8 +20,7 @@ def removeUserSession():
         userID = request.values['id']
         response = requests.delete(f'{SESSION_SERVICE_URL__DEV}/remove/{userID}')
         response.raise_for_status()
-        print(response, file = sys.stderr)
-        #delete rest call wont have a json response 
+        #delete rest call wont have a json response and the function requires a wsgi callable instance
         return "Removed user from session", response.status_code
 
     except requests.exceptions.HTTPError as err:

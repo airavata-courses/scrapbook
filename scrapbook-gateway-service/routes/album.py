@@ -21,13 +21,7 @@ def createAlbum():
         print(data, file = sys.stderr)
         userID = data['userID']
         #make sure the name of the parameter matches for name of album
-        albumName = data['name']
-        '''
-        maybe validate if they are non Null
-        if userID and albumName:
-            then put request
-        '''
-        
+        albumName = data['name']       
         response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/albums/create', data = data)
         response.raise_for_status()
         return response.json(), response.status_code
