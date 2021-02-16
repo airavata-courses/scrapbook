@@ -51,15 +51,16 @@ public class GoogleDriveImageController {
      * @return Image object containing all required information
      */
     @Operation(summary = "Upload image to album", description = "This API is responsible for uploading image " +
-            "to given album name on the google drive. It also communicates with image-service to update database i.e. MongoDB")
-    @PostMapping(path ="/upload/{albumname}",consumes = "multipart/form-data")
+            "to given album on google drive. It also communicates with image-service to update database i.e. MongoDB")
+    @PostMapping(path ="/upload/{albumgoogleid}",consumes = "multipart/form-data")
     public ResponseEntity<Image> uploadImageToAlbum(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("userid") String userId, @PathVariable("albumname") String album){
+                                                    @RequestParam("userid") String userId,
+                                                    @PathVariable("albumgoogleid") String albumGoogleId){
 
         ResponseEntity<Image> responseEntity = null;
         Image image = null;
         try {
-            image = googleDriveImageService.uploadImage(file,userId, album);
+            image = googleDriveImageService.uploadImage(file,userId, albumGoogleId);
             responseEntity = new ResponseEntity<Image>(image,HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
