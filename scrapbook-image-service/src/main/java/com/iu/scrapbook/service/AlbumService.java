@@ -3,7 +3,7 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
-import com.iu.scrapbook.service.exception.GoogleDriveException;
+import com.iu.scrapbook.exception.GoogleDriveException;
 
 import java.util.List;
 

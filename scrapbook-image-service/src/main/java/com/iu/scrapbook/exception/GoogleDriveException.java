@@ -1,4 +1,4 @@
-package com.iu.scrapbook.service.exception;
+package com.iu.scrapbook.exception;
 
 /**
  * @author jbhushan
