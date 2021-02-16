@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,9 +72,9 @@ public class GoogleDriveImageController {
 
     @Operation(summary = "Download image from google drive", description = "This API is responsible for downloading image " +
             "for given googleDriveId from google drive.")
-    @GetMapping(path="/{googledriveid}")
-    public ResponseEntity<OutputStream> downloadImage(@PathVariable("googledriveid") String googleId, @RequestParam("user") String userId){
-        ResponseEntity<OutputStream> responseEntity = null;
+    @GetMapping(path="/{googledriveid}",  produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> downloadImage(@PathVariable("googledriveid") String googleId, @RequestParam("userid") String userId){
+        ResponseEntity<byte[]> responseEntity = null;
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService
                     .downloadImage(googleId,userId));

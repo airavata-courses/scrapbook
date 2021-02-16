@@ -4,6 +4,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.iu.scrapbook.config.GoogleDriveConfig;
 import com.iu.scrapbook.dto.Image;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -71,12 +72,14 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
     }
 
     @Override
-    public OutputStream downloadImage(String googleId, String userId) throws Exception {
+    public byte[] downloadImage(String googleId, String userId) throws Exception {
 
       //  ResponseEntity<Image> responseEntity = imageServiceRestTemplate.get("/image/"+googleId+"?user="+userId, Image.class);
-        OutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         googleDriveConfig.getDrive().files().get(googleId).executeMediaAndDownloadTo(outputStream);
-        return outputStream;
+        //byte[] data = new byte[];
+        //return IOUtils.serialize(outputStream);
+        return outputStream.toByteArray();
     }
 
     @Override
