@@ -23,12 +23,13 @@ public class Album {
     @MongoId
     private String id;
     private String googleDriveId;
+    private String description;
     private String name;
-    private int size;
+    private long size;
     private Instant createdDate;
     private Instant modifiedDate;
     private String createdBy;
     private String modifiedBy;
     private boolean active;
-    private List<Image> images;
+    //private List<Image> images;
 }

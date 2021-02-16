@@ -21,4 +21,6 @@ public interface AlbumRepository extends MongoRepository<Album, String> {
 
     Album findByGoogleDriveIdAndCreatedBy(String googleDriveId, String userId);
 
+    List<Album> findByNameAndCreatedBy(String name, String userId);
+
 }
