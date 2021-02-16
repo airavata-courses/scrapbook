@@ -24,9 +24,13 @@ def login():
         response = requests.post(f'{USER_SERVICE_URL__DEV}/users/login', json=user)
         response.raise_for_status()
         #Adds user to session after authenticating
+<<<<<<< HEAD
         #print(request.args.get('email'), file = sys.stderr)
         #print(request.args.get('token'), file = sys.stderr)
         session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set', data = {"userID": user['email'], "token": user['token']})
+=======
+        session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set', data = {"userID": user['userID'], "token": user["token"]})
+>>>>>>> 426bec911ad2b8992a4b0c56bc24886506741b68
         session_response.raise_for_status()
         return response.json(), response.status_code
 
