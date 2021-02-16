@@ -2,10 +2,12 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
-import com.iu.scrapbook.repository.AlbumRepository;
+import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
+import com.iu.scrapbook.exception.GoogleDriveException;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/album")
 @CrossOrigin(origins = "*",allowedHeaders = "*")
+@Slf4j
 public class AlbumController {
 
     @Autowired
@@ -37,16 +40,30 @@ public class AlbumController {
      */
     @Operation(summary = "Create album to database", description = "This API is responsible for creating album " +
             "into database. It stores all information related to album ")
-    @PostMapping
+  //  @PostMapping
     public ResponseEntity<Album> create(@RequestBody Album album){
         return ResponseEntity.status(HttpStatus.CREATED).body(albumService.save(album));
     }
 
-    /**
-     *
-     * @param album
-     * @return album updated
-     */
+
+    @Operation(summary = "Create album to database and in google drive", description = "This API is responsible for creating album " +
+            "into database. It stores all information related to album ")
+    @PostMapping
+    public ResponseEntity<Album> create(@RequestBody CreateAlbumRequest createAlbumRequest,
+                                        @RequestParam("userid") String userId){
+        log.info("Request for creating album "+createAlbumRequest.getName());
+        ResponseEntity<Album> responseEntity = null;
+        try {
+            Album album = albumService.createAlbum(createAlbumRequest,userId);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(album);
+        } catch (GoogleDriveException e) {
+            log.error("Exception in google drive service: "+e.getMessage());
+            e.printStackTrace();
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return responseEntity;
+    }
+
     @Operation(summary = "update album information to database", description = "This API is responsible for updating album details" +
             "into database. It stores all information related to album ")
     @PutMapping
@@ -54,32 +71,24 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.save(album));
     }
 
-    /**
-     *
-     * @return album created
-     */
+
     @Operation(summary = "Retrieve all active albums from database", description = "This API is responsible for " +
             "retrieving all active albums from the database.")
     @GetMapping(path="/all")
     public ResponseEntity<List<Album>> retrieveAll(){
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.retrieveALl());
+        log.info("Request for retrieving all active album ");
+        return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl());
     }
 
-    /**
-     *
-     * @return album created
-     */
     @Operation(summary = "Retrieve all active albums from database for given userId", description = "This API is responsible for " +
             "retrieving all active albums for given user from the database.")
     @GetMapping
     public ResponseEntity<List<Album>> retrieveAll(@RequestParam("userid") String userId){
+        log.info("Request for creating album for user "+userId);
         return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl(userId));
     }
 
-    /**
-     *
-     * @return album created
-     */
+
     @Operation(summary = "Retrieve album from database for given userId and googleDriveId", description = "This API is responsible for " +
             "retrieving album for given user and and googleDriveId from the database.")
     @GetMapping("/{googledriveid}")
