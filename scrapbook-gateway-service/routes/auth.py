@@ -1,5 +1,6 @@
 import requests
 from flask import Blueprint, request, jsonify
+import sys
 from service_utils import auth_service as auth
 
 from config import USER_SERVICE_URL__DEV, SESSION_SERVICE_URL__DEV 
@@ -18,12 +19,14 @@ def login():
 
     try:
         user = request.json
+        #print(request, file = sys.stderr)
         auth.authenticateToken(user['token'])
-
         response = requests.post(f'{USER_SERVICE_URL__DEV}/users/login', json=user)
         response.raise_for_status()
         #Adds user to session after authenticating
-        session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set', data = {"userID": user['userID'], "token": user["token"]})
+        #print(request.args.get('email'), file = sys.stderr)
+        #print(request.args.get('token'), file = sys.stderr)
+        session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set', data = {"userID": user['email'], "token": user['token']})
         session_response.raise_for_status()
         return response.json(), response.status_code
 
