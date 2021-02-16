@@ -13,7 +13,7 @@ import java.time.Instant;
  * @author jbhushan
  */
 @Component
-public class GoogleDriveAlbumServiceImpl implements GoogleDriveAbumService {
+public class GoogleDriveAlbumServiceImpl implements GoogleDriveAlbumService {
 
     @Autowired
     private GoogleDriveConfig googleDriveConfig;
@@ -35,5 +35,19 @@ public class GoogleDriveAlbumServiceImpl implements GoogleDriveAbumService {
 
         ResponseEntity<Album> response = imageServiceRestTemplate.post("/album",album, Album.class);
         return response.getBody();
+    }
+
+    @Override
+    public Album createAlbum(Album album, String userId) throws Exception {
+        File fileMetadata = new File();
+        fileMetadata.setName(album.getName());
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+        fileMetadata = googleDriveConfig.getDrive().files().create(fileMetadata).setFields("*").execute();
+
+        album.setGoogleDriveId(fileMetadata.getId());
+        album.setCreatedDate(Instant.ofEpochMilli(fileMetadata.getCreatedTime().getValue()));
+        album.setModifiedDate(Instant.ofEpochMilli(fileMetadata.getModifiedTime().getValue()));
+        album.setSize(fileMetadata.getSize());
+        return album;
     }
 }
