@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ImageService
+
+scrapbook:
+  googledrive:
+    service:
+      album:
+        baseurl: http://localhost:9090/album

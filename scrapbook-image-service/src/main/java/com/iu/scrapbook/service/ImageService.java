@@ -16,11 +16,13 @@ public interface ImageService {
 
     List<Image> retrieveAll(String albumGDriveId, String userId);
 
+    List<Image> retrieveAllImages(String albumGDriveId);
+
     List<Image> retrieveAll(String userId);
 
     List<Image> retrieveAll();
 
-    Image retrieveImageDetails(String googleId, String userId) throws Exception;
+    Image retrieveImageDetails(String googleId) throws Exception;
 
     void delete(String googleId, String userId);
 
