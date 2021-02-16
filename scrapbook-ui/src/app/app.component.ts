@@ -18,6 +18,9 @@ import { UIState } from './stores/ui.state';
 import { Observable } from 'rxjs';
 import { LoadingComponent } from './components/loading/loading.component';
 import { CloseLoading, OpenLoading } from './actions/ui.actions';
+import { UserStateModel, UserState } from './stores/user.state';
+import { StateReset } from 'ngxs-reset-plugin';
+import { AlbumState } from './stores/album.state';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +31,7 @@ export class AppComponent {
   title = 'scrapbook';
   @Select(UIState.getLoading) loading$: Observable<boolean>;
   @Select(UIState.getPageErr) pe$: Observable<string>;
+  @Select(UserState.getLoggedInState) loggedIn$: Observable<boolean>;
 
   constructor(
     private matIconRegistry: MatIconRegistry,
@@ -56,24 +60,31 @@ export class AppComponent {
         this.router.navigate(['/error'])
       }
     })
+
+    this.loggedIn$.subscribe(val => {
+      if (!val) {
+        this.store.dispatch(new StateReset(UIState));
+        this.store.dispatch(new StateReset(AlbumState));
+      }
+    })
   }
 
   // Shows and hides the loading spinner during RouterEvent changes
   navigationInterceptor(event: RouterEvent): void {
-    if (event instanceof NavigationStart) {
-      this.store.dispatch(new OpenLoading())
-    }
-    if (event instanceof NavigationEnd) {
-      this.store.dispatch(new CloseLoading())
-    }
+    // if (event instanceof NavigationStart) {
+    //   this.store.dispatch(new OpenLoading())
+    // }
+    // if (event instanceof NavigationEnd) {
+    //   this.store.dispatch(new CloseLoading())
+    // }
 
-    // Set loading state to false in both of the below events to hide the spinner in case a request fails
-    if (event instanceof NavigationCancel) {
-      this.store.dispatch(new CloseLoading())
-    }
-    if (event instanceof NavigationError) {
-      this.store.dispatch(new CloseLoading())
-    }
+    // // Set loading state to false in both of the below events to hide the spinner in case a request fails
+    // if (event instanceof NavigationCancel) {
+    //   this.store.dispatch(new CloseLoading())
+    // }
+    // if (event instanceof NavigationError) {
+    //   this.store.dispatch(new CloseLoading())
+    // }
   }
 
   openLoading() {

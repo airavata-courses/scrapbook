@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchUserData } from 'src/app/actions/user.actions';
 import { Store, Select } from '@ngxs/store';
-import { FetchAllAlbumsOfUser, PutAlbumInView } from 'src/app/actions/album.actions';
+import { FetchAllAlbumsOfUser, PutAlbumInView, RemoveAlbumFromView } from 'src/app/actions/album.actions';
 import { UserState } from 'src/app/stores/user.state';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
@@ -36,12 +36,6 @@ export class HomeComponent implements OnInit {
        }
     })
     
-    router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.route(event)
-      }
-    })
-    
   }
 
   ngOnInit(): void {
@@ -49,16 +43,5 @@ export class HomeComponent implements OnInit {
     // this.store.dispatch(new FetchUserData(''))
   }
 
-  route(event) {
-    if (event.url === '/home') {
-      const userID = this.store.selectSnapshot(UserState.getUserData)._id
-      this.store.dispatch(new FetchAllAlbumsOfUser(userID))
-    } else {
-      const splitRoute = event.url.split('/')
-      const albumId = splitRoute[splitRoute.length - 1];
-      // get data for that route
-      this.store.dispatch(new PutAlbumInView(albumId))
-    }
-  }
 
 }

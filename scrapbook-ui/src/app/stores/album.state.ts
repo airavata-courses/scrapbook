@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading } from '../actions/ui.actions';
 import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError } from 'rxjs/operators';
@@ -81,7 +81,7 @@ export class AlbumState {
     })
   }
   @Action(FetchAllAlbumsOfUser)
-  fetchAllAlbumsOfUser({getState, setState}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
+  fetchAllAlbumsOfUser({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
     const state = getState();
 
     return this.albumService.getAlbumsOfUser(id).pipe(
@@ -89,6 +89,7 @@ export class AlbumState {
         // response.map(album => {
         //   album.images = []
         // })
+        dispatch(new CloseLoading())
          setState({
            ...state,
            allAlbumsOfUser: response
