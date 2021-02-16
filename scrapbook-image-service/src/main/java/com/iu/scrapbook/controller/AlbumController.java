@@ -65,11 +65,6 @@ public class AlbumController {
         return responseEntity;
     }
 
-    /**
-     *
-     * @param album
-     * @return album updated
-     */
     @Operation(summary = "update album information to database", description = "This API is responsible for updating album details" +
             "into database. It stores all information related to album ")
     @PutMapping
@@ -77,32 +72,24 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.save(album));
     }
 
-    /**
-     *
-     * @return album created
-     */
+
     @Operation(summary = "Retrieve all active albums from database", description = "This API is responsible for " +
             "retrieving all active albums from the database.")
     @GetMapping(path="/all")
     public ResponseEntity<List<Album>> retrieveAll(){
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.retrieveALl());
+        log.info("Request for retrieving all active album ");
+        return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl());
     }
 
-    /**
-     *
-     * @return album created
-     */
     @Operation(summary = "Retrieve all active albums from database for given userId", description = "This API is responsible for " +
             "retrieving all active albums for given user from the database.")
     @GetMapping
     public ResponseEntity<List<Album>> retrieveAll(@RequestParam("userid") String userId){
+        log.info("Request for creating album for user "+userId);
         return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl(userId));
     }
 
-    /**
-     *
-     * @return album created
-     */
+
     @Operation(summary = "Retrieve album from database for given userId and googleDriveId", description = "This API is responsible for " +
             "retrieving album for given user and and googleDriveId from the database.")
     @GetMapping("/{googledriveid}")

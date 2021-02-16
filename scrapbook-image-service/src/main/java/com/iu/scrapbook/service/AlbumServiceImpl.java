@@ -82,6 +82,7 @@ public class AlbumServiceImpl implements AlbumService{
         if(response.getStatusCode().equals(HttpStatus.CREATED)){
             album = mongoTemplate.insert(response.getBody());
         } else {
+            log.error(" Exception from google drive service. Album not created");
             throw new GoogleDriveException();
         }
         return album;
