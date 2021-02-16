@@ -33,8 +33,18 @@ export class Upload {
   constructor(public files: any, public id: string, public idx: number) {}
 }
 
+export class GetAllImagesInAlbum {
+  static readonly type = '[GET] All Images Of Album';
+  constructor(public id: string) {}
+}
+
 export class PutAlbumInView {
   static readonly type = 'PUT ALBUM INTO VIEW';
   constructor(public id: any) {}
+}
+
+export class RemoveAlbumFromView {
+  static readonly type = 'REMOVE ALBUM FORM VIEW';
+  constructor() {}
 }
 

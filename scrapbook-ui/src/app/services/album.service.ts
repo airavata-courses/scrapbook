@@ -18,6 +18,10 @@ export class AlbumService {
     return this.http.post(`${IMAGE_SERVICE_URL}/album?userid=${id}`, {name: name, description: 'this is a new album called' + name});
   }
 
+  getAllImagesOfAlbum(id: string) {
+    return this.http.get(`${IMAGE_SERVICE_URL}/album/${id}/image`)
+  }
+
   uploadFiles(file: any, id: string , userid: string) {
     const formData = new FormData();
     formData.append('file', file.file[0])
@@ -27,8 +31,8 @@ export class AlbumService {
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
 
-    let params = new HttpParams().set('userid', userid);
+    // let params = new HttpParams().set('userid', userid);
 
-    return this.http.post<any>(`${GOOGLE_DRIVE_SERVICE_URL}/image/upload/${id}`, formData, {headers: headers, params: params})
+    return this.http.post<any>(`${GOOGLE_DRIVE_SERVICE_URL}/image/upload/${id}`, formData, {headers: headers})
   }
 }

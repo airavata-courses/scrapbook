@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -9,6 +9,7 @@ import { Image } from '../models/image.model';
 import { UserState } from './user.state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
+import { StateReset } from 'ngxs-reset-plugin';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -136,9 +137,28 @@ export class AlbumState {
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
+    const album = state.allAlbumsOfUser.find(a => a.id === id);
+    const googleDriveId = album.googleDriveId;
+
+    return this.albumService.getAllImagesOfAlbum(googleDriveId).pipe(
+      tap((res: Image[]) => {
+        setState({
+          ...state,
+          albumInView: {...album, images: res}
+        })
+      }),
+      catchError((err) => {
+        dispatch(new SetPageError('500'));
+        return of('')
+      })
+    )
+  }
+
+  @Action(RemoveAlbumFromView)
+  removeAlbumFromView({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
     setState({
-      ...state,
-      albumInView: state.allAlbumsOfUser.find(a => a.id === id)
+      ...getState(),
+      albumInView: {}
     })
   }
   

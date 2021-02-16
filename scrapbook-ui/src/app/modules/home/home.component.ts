@@ -25,7 +25,6 @@ export class HomeComponent implements OnInit {
   constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) { 
     this.userAlbums$.subscribe(data => {
       if (data) {
-        console.log(data)
         this.albumListService.data$.next(data);
       }
     })
@@ -39,24 +38,27 @@ export class HomeComponent implements OnInit {
     
     router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        const splitRoute = event.url.split('/')
-        const albumId = splitRoute[splitRoute.length - 1];this.store.dispatch(new PutAlbumInView(albumId))
+        this.route(event)
       }
     })
     
   }
 
   ngOnInit(): void {
-    if (this.router.url === '/home') {
+    
+    // this.store.dispatch(new FetchUserData(''))
+  }
+
+  route(event) {
+    if (event.url === '/home') {
       const userID = this.store.selectSnapshot(UserState.getUserData)._id
       this.store.dispatch(new FetchAllAlbumsOfUser(userID))
     } else {
-      const splitRoute = this.router.url.split('/')
+      const splitRoute = event.url.split('/')
       const albumId = splitRoute[splitRoute.length - 1];
       // get data for that route
       this.store.dispatch(new PutAlbumInView(albumId))
     }
-    // this.store.dispatch(new FetchUserData(''))
   }
 
 }

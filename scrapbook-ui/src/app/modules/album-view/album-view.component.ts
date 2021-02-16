@@ -15,6 +15,7 @@ export class AlbumViewComponent implements OnInit {
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store) { 
     this.albumViewService.album$.subscribe(data => {
       this.album = data;
+      console.log(data)
     })
   }
 
