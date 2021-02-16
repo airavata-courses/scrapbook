@@ -10,4 +10,5 @@ spring:
 scrapbook:
   googledrive:
     service:
-      baseurl: http://localhost:9090
+      album:
+        baseurl: http://localhost:9090/album
