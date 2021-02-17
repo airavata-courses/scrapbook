@@ -18,6 +18,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   faLayerGroup = faLayerGroup;
   albums: Album[];
   public uploadResult?: any;
+
   @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>()
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("stepper", { static: false }) private stepper: MatStepper;
@@ -26,8 +27,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   selectedAlbum = '';
   newAlbum: string;
-  files: File[] = []
+  newAlbumDescription: string;
+  files: File[] = [];
   currentStep = 0;
+  isAlbumView = false;
 
   constructor(public store: Store) { 
     this.allAlbumsOfUser$.subscribe(aaou => {
@@ -35,7 +38,15 @@ export class UploadComponent implements OnInit, AfterViewInit {
         this.newAlbum = ''
         this.albums = aaou
       }
-    })
+    });
+
+    const isAlbumView = this.store.selectSnapshot(AlbumState.getAlbumInView);
+    if (isAlbumView) {
+      this.isAlbumView = true;
+      this.selectedAlbum = isAlbumView.id;
+    } else {
+      this.isAlbumView = false;
+    }
   }
 
   ngOnInit(): void {}
@@ -46,19 +57,18 @@ export class UploadComponent implements OnInit, AfterViewInit {
       .subscribe((res: number) => {
         this.currentStep = res;
 
-        if (res === 1) {
+        if (res === 1 && !this.isAlbumView) {
           this.albumSelection();
         }
 
         if (res === 2) {
-          console.log(this.files)
         }
       })
   }
 
   createAlbum() {
     this.selectedAlbum = this.newAlbum;
-    this.store.dispatch(new CreateAlbum(this.newAlbum)) 
+    this.store.dispatch(new CreateAlbum(this.newAlbum, this.newAlbumDescription)) 
   }
 
   albumSelection() {
@@ -81,23 +91,16 @@ export class UploadComponent implements OnInit, AfterViewInit {
         return false; break;
       
       case 0:
-        if(this.selectedAlbum.length > 0) return false; break
+        if(!this.isAlbumView) {
+          if(this.selectedAlbum.length > 0) return false; break;
+        } else {
+          return false;
+        }
+        
     }
     return true
   }
 
-  async onSelect(event) {
-    this.files.push(...event.addedFiles);
-    for(let file of this.files) {
-      // const fileData = await this.readFile(file);
-      // const name = this.albums.find(a => a.id === this.selectedAlbum).name
-      // // change this to selectedAlbum (it is the ID)
-      // this.store.dispatch(new Upload({content: fileData, name: file.name}, name))
-
-
-
-    }
-  }
   
   onRemove(event) {
     this.files.splice(this.files.indexOf(event), 1);
@@ -116,9 +119,15 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
 
     let file = this.files[0];
-    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum)
-    const googleDriveId = this.albums[idx].googleDriveId
-    this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
+    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum);
+    console.log(this.selectedAlbum)
+    if (idx !== -1) {
+      const googleDriveId = this.albums[idx].googleDriveId
+      this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
+    } else {
+      console.log('error')
+    }
+    
   }
 
 }

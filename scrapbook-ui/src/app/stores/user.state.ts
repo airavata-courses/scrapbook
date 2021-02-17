@@ -16,15 +16,18 @@ import { UserService } from '../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { AlbumState } from './album.state';
 
 export class UserStateModel {
   userData: any;
+  loggedIn: boolean;
 }
 
 @State<UserStateModel>({
   name: 'userState',
   defaults: {
     userData: {},
+    loggedIn: false
   },
 })
 @Injectable()
@@ -43,6 +46,11 @@ export class UserState {
     return state.userData.token;
   }
 
+  @Selector()
+  static getLoggedInState(state: UserStateModel) {
+    return state.loggedIn;
+  }
+
   @Action(GoogleLogin)
   googleLogin({ dispatch, setState, getState, patchState }: StateContext<UserStateModel>) {
     this.gas.loginWithGoogle();
@@ -50,7 +58,6 @@ export class UserState {
 
   @Action(PutUserInSession)
   putUserIntoSession({ setState, getState }: StateContext<UserStateModel>, { user }: PutUserInSession) {
-    console.log('here User: ', user)
     let loggedInUser: User = {
       name: user.name,
       email: user.email,
@@ -63,16 +70,20 @@ export class UserState {
     setState({
       ...getState(),
       userData: loggedInUser,
+      loggedIn: true
     })
   }
 
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
     localStorage.setItem('scrapbook-token', '');
-    dispatch(new StateReset(UIState))
+    // dispatch(new StateReset(UIState));
+    // // dispatch(new StateReset(AlbumState));
+    // dispatch(new StateReset(UIState));
     setState({
       ...getState(),
-      userData: {}
+      userData: {},
+      loggedIn: false
     })
   }
 

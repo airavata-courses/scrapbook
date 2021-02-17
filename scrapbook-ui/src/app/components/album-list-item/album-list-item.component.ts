@@ -13,6 +13,7 @@ export class AlbumListItemComponent implements OnInit {
   
   faTh = faLayerGroup;
   moment = moment;
+  Math = Math;
   
   @Input() album: Album;
   @Output() showAlbumInfo: EventEmitter<any> = new EventEmitter<any>();
