@@ -1,6 +1,7 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal } from '../actions/ui.actions';
+import { RemoveImage } from '../actions/album.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -12,6 +13,7 @@ export class UIStateModel {
   loading: boolean;
   pageError: string;
   navigationStack: Array<string>;
+  imageModalOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -25,7 +27,8 @@ export class UIStateModel {
     error: false,
     loading: false,
     pageError: '',
-    navigationStack: []
+    navigationStack: [],
+    imageModalOpen: false
   }
 })
 @Injectable()
@@ -55,6 +58,11 @@ export class UIState {
   @Selector() 
   static getPageErr(state: UIStateModel) {
     return state.pageError;
+  }
+
+  @Selector()
+  static getImgModal(state: UIStateModel) {
+    return state.imageModalOpen;
   }
 
   @Action(OpenProfile)
@@ -135,6 +143,23 @@ export class UIState {
     setState({
       ...getState(),
       pageError: ''
+    })
+  }
+
+  @Action(OpenImageModal)
+  openImageModal({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      imageModalOpen: true
+    })
+  }
+
+  @Action(CloseImageModal)
+  closeImageModal({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    dispatch(new RemoveImage());
+    setState({
+      ...getState(),
+      imageModalOpen: false
     })
   }
 

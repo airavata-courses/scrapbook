@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import * as moment from 'moment'
 import { Image } from 'src/app/models/image.model';
 import { faFileImage } from "@fortawesome/free-solid-svg-icons";
-import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-image-list-item',
   templateUrl: './image-list-item.component.html',
@@ -15,13 +16,15 @@ export class ImageListItemComponent implements OnInit {
   faFileImage= faFileImage;
   @Input() image: Image;
   @Output() showImageInfo: EventEmitter<any> = new EventEmitter<any>();
-  constructor() { }
+  @Output() showImage: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
 
-  showImage() {
-
+  onShowImage(imgId: Image) {
+    this.showImage.emit(imgId);
   }
 
   onShowImageInfo() {

@@ -11,7 +11,7 @@
   <div>
     <div *ngFor="let image of album.images; let i = index">
       <div class="py-3" style="border-bottom: 1px solid #ececec;">
-        <app-image-list-item (showImageInfo)="showImageIngo($event)" [image]="image"></app-image-list-item>
+        <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"></app-image-list-item>
       </div>
     </div>
   </div>

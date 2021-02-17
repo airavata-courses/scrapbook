@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView } from '../actions/album.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -9,14 +9,20 @@ import { Image } from '../models/image.model';
 import { UserState } from './user.state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
-import { StateReset } from 'ngxs-reset-plugin';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ImageService } from '../services/image.service';
+import { NullTemplateVisitor } from '@angular/compiler';
+
+
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
   albumInfoModalData: Album | Image;
   imageInfoOpen: boolean;
   allAlbumsOfUser: Array<Album>;
-  albumInView: Album
+  albumInView: Album;
+  image: any;
+  imgBlob: Blob;
 }
 
 @State<AlbumStateModel>({
@@ -26,12 +32,14 @@ export class AlbumStateModel {
     imageInfoOpen: false,
     albumInfoModalData: {},
     allAlbumsOfUser: [],
-    albumInView: {}
+    albumInView: {},
+    image: null,
+    imgBlob: null,
   }
 })
 @Injectable()
 export class AlbumState {
-  constructor(public albumService: AlbumService, public store: Store) {}
+  constructor(public albumService: AlbumService, public store: Store, private sanitizer: DomSanitizer, public imageService: ImageService) {}
 
   @Selector()
   static getInfoModalState(state: AlbumStateModel) {
@@ -51,6 +59,11 @@ export class AlbumState {
   @Selector()
   static getAlbumInView(state: AlbumStateModel) {
     return state.albumInView;
+  }
+
+  @Selector()
+  static getImageSrc(state: AlbumStateModel) {
+    return state.image;
   }
 
   @Action(OpenAlbumInfo)
@@ -161,6 +174,40 @@ export class AlbumState {
       ...getState(),
       albumInView: {}
     })
+  }
+
+  @Action(GetImage)
+  getImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}:GetImage) {
+    const state = getState();
+    dispatch(new OpenImageModal());
+    dispatch(new RemoveImage());
+
+    return this.albumService.getImage(id).pipe(
+      tap((res) => {
+        let blob = new Blob([res] )
+
+        setState({
+          ...state,
+          imgBlob: blob,
+          image: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob))
+        })
+      })
+    )
+  }
+
+  @Action(RemoveImage)
+  removeImage({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    setState({
+      ...getState(),
+      image: null,
+      imgBlob: null
+    })
+  }
+
+  @Action(DownloadImage)
+  downloadImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {img, name}: DownloadImage) {
+    const state = getState();
+    this.imageService.downloadImage(img, name, state.imgBlob);
   }
   
 

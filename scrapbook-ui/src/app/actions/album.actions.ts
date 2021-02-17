@@ -48,3 +48,17 @@ export class RemoveAlbumFromView {
   constructor() {}
 }
 
+export class RemoveImage {
+  static readonly type = '[REMOVE] Image';
+  constructor() {}
+}
+
+export class GetImage {
+  static readonly type = '[GET] Image';
+  constructor(public id: string) {}
+}
+
+export class DownloadImage {
+  static readonly type = '[DOWNLOAD] Image';
+  constructor(public img: any, public name: string) {}
+}
