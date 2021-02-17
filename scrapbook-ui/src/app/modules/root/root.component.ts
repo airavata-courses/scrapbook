@@ -109,7 +109,7 @@ export class RootComponent {
     config.autoFocus = true;
     config.id = 'UploadModal';
     config.width = '800px';
-    config.height = "600px";
+    config.height = '750px';
     config.autoFocus = false;
 
     const uploadDialog = this.dialog.open(UploadComponent, config);

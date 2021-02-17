@@ -10,26 +10,28 @@
   <div class="card-body px-0">
     <mat-horizontal-stepper #stepper linear>
       <mat-step label="Select Album" [completed]="false" [editable]="false" class="">
-        <div class="pt-4">
-          <div class="h6 text-dark">Select an existing album</div>
-          <div class="mt-4 d-flex flex-wrap">
-            <div *ngFor="let album of albums" class="mr-3 my-2">
-              <div class="bg-light p-3 d-flex align-items-center album-card" [ngClass]="{'active': album.id === selectedAlbum}" (click)="selectedAlbum === album.id ? selectedAlbum = '' : selectedAlbum = album.id">
-                <fa-icon [icon]="faLayerGroup" size="1x" class="text-grey"></fa-icon>
-                <span class="pl-3" style="overflow: hidden;
-                white-space: nowrap; text-overflow: ellipsis;">{{album.name}}</span>
+        <div>
+          <div class="pt-4" tyle="max-height: 400px; overflow: auto;">
+            <div class="h6 text-dark">Select an existing album</div>
+            <div class="mt-4 d-flex flex-wrap">
+              <div *ngFor="let album of albums" class="mr-3 my-2" style="width: 150px;" #tooltip="matTooltip" [matTooltip]="album.name">
+                <div class="bg-light p-3 d-flex align-items-center album-card" [ngClass]="{'active': album.id === selectedAlbum}" (click)="selectedAlbum === album.id ? selectedAlbum = '' : selectedAlbum = album.id">
+                  <fa-icon [icon]="faLayerGroup" size="1x" class="text-grey"></fa-icon>
+                  <span class="pl-3 desc">{{album.name}}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="mt-5">
-          <div class="h6 text-dark">Create an album</div>
-          <div class="mt-4 d-flex align-items-center">
-            <input class="form-control border-0 bg-light w-75 mr-3 py-2" placeholder="Album name..." [(ngModel)]="newAlbum" >
-            <button class="btn btn-primary" (click)="createAlbum()">Add</button>
-          </div>
-        </div>
+  
+          <div class="mt-4">
+            <div class="h6 text-dark">Create an album</div>
+            <div class="mt-4">
+              <input class="form-control border-0 bg-light w-75 mr-3 py-2 w-100" placeholder="Album name..." [(ngModel)]="newAlbum" >
+              <textarea class="form-control border-0 bg-light w-75 mr-3 py-2 mt-3 w-100" placeholder="Album description..." rows="3" [(ngModel)]="newAlbumDescription" ></textarea>
+              <button class="btn btn-primary mt-3" (click)="createAlbum()">Add</button>
+            </div>
+          </div></div>
+        
       </mat-step>
 
       <mat-step label="Upload" [completed]="false" [editable]="false">
@@ -49,11 +51,10 @@
       </mat-step>
     
       
-      
     </mat-horizontal-stepper>
     
   </div>
-  <div class="card-footer text-right p-0">
+  <div class="card-footer text-right p-0 ">
     <button class="btn btn-light mr-3" *ngIf="currentStep > 0" (click)="goBack()">Back</button>
     <button class="btn btn-primary" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" [disabled]="getNextBtnStatus()">{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
   </div>

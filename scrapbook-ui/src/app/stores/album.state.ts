@@ -112,10 +112,10 @@ export class AlbumState {
   }
 
   @Action(CreateAlbum)
-  createAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name}: CreateAlbum) {
+  createAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, desc}: CreateAlbum) {
     const state = getState();
     const userid = this.store.selectSnapshot(UserState.getUserData)._id;
-    return this.albumService.createAlbum(name, userid).pipe(
+    return this.albumService.createAlbum(name, userid, desc).pipe(
       tap((response: Album) => {
         // response.images = []
         setState({
@@ -127,11 +127,11 @@ export class AlbumState {
   }
 
   @Action(Upload)
-  uploadFiles({getState, setState, dispatch}: StateContext<AlbumStateModel>, {files, id, idx}: Upload) {
+  uploadFiles({getState, setState, dispatch}: StateContext<AlbumStateModel>, {files, id, idx, description}: Upload) {
     const state = getState();
     const userid = this.store.selectSnapshot(UserState.getUserData)._id;
     
-    return this.albumService.uploadFiles(files, id ,userid).pipe(
+    return this.albumService.uploadFiles(files, id ,userid, description).pipe(
       tap((response: Image) => {
           dispatch(new CloseUpload());
 

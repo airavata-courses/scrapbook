@@ -25,12 +25,12 @@ export class FetchAllAlbumsOfUser {
 
 export class CreateAlbum {
   static readonly type = '[FETCH] Create Album';
-  constructor(public name: string) {}
+  constructor(public name: string, public desc?: string) {}
 }
 
 export class Upload {
   static readonly type = '[UPLOAD] Images to Album';
-  constructor(public files: any, public id: string, public idx: number) {}
+  constructor(public files: any, public id: string, public idx: number, public description?: string) {}
 }
 
 export class GetAllImagesInAlbum {

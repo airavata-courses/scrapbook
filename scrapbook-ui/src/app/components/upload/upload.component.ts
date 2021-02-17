@@ -26,6 +26,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   selectedAlbum = '';
   newAlbum: string;
+  newAlbumDescription: string;
   files: File[] = []
   currentStep = 0;
 
@@ -58,7 +59,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   createAlbum() {
     this.selectedAlbum = this.newAlbum;
-    this.store.dispatch(new CreateAlbum(this.newAlbum)) 
+    this.store.dispatch(new CreateAlbum(this.newAlbum, this.newAlbumDescription)) 
   }
 
   albumSelection() {
@@ -86,18 +87,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
     return true
   }
 
-  async onSelect(event) {
-    this.files.push(...event.addedFiles);
-    for(let file of this.files) {
-      // const fileData = await this.readFile(file);
-      // const name = this.albums.find(a => a.id === this.selectedAlbum).name
-      // // change this to selectedAlbum (it is the ID)
-      // this.store.dispatch(new Upload({content: fileData, name: file.name}, name))
-
-
-
-    }
-  }
   
   onRemove(event) {
     this.files.splice(this.files.indexOf(event), 1);
