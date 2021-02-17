@@ -5,6 +5,9 @@ import sys
 import requests
 
 from routes.auth import authenticate_user_api
+from routes.session import logout_user_api
+from routes.album import album_user_api
+
 
 # Defines the Flask app
 app = Flask(__name__)
@@ -12,6 +15,10 @@ app = Flask(__name__)
 CORS(app)
 
 app.register_blueprint(authenticate_user_api)
+
+app.register_blueprint(logout_user_api)
+
+#app.register_blueprint(album_user_api)
 
 
 if __name__ == '__main__':
