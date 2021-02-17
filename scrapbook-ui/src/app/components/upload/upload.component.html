@@ -1,6 +1,6 @@
 <div class="card text-dark px-1 h-100">
   <div class="card-header h5 d-flex w-100 justify-content-between align-items-center p-0">
-    <div>Upload</div>
+    <div>{{isAlbumView ? 'Upload Images' : 'Upload'}}</div>
     <div>
       <button mat-icon-button (click)="onClose()">
         <mat-icon>clear</mat-icon>
@@ -9,7 +9,7 @@
   </div>
   <div class="card-body px-0">
     <mat-horizontal-stepper #stepper linear>
-      <mat-step label="Select Album" [completed]="false" [editable]="false" class="">
+      <mat-step label="Select Album" [completed]="false" [editable]="false" *ngIf="!isAlbumView">
         <div>
           <div class="pt-4" tyle="max-height: 400px; overflow: auto;">
             <div class="h6 text-dark">Select an existing album</div>
@@ -56,6 +56,7 @@
   </div>
   <div class="card-footer text-right p-0 ">
     <button class="btn btn-light mr-3" *ngIf="currentStep > 0" (click)="goBack()">Back</button>
-    <button class="btn btn-primary" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" [disabled]="getNextBtnStatus()">{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
+    <button class="btn btn-primary" *ngIf="isAlbumView" (click)="uploadFile(fileInput)">Submit</button>
+    <button class="btn btn-primary" *ngIf="!isAlbumView" (click)="currentStep === 0 ? goNext() : uploadFile(fileInput)" [disabled]="getNextBtnStatus()">{{currentStep === 0 ? 'Next' : 'Submit'}}</button>
   </div>
 </div>

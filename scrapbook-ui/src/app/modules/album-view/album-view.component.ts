@@ -31,6 +31,7 @@ export class AlbumViewComponent implements OnInit {
     this.store.dispatch(new PutAlbumInView(albumId));
 
     this.albumInView$.subscribe(data => {
+      console.log('updated', data)
       if(data) {
         this.album = data;
       }

@@ -41,10 +41,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
     });
 
     const isAlbumView = this.store.selectSnapshot(AlbumState.getAlbumInView);
-    if (!isAlbumView) {
-      console.log('hiii')
+    if (isAlbumView) {
+      this.isAlbumView = true;
+      this.selectedAlbum = isAlbumView.id;
     } else {
-      console.log('byeeee')
+      this.isAlbumView = false;
     }
   }
 
@@ -56,7 +57,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       .subscribe((res: number) => {
         this.currentStep = res;
 
-        if (res === 1) {
+        if (res === 1 && !this.isAlbumView) {
           this.albumSelection();
         }
 
@@ -90,7 +91,12 @@ export class UploadComponent implements OnInit, AfterViewInit {
         return false; break;
       
       case 0:
-        if(this.selectedAlbum.length > 0) return false; break
+        if(!this.isAlbumView) {
+          if(this.selectedAlbum.length > 0) return false; break;
+        } else {
+          return false;
+        }
+        
     }
     return true
   }
@@ -113,9 +119,15 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
 
     let file = this.files[0];
-    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum)
-    const googleDriveId = this.albums[idx].googleDriveId
-    this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
+    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum);
+    console.log(this.selectedAlbum)
+    if (idx !== -1) {
+      const googleDriveId = this.albums[idx].googleDriveId
+      this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
+    } else {
+      console.log('error')
+    }
+    
   }
 
 }
