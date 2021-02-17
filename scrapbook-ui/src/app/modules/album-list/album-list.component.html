@@ -7,11 +7,16 @@
   </div>
   <hr>
   
-  <div>
+  <div *ngIf="albums else loading">
     <div *ngFor="let album of albums; let i = index">
       <div class="py-3" style="border-bottom: 1px solid #ececec;">
         <app-album-list-item (showAlbumInfo)="showAlbumInfo($event)" [album]="album"></app-album-list-item>
       </div>
     </div>
   </div>
+  <ng-template #loading>
+    <div class="d-flex justify-content-center align-items-center w-100 h-100 mt-5">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
+  </ng-template>
 </div>

@@ -24,13 +24,16 @@ export class AlbumViewComponent implements OnInit {
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) { 
-    const splitRoute = router.url.split('/')
+    
+    const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 
     this.store.dispatch(new PutAlbumInView(albumId));
 
     this.albumInView$.subscribe(data => {
-      this.album = data;
+      if(data) {
+        this.album = data;
+      }
     })
   }
 

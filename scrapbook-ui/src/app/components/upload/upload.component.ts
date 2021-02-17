@@ -18,6 +18,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   faLayerGroup = faLayerGroup;
   albums: Album[];
   public uploadResult?: any;
+
   @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>()
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("stepper", { static: false }) private stepper: MatStepper;
@@ -27,8 +28,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
   selectedAlbum = '';
   newAlbum: string;
   newAlbumDescription: string;
-  files: File[] = []
+  files: File[] = [];
   currentStep = 0;
+  isAlbumView = false;
 
   constructor(public store: Store) { 
     this.allAlbumsOfUser$.subscribe(aaou => {
@@ -36,7 +38,14 @@ export class UploadComponent implements OnInit, AfterViewInit {
         this.newAlbum = ''
         this.albums = aaou
       }
-    })
+    });
+
+    const isAlbumView = this.store.selectSnapshot(AlbumState.getAlbumInView);
+    if (!isAlbumView) {
+      console.log('hiii')
+    } else {
+      console.log('byeeee')
+    }
   }
 
   ngOnInit(): void {}
@@ -52,7 +61,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
         }
 
         if (res === 2) {
-          console.log(this.files)
         }
       })
   }

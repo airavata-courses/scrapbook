@@ -32,7 +32,7 @@ export class AlbumStateModel {
     imageInfoOpen: false,
     albumInfoModalData: {},
     allAlbumsOfUser: [],
-    albumInView: {},
+    albumInView: null,
     image: null,
     imgBlob: null,
   }
@@ -99,9 +99,7 @@ export class AlbumState {
 
     return this.albumService.getAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
-        // response.map(album => {
-        //   album.images = []
-        // })
+
         dispatch(new CloseLoading())
          setState({
            ...state,
@@ -172,7 +170,7 @@ export class AlbumState {
   removeAlbumFromView({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
     setState({
       ...getState(),
-      albumInView: {}
+      albumInView: null
     })
   }
 
