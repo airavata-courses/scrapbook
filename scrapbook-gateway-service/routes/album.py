@@ -88,3 +88,83 @@ def retreieveAllAlbumsInDB():
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
 
+
+album_update_api = Blueprint('album_update_api', __name__)
+
+@album_update_api.route('/album', methods=["PUT"])
+@session_service.checkUserSession()
+def updateAlbum():
+    """
+    responsible for updating album detailsinto database
+
+    @params - A PUT request that is used to modify an existing album 
+    @return - http status code
+    """
+    try:
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album', headers = request.headers, data = request.data)
+        response.raise_for_status()
+        return str(response.status_code), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+album_delete_all_api = Blueprint('album_delete_all_api', __name__)
+
+@album_delete_all_api.route('/<album>', methods=["DELETE"])
+@session_service.checkUserSession()
+def deleteAllAlbumsForUser():
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - A DELETE request that sets all the albums of a specific user to inactive
+    @return - http status code
+    """
+    try:
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/{album}')
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+album_retrieve_album_api = Blueprint('album_retrieve_album_api', __name__)
+
+@album_retrieve_album_api.route('/album/<googledriveid>', methods=["GET"])
+@session_service.checkUserSession()
+def retreieveAlbumByID(googledriveid):
+    """
+    retrieve albums from databse with the id = googledriveid
+
+    @params - A DELETE request that sets all the albums of a specific user to inactive
+    @return - http status code
+    """
+    try:
+        userID = request.args.get('userid')
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}')
+        response.raise_for_status()
+        return response.json(), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+album_delete_album_api = Blueprint('album_delete_album_api', __name__)
+
+@album_delete_album_api.route('/album/<googledriveid>', methods=["GET"])
+@session_service.checkUserSession()
+def deleteAlbumByID(googledriveid):
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - A DELETE request that sets all the albums of a specific user to inactive
+    @return - http status code
+    """
+    try:
+        userID = request.args.get('userid')
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}')
+        response.raise_for_status()
+        return str(response.status_code), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
