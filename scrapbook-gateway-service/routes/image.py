@@ -4,10 +4,10 @@ from service_utils import session_service
 from config import G_DRIVE_SERVICE_URL__DEV
 import sys
 
-image_upload_api = Blueprint('image_upload_api', __name__)
+image_api = Blueprint('image_api', __name__)
 
 
-@image_upload_api.route('/image/upload/<imageid>', methods=["POST"])
+@image_api.route('/image/upload/<imageid>', methods=["POST"])
 @session_service.checkUserSession()
 def uploadImage(imageid):
     """
@@ -24,10 +24,8 @@ def uploadImage(imageid):
         return err.response.text, err.response.status_code
 
 
-image_download_api = Blueprint('image_download_api', __name__)
 
-
-@image_download_api.route('/image/<imageid>', methods=["GET"])
+@image_api.route('/image/<imageid>', methods=["GET"])
 @session_service.checkUserSession()
 def downloadImage(imageid):
     """
