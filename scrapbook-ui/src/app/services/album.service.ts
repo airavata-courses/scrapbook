@@ -25,11 +25,10 @@ export class AlbumService {
     return this.http.get(`${GOOGLE_DRIVE_SERVICE_URL}/image/${id}`, {responseType: 'blob'})
   }
 
-  uploadFiles(file: any, id: string , userid: string, description: string) {
+  uploadFile(file: any, id: string , userid: string) {
     const formData = new FormData();
-    formData.append('file', file.file[0]);
+    formData.append('file', file);
     formData.append('userid', userid);
-    formData.append('description', description);
 
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
