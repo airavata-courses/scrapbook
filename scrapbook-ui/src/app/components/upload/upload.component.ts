@@ -111,26 +111,21 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.close.emit();
   }
 
-  
+  handleFileInput(files) {
+    this.files.push(...files);
+  }
+
+  removeUpload(i: number) {
+    this.files = [...this.files.slice(0,i), ...this.files.slice(i+1, this.files.length)]
+  }
 
   async uploadFile(fileInput: any) {
-    this.files.push(...fileInput.files);
+    
     if (this.files.length < 1) {
       return;
     }
-
     
     this.store.dispatch(new Upload(this.files, this.selectedAlbum))
-    
-    
-    // const idx = this.albums.findIndex(a => a.id === this.selectedAlbum);
-    // console.log(this.selectedAlbum)
-    // 
-    //   const googleDriveId = this.albums[idx].googleDriveId
-    //   this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
-    // } else {
-    //   console.log('error')
-    // }
     
   }
 
