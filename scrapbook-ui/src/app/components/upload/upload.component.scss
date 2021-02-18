@@ -25,3 +25,35 @@ ul > li {
 .active {
   background-color: lighten($color: #c2c2c2, $amount: 10%) !important;
 }
+
+.fileUpload {
+	position: relative;
+	overflow: hidden;
+	margin: 10px;
+  border: 2px solid rgb(162, 162, 162);
+  border-radius: 20px;
+  border-style: dashed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.fileUpload:hover {
+  border: 2px solid #737CEB;
+  border-style: dashed;
+  background-color: #F6F9FA;
+}
+.fileUpload input.upload {
+  position: absolute;
+  width: 100%;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	// filter: alpha(opacity=0);
+}

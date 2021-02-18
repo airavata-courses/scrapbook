@@ -7,6 +7,7 @@ import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { CreateAlbum, Upload } from 'src/app/actions/album.actions';
+import { OpenUpload, OpenUploadingPanel } from 'src/app/actions/ui.actions';
 
 
 @Component({
@@ -110,23 +111,21 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.close.emit();
   }
 
-  
+  handleFileInput(files) {
+    this.files.push(...files);
+  }
+
+  removeUpload(i: number) {
+    this.files = [...this.files.slice(0,i), ...this.files.slice(i+1, this.files.length)]
+  }
 
   async uploadFile(fileInput: any) {
-    this.files.push(fileInput.files);
+    
     if (this.files.length < 1) {
       return;
     }
-
-    let file = this.files[0];
-    const idx = this.albums.findIndex(a => a.id === this.selectedAlbum);
-    console.log(this.selectedAlbum)
-    if (idx !== -1) {
-      const googleDriveId = this.albums[idx].googleDriveId
-      this.store.dispatch(new Upload({file: file, name: file.name}, googleDriveId, idx))
-    } else {
-      console.log('error')
-    }
+    
+    this.store.dispatch(new Upload(this.files, this.selectedAlbum))
     
   }
 

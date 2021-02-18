@@ -1,7 +1,8 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel } from '../actions/ui.actions';
 import { RemoveImage } from '../actions/album.actions';
+import { PendingUploadsState } from "../models/image.model";
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -14,6 +15,7 @@ export class UIStateModel {
   pageError: string;
   navigationStack: Array<string>;
   imageModalOpen: boolean;
+  uploading: boolean;
 }
 
 @State<UIStateModel>({
@@ -28,7 +30,8 @@ export class UIStateModel {
     loading: false,
     pageError: '',
     navigationStack: [],
-    imageModalOpen: false
+    imageModalOpen: false,
+    uploading: false
   }
 })
 @Injectable()
@@ -63,6 +66,11 @@ export class UIState {
   @Selector()
   static getImgModal(state: UIStateModel) {
     return state.imageModalOpen;
+  }
+
+  @Selector()
+  static getUploadingPanelState(state: UIStateModel) {
+    return state.uploading;
   }
 
   @Action(OpenProfile)
@@ -163,4 +171,21 @@ export class UIState {
     })
   }
 
+  @Action(OpenUploadingPanel)
+  openUploadingPanel({getState, setState, dispatch}: StateContext<UIStateModel>) {
+
+    setState({
+      ...getState(),
+      uploading: true,
+      uploadOpen: false,
+    })
+  }
+
+  @Action(CloseUploadingPanel)
+  closeUploadingPanel({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      uploading: false,
+    })
+  }
 }

@@ -77,3 +77,18 @@ export class CloseImageModal {
   static readonly type = '[CLOSE] Image Modal';
   constructor() {}
 }
+
+export class OpenUploadingPanel {
+  static readonly type = '[OPEN] Uploading Panel';
+  constructor() {}
+}
+
+export class CloseUploadingPanel {
+  static readonly type = '[CLOSE] Uploading Panel';
+  constructor() {}
+}
+
+export class SetPendingUploadRequests {
+  static readonly type = '[SET] Pending Upload Requests';
+  constructor(public idx: number) {}
+}
