@@ -1,17 +1,18 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage } from '../actions/album.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
-import { Image } from '../models/image.model';
+import { Image, PendingUploadsState, UPLOAD_STATE, PendingUploadsStateInterface } from '../models/image.model';
 import { UserState } from './user.state';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, from, throwError, forkJoin} from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageService } from '../services/image.service';
-import { NullTemplateVisitor } from '@angular/compiler';
+import { patch, updateItem } from '@ngxs/store/operators';
+
 
 
 
@@ -23,6 +24,7 @@ export class AlbumStateModel {
   albumInView: Album;
   image: any;
   imgBlob: Blob;
+  pendingUploads: Array<PendingUploadsStateInterface>
 }
 
 @State<AlbumStateModel>({
@@ -35,6 +37,7 @@ export class AlbumStateModel {
     albumInView: null,
     image: null,
     imgBlob: null,
+    pendingUploads: []
   }
 })
 @Injectable()
@@ -64,6 +67,11 @@ export class AlbumState {
   @Selector()
   static getImageSrc(state: AlbumStateModel) {
     return state.image;
+  }
+
+  @Selector()
+  static getUploadPanelPendingArray(state: AlbumStateModel) {
+    return state.pendingUploads;
   }
 
   @Action(OpenAlbumInfo)
@@ -125,24 +133,52 @@ export class AlbumState {
   }
 
   @Action(Upload)
-  uploadFiles({getState, setState, dispatch}: StateContext<AlbumStateModel>, {files, id, idx, description}: Upload) {
-    const state = getState();
+  uploadFiles({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {files, id}: Upload) {
     const userid = this.store.selectSnapshot(UserState.getUserData)._id;
-    
-    return this.albumService.uploadFiles(files, id ,userid, description).pipe(
-      tap((response: Image) => {
-          dispatch(new CloseUpload());
+    patchState({
+      pendingUploads: []
+    })
+    dispatch(new OpenUploadingPanel());
+    dispatch(new CloseUpload());
 
-          setState({
-            ...state
-          })
-      }),
-      catchError((err: HttpErrorResponse) => {
-        // open snackbar
-        // dispatch(new SetPageError(err.status.toString()))
-        return of('')
-      })
-    )
+    
+    let uploads: Array<PendingUploadsState> = [];
+    files.forEach((file) => {
+      uploads.push(new PendingUploadsState(file, file.name, UPLOAD_STATE.progress))
+    })
+
+    patchState({
+      pendingUploads: uploads
+    })
+
+    const fetch$ = (obj) => {
+      return this.albumService.uploadFile(obj.file, id, userid).pipe(
+        tap(res => {
+          setState(
+            patch({
+              pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.done}))
+            })
+          )
+        }),
+        catchError(error => {
+          setState(
+            patch({
+              pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.fail}))
+            })
+          )
+          console.log('err:', error.message, obj);
+          return of(undefined);
+        })
+      );
+    };
+
+    forkJoin(uploads.map(fetch$)).subscribe(_ => {
+      // setState({
+      //   ...getState(),
+      //   w
+      // })
+    })
+  
   }
   
 
@@ -208,5 +244,11 @@ export class AlbumState {
     this.imageService.downloadImage(img, name, state.imgBlob);
   }
   
-
+  @Action(RemoveUploadPanel)
+  removeUploadQueue({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    setState({
+      ...getState(),
+      pendingUploads: []
+    })
+  }
 }

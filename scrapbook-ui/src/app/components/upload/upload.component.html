@@ -15,7 +15,7 @@
             <div class="h6 text-dark">Select an existing album</div>
             <div class="mt-4 d-flex flex-wrap">
               <div *ngFor="let album of albums" class="mr-3 my-2" style="width: 150px;" #tooltip="matTooltip" [matTooltip]="album.name">
-                <div class="bg-light p-3 d-flex align-items-center album-card" [ngClass]="{'active': album.id === selectedAlbum}" (click)="selectedAlbum === album.id ? selectedAlbum = '' : selectedAlbum = album.id">
+                <div class="bg-light p-3 d-flex align-items-center album-card" [ngClass]="{'active': album.googleDriveId === selectedAlbum}" (click)="selectedAlbum === album.googleDriveId ? selectedAlbum = '' : selectedAlbum = album.googleDriveId">
                   <fa-icon [icon]="faLayerGroup" size="1x" class="text-grey"></fa-icon>
                   <span class="pl-3 desc">{{album.name}}</span>
                 </div>
@@ -36,7 +36,7 @@
 
       <mat-step label="Upload" [completed]="false" [editable]="false">
         <div class="pt-4">
-          <input class="form-control btn-light px-3 file" #fileInput type="file" [multiple]="false"/>
+          <input class="form-control btn-light px-3 file" #fileInput type="file" [multiple]="true"/>
         </div>
         <!-- <div class="custom-dropzone mt-4" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
           <ngx-dropzone-label>

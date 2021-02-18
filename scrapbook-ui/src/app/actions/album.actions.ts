@@ -30,7 +30,7 @@ export class CreateAlbum {
 
 export class Upload {
   static readonly type = '[UPLOAD] Images to Album';
-  constructor(public files: any, public id: string, public idx: number, public description?: string) {}
+  constructor(public files: any[], public id: string) {}
 }
 
 export class GetAllImagesInAlbum {
@@ -61,4 +61,9 @@ export class GetImage {
 export class DownloadImage {
   static readonly type = '[DOWNLOAD] Image';
   constructor(public img: any, public name: string) {}
+}
+
+export class RemoveUploadPanel {
+  static readonly type = '[REMOVE] Upload Panel';
+  constructor() {}
 }

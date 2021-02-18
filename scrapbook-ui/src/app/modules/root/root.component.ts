@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './../../components/profile/profile.component';
-import { CloseProfile, CloseUpload, CloseFilters } from '../../actions/ui.actions';
+import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel } from '../../actions/ui.actions';
 import { InfoComponent } from '../../components/info/info.component';
 import { CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from './../../actions/album.actions';
 import { AlbumState } from './../../stores/album.state';
@@ -17,6 +17,7 @@ import { StateClear } from 'ngxs-reset-plugin';
 import { UIState } from 'src/app/stores/ui.state';
 import { Album } from 'src/app/models/album.model';
 import { UserState } from 'src/app/stores/user.state';
+import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending-panel/uploads-pending-panel.component';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class RootComponent {
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
+  @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -71,10 +73,50 @@ export class RootComponent {
     this.filters$.subscribe((status) => {
       if (status) this.openFilters();
       else this.closeFilters();
+    });
+
+    this.uploadPanel$.subscribe((status) => {
+      if (status) {
+        this.openPendingUploadPanel();
+      } else {
+        this.closePendingUploadingPanel();
+      }
     })
   }
 
   ngOnInit(): void {}
+
+  openPendingUploadPanel() {
+    const config = new MatDialogConfig();
+    config.disableClose = true;
+    config.autoFocus = false;
+    config.id = 'UploadPendingPanel';
+    config.width = '500px';
+    config.autoFocus = false;
+    config.hasBackdrop = false;
+    config.panelClass = 'no-padding'
+
+    const uploadPendingPanel = this.dialog.open(UploadsPendingPanelComponent, config);
+
+    uploadPendingPanel.updatePosition({ bottom: '30px', right: '40px' });
+
+    uploadPendingPanel.componentInstance.close.subscribe(_ => {
+      this.store.dispatch(new CloseUploadingPanel());
+    })
+
+    uploadPendingPanel.afterClosed().subscribe((_) => {
+      this.store.dispatch(new CloseUploadingPanel());
+    });
+  }
+
+  closePendingUploadingPanel() {
+    const uploadPendingPanel = this.dialog.getDialogById('UploadPendingPanel');
+
+    if (uploadPendingPanel) {
+      this.store.dispatch(new CloseUploadingPanel());
+      uploadPendingPanel.close();
+    }
+  }
 
   openFilters() {
     const config = new MatDialogConfig();
