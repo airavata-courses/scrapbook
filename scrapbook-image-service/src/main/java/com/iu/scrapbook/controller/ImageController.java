@@ -78,10 +78,10 @@ public class ImageController {
     @Operation(summary = "Retrieve image for given user and googleDriveId", description = "This API is responsible for retrieving" +
             "image from database for given user and googleDriveId.")
     @GetMapping(path="/{googleid}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Image> retrieve(@PathVariable("googleid") String googleId, @RequestParam("userid") String userId){
+    public ResponseEntity<Image> retrieveImage(@PathVariable("googleid") String googleId){
         ResponseEntity<Image> responseEntity = null;
         try {
-            Image image = imageService.retrieveImageDetails(googleId, userId);
+            Image image = imageService.retrieveImageDetails(googleId);
             responseEntity = ResponseEntity.ok(image);
         }catch(Exception e){
             responseEntity = ResponseEntity.notFound().build();

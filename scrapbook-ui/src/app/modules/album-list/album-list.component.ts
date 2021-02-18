@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { OpenAlbumInfo } from 'src/app/actions/album.actions';
+import { Store, Select } from '@ngxs/store';
+import { OpenAlbumInfo, RemoveAlbumFromView, FetchAllAlbums, FetchAllAlbumsOfUser } from 'src/app/actions/album.actions';
 import { Album } from 'src/app/models/album.model';
 import { AlbumListService } from './album-list.service';
+import { AlbumState } from 'src/app/stores/album.state';
+import { Observable } from 'rxjs';
+import { UserState } from 'src/app/stores/user.state';
 
 @Component({
   selector: 'app-album-list',
@@ -13,8 +16,14 @@ export class AlbumListComponent implements OnInit {
   
   // @Input() albums: Album[];
   albums: Album[];
+  @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
   constructor(private store: Store, public albumListService: AlbumListService) {
-    this.albumListService.data$.subscribe(data => {
+    console.log('ALBUM LIST')
+    const userID = this.store.selectSnapshot(UserState.getUserData)._id
+    this.store.dispatch(new RemoveAlbumFromView())
+    this.store.dispatch(new FetchAllAlbumsOfUser(userID))
+
+    this.allAlbumsOfUser$.subscribe(data => {
       if (data) {
         this.albums = data;
       }

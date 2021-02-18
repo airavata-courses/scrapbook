@@ -1,7 +1,7 @@
 package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.dto.Album;
-import com.iu.scrapbook.service.GoogleDriveAbumService;
+import com.iu.scrapbook.service.GoogleDriveAlbumService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,22 +20,39 @@ import org.springframework.web.bind.annotation.*;
 public class GoogleDriveAlbumController {
 
     @Autowired
-    private GoogleDriveAbumService googleDriveAbumService;
+    private GoogleDriveAlbumService googleDriveAlbumService;
 
     @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
             "to google drive with given album name.")
-    @PostMapping(path="/{albumname}")
+   // @PostMapping(path="/{albumname}")
     public ResponseEntity<Album> createAlbum(@PathVariable("albumname") String albumName,
                                         @RequestParam("userid") String userId){
 
        ResponseEntity<Album> responseEntity = null;
         Album album = null;
         try {
-            album = googleDriveAbumService.createAlbum(albumName,userId);
+            album = googleDriveAlbumService.createAlbum(albumName,userId);
             responseEntity = new ResponseEntity<Album>(album,HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return responseEntity;
+    }
+
+    @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
+            "to google drive with given album name.")
+   @PostMapping
+    public ResponseEntity<Album> createAlbum(@RequestBody Album album,
+                                             @RequestParam("userid") String userId){
+
+        ResponseEntity<Album> responseEntity = null;
+        try {
+            album = googleDriveAlbumService.createAlbum(album,userId);
+            responseEntity = new ResponseEntity<Album>(album,HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return responseEntity;
     }

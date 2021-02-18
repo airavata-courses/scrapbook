@@ -13,4 +13,5 @@ export interface Album {
   modifiedDate?: string;
   name?: string;
   size?: number | null;
+  description?: string;
   }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,15 +52,16 @@ public class GoogleDriveImageController {
      * @return Image object containing all required information
      */
     @Operation(summary = "Upload image to album", description = "This API is responsible for uploading image " +
-            "to given album name on the google drive. It also communicates with image-service to update database i.e. MongoDB")
-    @PostMapping(path ="/upload/{albumname}",consumes = "multipart/form-data")
+            "to given album on google drive. It also communicates with image-service to update database i.e. MongoDB")
+    @PostMapping(path ="/upload/{albumgoogleid}",consumes = "multipart/form-data")
     public ResponseEntity<Image> uploadImageToAlbum(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("userid") String userId, @PathVariable("albumname") String album){
+                                                    @RequestParam("userid") String userId,
+                                                    @PathVariable("albumgoogleid") String albumGoogleId){
 
         ResponseEntity<Image> responseEntity = null;
         Image image = null;
         try {
-            image = googleDriveImageService.uploadImage(file,userId, album);
+            image = googleDriveImageService.uploadImage(file,userId, albumGoogleId);
             responseEntity = new ResponseEntity<Image>(image,HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,12 +72,12 @@ public class GoogleDriveImageController {
 
     @Operation(summary = "Download image from google drive", description = "This API is responsible for downloading image " +
             "for given googleDriveId from google drive.")
-    @GetMapping(path="/{googledriveid}")
-    public ResponseEntity<OutputStream> downloadImage(@PathVariable("googledriveid") String googleId, @RequestParam("user") String userId){
-        ResponseEntity<OutputStream> responseEntity = null;
+    @GetMapping(path="/{googledriveid}",  produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> downloadImage(@PathVariable("googledriveid") String googleId){
+        ResponseEntity<byte[]> responseEntity = null;
         try {
             responseEntity = ResponseEntity.ok(googleDriveImageService
-                    .downloadImage(googleId,userId));
+                    .downloadImage(googleId));
         }catch(Exception e){
             e.printStackTrace();
             responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).build();

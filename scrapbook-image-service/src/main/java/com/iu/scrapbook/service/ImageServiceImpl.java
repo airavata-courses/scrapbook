@@ -6,12 +6,14 @@ import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.MissingResourceException;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -38,6 +40,9 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
+//    @Autowired
+//    private MongoOperations mongoOperations;
+
     @Override
     public Image create(Image image) {
         image.setActive(true);
@@ -54,13 +59,26 @@ public class ImageServiceImpl implements ImageService{
         image.setAlbum(album);
         image = imageRepository.insert(image);
         // update album
-        album = albumService.addImageToAlbum(album,image);
+        List<Image> images = imageRepository.findByAlbumGoogleDriveIdAndActive(albumId,true);
+        Long size = images.stream().mapToLong(i->i.getSize()).sum();
+        //album.setSize(size);
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(albumId)),
+                update("size", size), Album.class);
+
+        mongoTemplate.updateFirst(query(where("googleDriveId").is(image.getGoogleDriveId())),
+                update("album", album), Image.class);
+       // albumRepository.save(album);
         return image;
     }
 
     @Override
     public List<Image> retrieveAll(String albumGDriveId, String userId) {
         return imageRepository.findByAlbumGoogleDriveIdAndCreatedByAndActive(albumGDriveId,userId,true);
+    }
+
+    @Override
+    public List<Image> retrieveAllImages(String albumGDriveId) {
+        return imageRepository.findByAlbumGoogleDriveIdAndActive(albumGDriveId,true);
     }
 
     @Override
@@ -74,8 +92,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public Image retrieveImageDetails(String googleId, String userId) throws Exception{
-        Image image = imageRepository.findByGoogleDriveIdAndCreatedBy(googleId,userId);
+    public Image retrieveImageDetails(String googleId) throws Exception{
+        Image image = imageRepository.findByGoogleDriveId(googleId);
         if(image == null){
             throw new Exception("Image not found");
         }

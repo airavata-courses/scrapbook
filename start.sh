@@ -18,7 +18,7 @@ elif [ "$1" == "gs" ]; then
   cd scrapbook-googledrive-service && rm -rf target && mvn clean && mvn clean install && cd target && java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
 
 elif [ "$1" == "img" ]; then
-  cd scrapbook-image-service && rm -rf target && mvn clean && mvn clean install && cd target && java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+  cd scrapbook-image-service && rm -rf target && mvn clean && mvn clean install -DskipTests && cd target && java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
 
 elif [ "$1" == "help" ]; then
   echo ""

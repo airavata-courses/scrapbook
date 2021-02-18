@@ -67,3 +67,13 @@ export class ClearPageError {
   static readonly type = '[CLEAR] Page Error';
   constructor() {}
 }
+
+export class OpenImageModal {
+  static readonly type = '[OPEN] Image Modal';
+  constructor() {}
+}
+
+export class CloseImageModal {
+  static readonly type = '[CLOSE] Image Modal';
+  constructor() {}
+}
