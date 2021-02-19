@@ -59,4 +59,22 @@ router.get('/:id', (req, res) => {
   })
 });
 
+/** 
+ * GET All Users
+ * @param req - body contains userid
+ * 
+ * Find all users from the database.
+ */
+router.get('/', (req, res) => {
+  const userid = req.params.id
+
+  User.find({}, (err, user) => {
+    if (err) {
+      res.status(400).send(err)
+    } else {
+      res.status(200).send(user)
+    }
+  })
+});
+
 module.exports = router;
