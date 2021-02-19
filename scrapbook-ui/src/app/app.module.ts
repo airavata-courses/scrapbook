@@ -46,10 +46,11 @@ import { AlbumViewComponent } from './modules/album-view/album-view.component';
 import { ImageListItemComponent } from './components/image-list-item/image-list-item.component';
 import { ImageModalComponent } from './components/image-modal/image-modal.component';
 import { UploadsPendingPanelComponent } from './components/uploads-pending-panel/uploads-pending-panel.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

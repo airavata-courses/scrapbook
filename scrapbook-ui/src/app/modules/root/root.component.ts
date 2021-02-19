@@ -34,6 +34,7 @@ export class RootComponent {
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
   @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
+  @Select(UIState.getSettingsState) settings$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -85,6 +86,12 @@ export class RootComponent {
   }
 
   ngOnInit(): void {}
+
+  
+
+  closeSettingsModal() {
+
+  }
 
   openPendingUploadPanel() {
     const config = new MatDialogConfig();
@@ -143,6 +150,10 @@ export class RootComponent {
       this.store.dispatch(new CloseFilters());
       filterModal.close();
     }
+  }
+
+  openSettings() {
+
   }
 
   openUploadModal() {

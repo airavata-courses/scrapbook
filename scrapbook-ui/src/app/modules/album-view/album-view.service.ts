@@ -10,6 +10,8 @@ import { PutAlbumInView } from 'src/app/actions/album.actions';
 })
 export class AlbumViewService {
   album$ = new BehaviorSubject<Album>(null);
+  settings$ = new BehaviorSubject<boolean>(false);
+  
   constructor(public router: Router, public store: Store) {
 
   }
