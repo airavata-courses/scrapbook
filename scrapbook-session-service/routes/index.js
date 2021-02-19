@@ -1,16 +1,24 @@
 var express = require("express");
 var router = express.Router();
-var Session = require("../models/session.js");
 var redis = require('../config/redis');
 
 const redisClient = redis.client;
+
+const TTL = 3600;
 
 /**
  * Route to set the user session. Accepts the UserID and token in the request body
  */
 router.post("/set", function (req, res, next) {
   const { userID, token } = req.body;
-  addUserToSession(res, userID, token);
+    try {
+      redisClient.set(userID, token, 'ex', TTL, (error, done) => {
+        if (error) throw error;
+        if (done) res.status(200).send('Session Added');
+      })
+    } catch(err) {
+        res.status(500).send(err);
+    }
 });
 
 /**
@@ -19,13 +27,19 @@ router.post("/set", function (req, res, next) {
  */
 router.put('/reset/:id', (req, res, next) => {
   const id = req.params.id;
-  Session.findOneAndUpdate({_id: id}, {createdAt: new Date()}, (err, updatedSession) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(203).send(updatedSession)
-    }
-  })
+  try {
+    redisClient.expire(id, TTL, (err, done) => {
+      if (err) throw err;
+      if (done) {
+        res.status(200).send('Session Updated')
+      } else {
+        res.status(401).send('User not in session');
+      }
+     
+    })
+  } catch (err) {
+    res.status(401).send(err);
+  }
 })
 
 /**
@@ -33,30 +47,12 @@ router.put('/reset/:id', (req, res, next) => {
  */
 router.delete('/remove/:id', (req, res, next) => {
   const id = req.params.id;
-  Session.remove({_id: id}, (err, removed) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.sendStatus(200);
-    }
+  redisClient.del(id, (err, done) => {
+    if (err) res.status(500).send(err)
+    if (done) res.status(200).send('User Removed from session');
+    else res.send(401).send('User not found')
   })
 })
 
-/** 
- * Function to create a session based on the emailID and the token
- */
-function addUserToSession(res, userID, token) {
-  new Session({
-    userID: userID,
-    token: token
-  }).save((err, newSession) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(newSession);
-    }
-  })
-}
 
 module.exports = router;
