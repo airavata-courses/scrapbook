@@ -7,6 +7,7 @@ import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { AlbumListService } from '../album-list/album-list.service';
 import { AlbumViewService } from '../album-view/album-view.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',

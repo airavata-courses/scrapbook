@@ -9,8 +9,18 @@
   </div>
 
   <div class="card-body px-0">
+    <div class="d-flex align-items-center">
+      <span class="font-weight-bold pr-2">Public </span>
+      <mat-slide-toggle class="font-weight-bold">Private</mat-slide-toggle>
+    </div>
+
+    <label class="mt-4">Name</label>
     <input placeholder="Name" class="form-control btn-light px-3 w-100" [(ngModel)]="data.name">
-    <textarea placeholder="Description" class="form-control btn-light px-3 w-100 mt-3" rows="3" [(ngModel)]="data.description"></textarea>
+
+    <label class="mt-4">Description</label>
+    <textarea placeholder="Description" class="form-control btn-light px-3 w-100 " rows="3" [(ngModel)]="data.description"></textarea>
+
+    
   </div>
 
   <div class="card-footer d-flex justify-content-between align-items-center px-0">

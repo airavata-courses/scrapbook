@@ -27,11 +27,14 @@ export class SettingsComponent implements OnInit {
   }
 
   onUpdate() {
-    console.log('here')
     this.update.emit({
       name: this.data.name,
       description: this.data.description
     })
+  }
+
+  onPrivacyChange() {
+    
   }
 
   onDelete() {
