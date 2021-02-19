@@ -1,6 +1,6 @@
 import requests
 from flask import Blueprint, request, jsonify
-from service_utils import session_service 
+from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
 import json
 import sys
@@ -9,13 +9,13 @@ album_api = Blueprint('album_api', __name__)
 
 
 @album_api.route('/album', methods=["POST"])
-@session_service.checkUserSession()
+@auth.checkUserSession()
 def createAlbum():
     """
     Used to create an album
 
     @params - A POST request sent to the album service to create a new album
-    @return - http status code
+    @return - json of the created album with an http status code
     """
     try:
         #data = request.json
@@ -31,13 +31,13 @@ def createAlbum():
 
 
 @album_api.route('/album', methods=["GET"])
-@session_service.checkUserSession()
+@auth.checkUserSession()
 def getAlbums():
     """
     Get all the albums of the user
 
     @params - A GET request that is sent to fetch all the albums that the user has access to
-    @return - list of dictionaries wit h album details
+    @return - list of dictionaries with album details and http status code
     """
     try:
         userID = request.args.get('userid')
@@ -50,13 +50,13 @@ def getAlbums():
 
 
 @album_api.route('/album/<googledriveid>/image', methods=["GET"])
-@session_service.checkUserSession()
+@auth.checkUserSession()
 def retreieveImagesByAlbumId(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
     
-    @params - A DELETE request that sets all the albums of a specific user to inactive
-    @return - http status code
+    @params - A GET request that fetches all images from a specific album
+    @return - json formatted list of images in the album and http status code
     """
     try:
         userID = request.args.get('userid')
@@ -69,13 +69,13 @@ def retreieveImagesByAlbumId(googledriveid):
 
 
 @album_api.route('/album/all', methods=["GET"])
-@session_service.checkUserSession()
+@auth.checkUserSession()
 def retreieveAllAlbumsInDB():
     """
     retrieving all active albums from the database.    
     
-    @params - A DELETE request that sets all the albums of a specific user to inactive
-    @return - http status code
+    @params - A GET request that fetches all active albums from the database
+    @return - json formatted list of albums and http status code
     """
     try:
         response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/all')
