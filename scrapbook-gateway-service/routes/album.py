@@ -9,7 +9,7 @@ album_api = Blueprint('album_api', __name__)
 
 
 @album_api.route('/album', methods=["POST"])
-@auth.checkUserSession()
+@auth.check_user_session()
 def createAlbum():
     """
     Used to create an album
@@ -31,7 +31,7 @@ def createAlbum():
 
 
 @album_api.route('/album', methods=["GET"])
-@auth.checkUserSession()
+@auth.check_user_session()
 def getAlbums():
     """
     Get all the albums of the user
@@ -50,7 +50,7 @@ def getAlbums():
 
 
 @album_api.route('/album/<googledriveid>/image', methods=["GET"])
-@auth.checkUserSession()
+@auth.check_user_session()
 def retreieveImagesByAlbumId(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
@@ -69,7 +69,7 @@ def retreieveImagesByAlbumId(googledriveid):
 
 
 @album_api.route('/album/all', methods=["GET"])
-@auth.checkUserSession()
+@auth.check_user_session()
 def retreieveAllAlbumsInDB():
     """
     retrieving all active albums from the database.    

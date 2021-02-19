@@ -1,7 +1,7 @@
 import requests
 from flask import Blueprint, request, jsonify
 import sys
-from service_utils import auth_service as auth
+from service_utils import auth_service
 from config import USER_SERVICE_URL__DEV, SESSION_SERVICE_URL__DEV 
 
 authenticate_user_api = Blueprint('authenticate_user_api', __name__)
@@ -18,7 +18,7 @@ def login():
 
     try:
         user = request.json
-        auth.authenticateToken(user['token'])
+        auth_service.authenticateToken(user['token'])
         response = requests.post(f'{USER_SERVICE_URL__DEV}/users/login', json=user)
         response.raise_for_status()
         #Adds user to session after authenticating
@@ -31,7 +31,7 @@ def login():
 
 
 @authenticate_user_api.route('/logout', methods=["GET"])
-@auth.checkUserSession()
+@auth_service.check_user_session()
 def logout():
     """
     Removes user data from the session
