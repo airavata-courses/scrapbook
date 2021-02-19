@@ -3,6 +3,7 @@ import * as moment from 'moment'
 import { Image } from 'src/app/models/image.model';
 import { faFileImage } from "@fortawesome/free-solid-svg-icons";
 import { MatDialog } from '@angular/material/dialog';
+import { formatBytes } from 'src/app/static/util';
 
 @Component({
   selector: 'app-image-list-item',
@@ -13,7 +14,9 @@ export class ImageListItemComponent implements OnInit {
   
   moment = moment;
   Math = Math;
-  faFileImage= faFileImage;
+  faFileImage = faFileImage;
+  formatBytes = formatBytes
+
   @Input() image: Image;
   @Output() showImageInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() showImage: EventEmitter<any> = new EventEmitter<any>();
