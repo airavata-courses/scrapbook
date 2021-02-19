@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Album } from 'src/app/models/album.model';
 import { Image } from 'src/app/models/image.model';
 
-import * as moment from 'moment'
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-info',
@@ -16,7 +16,7 @@ export class InfoComponent implements OnInit {
 
   @Output() infoClose: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {

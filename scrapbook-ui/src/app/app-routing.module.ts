@@ -31,10 +31,10 @@ const routes: Routes = [
             path: '',
             component: AlbumListComponent
           },
-          
+
         ]
       },
-      
+
       {
         path: 'starred',
         component: StarredComponent,

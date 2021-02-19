@@ -15,40 +15,40 @@ import Swal from 'sweetalert2';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
+
   @Select(AlbumState.getAllAlbumsOfUser) userAlbums$: Observable<Album[]>;
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
 
   selectedAlbum: Album;
   openSettings;
 
-  constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) { 
+  constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) {
     this.userAlbums$.subscribe(data => {
       if (data) {
         this.albumListService.data$.next(data);
       }
-    })
-    
+    });
+
     this.albumInView$.subscribe(data => {
        if (data) {
         this.selectedAlbum = data;
         this.albumViewService.album$.next(data);
        }
-    })
-    
+    });
+
   }
 
   ngOnInit(): void {
-    
+
     // this.store.dispatch(new FetchUserData(''))
   }
 
   onSettings() {
    this.albumViewService.settings$.next(true);
   }
-  
+
   onInfo() {
-    this.store.dispatch(new OpenAlbumInfo(this.selectedAlbum.id))
+    this.store.dispatch(new OpenAlbumInfo(this.selectedAlbum.id));
   }
 
 }

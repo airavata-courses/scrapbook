@@ -23,7 +23,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {}
 
   scrollToElement($element: Element): void {
-    let dims = $element.getBoundingClientRect();
+    const dims = $element.getBoundingClientRect();
     window.scrollTo({
       top: dims.top - 50,
       left: window.scrollX,
@@ -33,7 +33,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    let element = document.querySelector('.navbr');
+    const element = document.querySelector('.navbr');
     if (window.pageYOffset > element.clientHeight) {
       element.classList.add('bg-light');
     } else {

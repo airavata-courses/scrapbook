@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SocialLoginModule } from 'angularx-social-login';
@@ -57,7 +57,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     HttpClientModule,
     NgxsModule.forRoot([UIState, UserState, DataState, AlbumState], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({
-    
+
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({

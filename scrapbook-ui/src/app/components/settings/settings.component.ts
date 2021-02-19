@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  
+
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   @Output() update: EventEmitter<any> = new EventEmitter<any>();
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
@@ -30,11 +30,11 @@ export class SettingsComponent implements OnInit {
     this.update.emit({
       name: this.data.name,
       description: this.data.description
-    })
+    });
   }
 
   onPrivacyChange() {
-    
+
   }
 
   onDelete() {
@@ -52,8 +52,8 @@ export class SettingsComponent implements OnInit {
         this.delete.emit();
       } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
-    })
-    
+    });
+
   }
 
 }

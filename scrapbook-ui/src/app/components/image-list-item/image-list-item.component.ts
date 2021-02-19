@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import * as moment from 'moment'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
 import { Image } from 'src/app/models/image.model';
-import { faFileImage } from "@fortawesome/free-solid-svg-icons";
+import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog } from '@angular/material/dialog';
 import { formatBytes } from 'src/app/static/util';
 
@@ -11,11 +11,11 @@ import { formatBytes } from 'src/app/static/util';
   styleUrls: ['./image-list-item.component.scss']
 })
 export class ImageListItemComponent implements OnInit {
-  
+
   moment = moment;
   Math = Math;
   faFileImage = faFileImage;
-  formatBytes = formatBytes
+  formatBytes = formatBytes;
 
   @Input() image: Image;
   @Output() showImageInfo: EventEmitter<any> = new EventEmitter<any>();

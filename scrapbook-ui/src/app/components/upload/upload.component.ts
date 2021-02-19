@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { MatStep, MatStepper } from '@angular/material/stepper';
-import { pluck } from "rxjs/operators";
+import { pluck } from 'rxjs/operators';
 import { Album } from 'src/app/models/album.model';
 import { Select, Store } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
@@ -20,10 +20,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
   albums: Album[];
   public uploadResult?: any;
 
-  @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>()
+  @Output() getAllUsersAlbums: EventEmitter<any> = new EventEmitter<any>();
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild("stepper", { static: false }) private stepper: MatStepper;
-  
+  @ViewChild('stepper', { static: false }) private stepper: MatStepper;
+
   @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
 
   selectedAlbum = '';
@@ -33,11 +33,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
   currentStep = 0;
   isAlbumView = false;
 
-  constructor(public store: Store) { 
+  constructor(public store: Store) {
     this.allAlbumsOfUser$.subscribe(aaou => {
       if (aaou.length)  {
-        this.newAlbum = ''
-        this.albums = aaou
+        this.newAlbum = '';
+        this.albums = aaou;
       }
     });
 
@@ -51,7 +51,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {}
-  
+
   ngAfterViewInit(): void {
     this.stepper.selectionChange
       .pipe(pluck('selectedIndex'))
@@ -64,16 +64,16 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
         if (res === 2) {
         }
-      })
+      });
   }
 
   createAlbum() {
     this.selectedAlbum = this.newAlbum;
-    this.store.dispatch(new CreateAlbum(this.newAlbum, this.newAlbumDescription)) 
+    this.store.dispatch(new CreateAlbum(this.newAlbum, this.newAlbumDescription));
   }
 
   albumSelection() {
-    this.getAllUsersAlbums.emit()
+    this.getAllUsersAlbums.emit();
   }
 
   goNext() {
@@ -87,22 +87,22 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   getNextBtnStatus() {
-    switch(this.currentStep) {
-      case 1: 
+    switch (this.currentStep) {
+      case 1:
         return false; break;
-      
+
       case 0:
-        if(!this.isAlbumView) {
-          if(this.selectedAlbum.length > 0) return false; break;
+        if (!this.isAlbumView) {
+          if (this.selectedAlbum.length > 0) { return false; } break;
         } else {
           return false;
         }
-        
+
     }
-    return true
+    return true;
   }
 
-  
+
   onRemove(event) {
     this.files.splice(this.files.indexOf(event), 1);
   }
@@ -116,17 +116,17 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   removeUpload(i: number) {
-    this.files = [...this.files.slice(0,i), ...this.files.slice(i+1, this.files.length)]
+    this.files = [...this.files.slice(0, i), ...this.files.slice(i + 1, this.files.length)];
   }
 
   async uploadFile(fileInput: any) {
-    
+
     if (this.files.length < 1) {
       return;
     }
-    
-    this.store.dispatch(new Upload(this.files, this.selectedAlbum))
-    
+
+    this.store.dispatch(new Upload(this.files, this.selectedAlbum));
+
   }
 
 }

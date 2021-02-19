@@ -50,23 +50,23 @@ export class AppComponent {
       }
     });
 
-    this.router.events.subscribe((e : RouterEvent) => {
+    this.router.events.subscribe((e: RouterEvent) => {
       this.navigationInterceptor(e);
-    })
+    });
 
     this.pe$.subscribe(val => {
-      console.log(val)
+      console.log(val);
       if (val === '401' || val === '404' || val === '500') {
-        this.router.navigate(['/error'])
+        this.router.navigate(['/error']);
       }
-    })
+    });
 
     this.loggedIn$.subscribe(val => {
       if (!val) {
         this.store.dispatch(new StateReset(UIState));
         this.store.dispatch(new StateReset(AlbumState));
       }
-    })
+    });
   }
 
   // Shows and hides the loading spinner during RouterEvent changes
@@ -90,8 +90,8 @@ export class AppComponent {
   openLoading() {
     const loadingModal = this.dialog.getDialogById('LoadingDialog');
 
-    if (loadingModal) return;
-    
+    if (loadingModal) { return; }
+
     const config = new MatDialogConfig();
     config.disableClose = false;
     config.autoFocus = true;

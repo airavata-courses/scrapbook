@@ -24,7 +24,7 @@ export class AlbumStateModel {
   albumInView: Album;
   image: any;
   imgBlob: Blob;
-  pendingUploads: Array<PendingUploadsStateInterface>
+  pendingUploads: Array<PendingUploadsStateInterface>;
 }
 
 @State<AlbumStateModel>({
@@ -75,7 +75,7 @@ export class AlbumState {
   }
 
   @Action(OpenAlbumInfo)
-  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId ,type}:OpenAlbumInfo) {
+  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId , type}: OpenAlbumInfo) {
     const state = getState();
 
     if (type) {
@@ -83,15 +83,15 @@ export class AlbumState {
         ...state,
         albumInfoOpen: true,
         albumInfoModalData: state.albumInView.images.find(a => a.id === albumId)
-      })
+      });
     } else {
       setState({
         ...state,
         albumInfoOpen: true,
         albumInfoModalData: state.allAlbumsOfUser.find(a => a.id === albumId)
-      })
+      });
     }
-    
+
   }
 
   @Action(CloseAlbumInfo)
@@ -99,7 +99,7 @@ export class AlbumState {
     setState({
       ...getState(),
       albumInfoOpen: false
-    })
+    });
   }
   @Action(FetchAllAlbumsOfUser)
   fetchAllAlbumsOfUser({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
@@ -108,13 +108,13 @@ export class AlbumState {
     return this.albumService.getAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
 
-        dispatch(new CloseLoading())
-         setState({
+        dispatch(new CloseLoading());
+        setState({
            ...state,
            allAlbumsOfUser: response
-         })
+         });
       })
-    )
+    );
   }
 
   @Action(CreateAlbum)
@@ -127,9 +127,9 @@ export class AlbumState {
         setState({
           ...state,
           allAlbumsOfUser: [...state.allAlbumsOfUser, response]
-        })
+        });
       })
-    )
+    );
   }
 
   @Action(Upload)
@@ -137,19 +137,19 @@ export class AlbumState {
     const userid = this.store.selectSnapshot(UserState.getUserData)._id;
     patchState({
       pendingUploads: []
-    })
+    });
     dispatch(new OpenUploadingPanel());
     dispatch(new CloseUpload());
 
-    
-    let uploads: Array<PendingUploadsState> = [];
+
+    const uploads: Array<PendingUploadsState> = [];
     files.forEach((file) => {
-      uploads.push(new PendingUploadsState(file, file.name, UPLOAD_STATE.progress))
-    })
+      uploads.push(new PendingUploadsState(file, file.name, UPLOAD_STATE.progress));
+    });
 
     patchState({
       pendingUploads: uploads
-    })
+    });
 
     const fetch$ = (obj) => {
       return this.albumService.uploadFile(obj.file, id, userid).pipe(
@@ -158,14 +158,14 @@ export class AlbumState {
             patch({
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.done}))
             })
-          )
+          );
         }),
         catchError(error => {
           setState(
             patch({
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.fail}))
             })
-          )
+          );
           console.log('err:', error.message, obj);
           return of(undefined);
         })
@@ -177,10 +177,10 @@ export class AlbumState {
       //   ...getState(),
       //   w
       // })
-    })
-  
+    });
+
   }
-  
+
 
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
@@ -193,13 +193,13 @@ export class AlbumState {
         setState({
           ...state,
           albumInView: {...album, images: res}
-        })
+        });
       }),
       catchError((err) => {
         dispatch(new SetPageError('500'));
-        return of('')
+        return of('');
       })
-    )
+    );
   }
 
   @Action(RemoveAlbumFromView)
@@ -207,26 +207,26 @@ export class AlbumState {
     setState({
       ...getState(),
       albumInView: null
-    })
+    });
   }
 
   @Action(GetImage)
-  getImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}:GetImage) {
+  getImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: GetImage) {
     const state = getState();
     dispatch(new OpenImageModal());
     dispatch(new RemoveImage());
 
     return this.albumService.getImage(id).pipe(
       tap((res) => {
-        let blob = new Blob([res] )
+        const blob = new Blob([res] );
 
         setState({
           ...state,
           imgBlob: blob,
           image: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob))
-        })
+        });
       })
-    )
+    );
   }
 
   @Action(RemoveImage)
@@ -235,7 +235,7 @@ export class AlbumState {
       ...getState(),
       image: null,
       imgBlob: null
-    })
+    });
   }
 
   @Action(DownloadImage)
@@ -243,12 +243,12 @@ export class AlbumState {
     const state = getState();
     this.imageService.downloadImage(img, name, state.imgBlob);
   }
-  
+
   @Action(RemoveUploadPanel)
   removeUploadQueue({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
     setState({
       ...getState(),
       pendingUploads: []
-    })
+    });
   }
 }

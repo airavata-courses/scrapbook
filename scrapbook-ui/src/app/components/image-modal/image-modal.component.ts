@@ -12,15 +12,15 @@ import { SafeUrl } from '@angular/platform-browser';
   styleUrls: ['./image-modal.component.scss']
 })
 export class ImageModalComponent implements OnInit {
-  
+
   image: Image;
-  loading: boolean = true;
-  imgSrc: SafeUrl
+  loading = true;
+  imgSrc: SafeUrl;
 
   @Output() close: EventEmitter<any>  = new EventEmitter<any>();
   @Output() download: EventEmitter<any>  = new EventEmitter<any>();
-  
-  @Select(AlbumState.getImageSrc) image$: Observable<any>; 
+
+  @Select(AlbumState.getImageSrc) image$: Observable<any>;
 
   constructor(@Inject(MAT_DIALOG_DATA) data: any) {
     this.image = data.image;
@@ -29,18 +29,18 @@ export class ImageModalComponent implements OnInit {
         this.loading = false;
         this.imgSrc = src;
       }
-    })
+    });
    }
 
   ngOnInit(): void {
   }
 
   onImgModalClose() {
-    this.close.emit()
+    this.close.emit();
   }
 
   downloadImage() {
-    this.download.emit({img: this.imgSrc, name: this.image.name})
+    this.download.emit({img: this.imgSrc, name: this.image.name});
   }
 
 }

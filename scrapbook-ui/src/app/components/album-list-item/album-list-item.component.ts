@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { Album } from 'src/app/models/album.model';
-import * as moment from 'moment'
+import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { formatBytes } from 'src/app/static/util';
 
@@ -12,15 +12,15 @@ import { formatBytes } from 'src/app/static/util';
   styleUrls: ['./album-list-item.component.scss']
 })
 export class AlbumListItemComponent implements OnInit {
-  
+
   faTh = faLayerGroup;
   moment = moment;
   Math = Math;
   formatBytes = formatBytes;
-  
+
   @Input() album: Album;
   @Output() showAlbumInfo: EventEmitter<any> = new EventEmitter<any>();
-  
+
   constructor(public router: Router) { }
 
   ngOnInit(): void {
@@ -28,11 +28,11 @@ export class AlbumListItemComponent implements OnInit {
 
   onShowAlbumInfo() {
     // pass the id of the current album
-    this.showAlbumInfo.emit(this.album.id)
+    this.showAlbumInfo.emit(this.album.id);
   }
 
   goToAlbum() {
-    this.router.navigate([this.router.url + `/${this.album.id}`])
+    this.router.navigate([this.router.url + `/${this.album.id}`]);
   }
 
 }

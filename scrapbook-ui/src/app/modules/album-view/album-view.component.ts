@@ -25,39 +25,39 @@ export class AlbumViewComponent implements OnInit {
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
 
-  constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) { 
-    
+  constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
+
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 
     this.store.dispatch(new PutAlbumInView(albumId));
 
     this.albumInView$.subscribe(data => {
-      if(data) {
+      if (data) {
         this.album = data;
       }
-    })
+    });
 
     this.albumViewService.settings$.subscribe(value => {
-      if(value) this.store.dispatch(new OpenSettings());
-    })
+      if (value) { this.store.dispatch(new OpenSettings()); }
+    });
 
     this.settings$.subscribe((status) => {
-      if(status) this.openSettingsModal()
-      else this.closeSettingsModal();
-    })
+      if (status) { this.openSettingsModal(); }
+      else { this.closeSettingsModal(); }
+    });
   }
 
   ngOnInit(): void {
   }
 
   showImage(img: Image) {
-    this.openImgModal(img)
-    this.store.dispatch(new GetImage(img.googleDriveId))
+    this.openImgModal(img);
+    this.store.dispatch(new GetImage(img.googleDriveId));
   }
 
   showImageInfo(e) {
-    this.store.dispatch(new OpenAlbumInfo(e, 't'))
+    this.store.dispatch(new OpenAlbumInfo(e, 't'));
   }
 
   openSettingsModal() {
@@ -76,8 +76,8 @@ export class AlbumViewComponent implements OnInit {
     });
 
     albumSettingsDialog.componentInstance.update.subscribe(data => {
-      console.log(data)
-    })
+      console.log(data);
+    });
   }
 
   closeSettingsModal() {
@@ -94,20 +94,20 @@ export class AlbumViewComponent implements OnInit {
     config.disableClose = false;
     config.autoFocus = false;
     config.id = 'ImageDialog';
-    config.panelClass = 'no-padding'
+    config.panelClass = 'no-padding';
     config.data = {
       image: img
-    }
+    };
 
     const imageDialog = this.dialog.open(ImageModalComponent, config);
 
     imageDialog.componentInstance.close.subscribe(data => {
       this.closeImgModal();
-    })
+    });
 
     imageDialog.componentInstance.download.subscribe(data => {
       this.downloadImage(data);
-    })
+    });
 
     imageDialog.afterClosed().subscribe((_) => {
       this.store.dispatch(new CloseImageModal());
@@ -125,7 +125,7 @@ export class AlbumViewComponent implements OnInit {
 
   downloadImage(data: any) {
     const {img, name} = data;
-    this.store.dispatch(new DownloadImage(img, name))
+    this.store.dispatch(new DownloadImage(img, name));
   }
 
 }
