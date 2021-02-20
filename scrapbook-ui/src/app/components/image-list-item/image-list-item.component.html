@@ -50,12 +50,13 @@
       </div>
       <mat-menu #options>
         <menu mat-menu-item (click)="onShowImageInfo()">Info</menu>
+        <menu mat-menu-item (click)="onShowImage(image)">Open</menu>
+        <menu mat-menu-item>Edit</menu>
         <menu mat-menu-item>Star</menu>
-        <menu mat-menu-item>Download</menu>
-        <menu mat-menu-item>Open</menu>
+        <mat-divider></mat-divider>
+        <menu mat-menu-item>Delete</menu>
       </mat-menu>
       <mat-menu #accessReq>
-        <!-- <menu mat-menu-item (click)="onShowAlbumInfo()">Request Access</menu> -->
       </mat-menu>
 
       <div>

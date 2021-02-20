@@ -142,4 +142,16 @@ export class AlbumViewComponent implements OnInit {
     this.store.dispatch(new DownloadImage(img, name));
   }
 
+  editImage(data: any) {
+
+  }
+
+  deleteImage(data: any) {
+
+  }
+
+  starImage(data: any) {
+
+  }
+
 }
