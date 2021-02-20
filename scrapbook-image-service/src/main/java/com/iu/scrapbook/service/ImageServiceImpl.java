@@ -116,6 +116,7 @@ public class ImageServiceImpl implements ImageService{
     public void delete(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Image.class);
+        // TODO: Jyoti Call google drive API to delete from there too
     }
 
     @Override
@@ -129,6 +130,8 @@ public class ImageServiceImpl implements ImageService{
         UpdateResult result = mongoTemplate.updateMulti(query,update, Image.class);
 
         log.info(" Deleted image count "+result.getModifiedCount());
+
+        // TODO: Jyoti Call google drive API to delete from there too
         return result.getModifiedCount();
     }
 
