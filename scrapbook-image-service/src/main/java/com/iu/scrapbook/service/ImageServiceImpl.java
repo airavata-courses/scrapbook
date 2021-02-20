@@ -5,13 +5,16 @@ import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
+import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.rmi.NoSuchObjectException;
@@ -45,8 +48,11 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
-//    @Autowired
-//    private MongoOperations mongoOperations;
+    @Autowired
+    private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
+
+    @Value("${scrapbook.googledrive.service.baseurl}")
+    private String baseUrl;
 
     @Override
     public Image create(Image image) {
@@ -121,7 +127,9 @@ public class ImageServiceImpl implements ImageService{
         mongoTemplate.updateFirst(query, update, Image.class);
 
         Image a = imageRepository.findByGoogleDriveId(googleDriveId);
-        return a;
+
+        ResponseEntity<Image> responseEntity = googleDriveServiceRestTemplate.put(baseUrl+"/image",a,Image.class);
+        return responseEntity.getBody();
     }
 
 }
