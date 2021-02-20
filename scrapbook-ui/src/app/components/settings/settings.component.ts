@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-settings',
@@ -14,6 +15,7 @@ export class SettingsComponent implements OnInit {
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
 
   data: any;
+  faTimes = faTimes;
 
   constructor(@Inject(MAT_DIALOG_DATA) data: any) {
     this.data = data;

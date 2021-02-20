@@ -14,6 +14,9 @@ import { UserService } from '../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { StateReset } from 'ngxs-reset-plugin';
+import { AlbumState } from './album.state';
+import { UIState } from './ui.state';
 
 export class UserStateModel {
   userData: any;
@@ -30,7 +33,7 @@ export class UserStateModel {
 @Injectable()
 export class UserState {
 
-  constructor(public router: Router, public userService: UserService, public gas: AuthService) {
+  constructor(public router: Router, public userService: UserService, public gas: AuthService, private ngZone: NgZone) {
   }
 
   @Selector()
@@ -62,8 +65,10 @@ export class UserState {
       token: user.token,
       _id: user._id,
     };
-    localStorage.setItem('scrapbook-token', loggedInUser.token);
     localStorage.setItem('scrapbook-userid', loggedInUser._id);
+    localStorage.setItem('scrapbook-name', loggedInUser.name);
+    localStorage.setItem('scrapbook-email', loggedInUser.email);
+    localStorage.setItem('scrapbook-photo', loggedInUser.photo);
 
     setState({
       ...getState(),
@@ -74,16 +79,25 @@ export class UserState {
 
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
-    localStorage.setItem('scrapbook-token', '');
-    localStorage.setItem('scrapbook-userid', '');
     // dispatch(new StateReset(UIState));
-    // // dispatch(new StateReset(AlbumState));
-    // dispatch(new StateReset(UIState));
-    setState({
-      ...getState(),
-      userData: {},
-      loggedIn: false
-    });
+    
+    return this.gas.lougoutFromGoogle().pipe(
+      tap((res) => {
+        localStorage.removeItem('scrapbook-userid')
+        localStorage.removeItem('scrapbook-name')
+        localStorage.removeItem('scrapbook-email')
+        localStorage.removeItem('scrapbook-photo')
+        dispatch(new StateReset(AlbumState));
+        dispatch(new StateReset(UIState));
+        this.ngZone.run(() => this.router.navigate(['/']));
+
+      })
+    )
+    // setState({
+    //   ...getState(),
+    //   userData: {},
+    //   loggedIn: false
+    // });
   }
 
   @Action(FetchUserData)

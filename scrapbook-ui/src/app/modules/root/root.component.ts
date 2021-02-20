@@ -168,7 +168,7 @@ export class RootComponent {
     const uploadDialog = this.dialog.open(UploadComponent, config);
 
     uploadDialog.componentInstance.getAllUsersAlbums.subscribe((data: any) => {
-      this.store.dispatch(new FetchAllAlbumsOfUser(this.user._id));
+      this.store.dispatch(new FetchAllAlbumsOfUser(localStorage.getItem('scrapbook-userid')));
     });
     uploadDialog.componentInstance.close.subscribe((data) => {
       this.closeUploadModal();

@@ -7,7 +7,7 @@ import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { CreateAlbum, Upload } from 'src/app/actions/album.actions';
-import { OpenUpload, OpenUploadingPanel } from 'src/app/actions/ui.actions';
+import { OpenUpload, OpenUploadingPanel, OpenLoading } from 'src/app/actions/ui.actions';
 
 
 @Component({
@@ -37,6 +37,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.allAlbumsOfUser$.subscribe(aaou => {
       if (aaou.length)  {
         this.newAlbum = '';
+        this.newAlbumDescription = '';
         this.albums = aaou;
       }
     });
@@ -44,7 +45,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     const isAlbumView = this.store.selectSnapshot(AlbumState.getAlbumInView);
     if (isAlbumView) {
       this.isAlbumView = true;
-      this.selectedAlbum = isAlbumView.id;
+      this.selectedAlbum = isAlbumView.googleDriveId;
     } else {
       this.isAlbumView = false;
     }
@@ -68,6 +69,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   createAlbum() {
+    this.store.dispatch(new OpenLoading());
     this.selectedAlbum = this.newAlbum;
     this.store.dispatch(new CreateAlbum(this.newAlbum, this.newAlbumDescription));
   }
@@ -119,12 +121,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.files = [...this.files.slice(0, i), ...this.files.slice(i + 1, this.files.length)];
   }
 
-  async uploadFile(fileInput: any) {
-
+  uploadFile() {
     if (this.files.length < 1) {
       return;
     }
-
     this.store.dispatch(new Upload(this.files, this.selectedAlbum));
 
   }

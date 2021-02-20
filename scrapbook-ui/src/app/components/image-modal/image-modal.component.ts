@@ -5,6 +5,7 @@ import { Select } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
+import { faDownload, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-image-modal',
@@ -16,6 +17,8 @@ export class ImageModalComponent implements OnInit {
   image: Image;
   loading = true;
   imgSrc: SafeUrl;
+  faDownload = faDownload;
+  faTimes = faTimes;
 
   @Output() close: EventEmitter<any>  = new EventEmitter<any>();
   @Output() download: EventEmitter<any>  = new EventEmitter<any>();
