@@ -1,6 +1,8 @@
 package com.iu.scrapbook.service;
 
+import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.ImageRequest;
 
 import java.util.List;
 import java.util.MissingResourceException;
@@ -26,5 +28,5 @@ public interface ImageService {
 
     void delete(String googleId, String userId);
 
-
+    Image updateImage(ImageRequest album, String googleDriveId, String userId);
 }

@@ -2,15 +2,20 @@ package com.iu.scrapbook.service;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.rmi.NoSuchObjectException;
+import java.time.Instant;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
@@ -104,6 +109,19 @@ public class ImageServiceImpl implements ImageService{
     public void delete(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Image.class);
+    }
+
+    @Override
+    public Image updateImage(ImageRequest request, String googleDriveId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
+        Update update = new Update().set("name", request.getName());
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        mongoTemplate.updateFirst(query, update, Image.class);
+
+        Image a = imageRepository.findByGoogleDriveId(googleDriveId);
+        return a;
     }
 
 }
