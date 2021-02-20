@@ -49,7 +49,7 @@ public class AlbumServiceImpl implements AlbumService{
     @Autowired
     private MongoOperations mongoOperations;
 
-    @Value("${scrapbook.googledrive.service.album.baseurl}")
+    @Value("${scrapbook.googledrive.service.baseurl}")
     private String baseUrl;
 
     @Override
@@ -76,9 +76,8 @@ public class AlbumServiceImpl implements AlbumService{
 
         Album a = albumRepository.findByGoogleDriveId(googleDriveId);
 
-        //TODO: jyoti
-        // Call google drive to update
-        return a;
+        ResponseEntity<Album> responseEntity = googleDriveServiceRestTemplate.put(baseUrl+"/album",a,Album.class);
+        return responseEntity.getBody();
     }
 
     @Override
@@ -93,7 +92,7 @@ public class AlbumServiceImpl implements AlbumService{
                 .size(0).description(request.getDescription()).createdBy(userId).modifiedBy(userId).build();
 
         //adding the query params to the URL
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl+"/album")
                 .queryParam("userid", userId);
         ResponseEntity<Album> response = googleDriveServiceRestTemplate.post(uriBuilder.toUriString(),album,Album.class);
 
