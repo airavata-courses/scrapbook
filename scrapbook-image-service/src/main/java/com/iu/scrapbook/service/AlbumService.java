@@ -14,6 +14,8 @@ public interface AlbumService {
 
     Album save(Album album);
 
+    Album updateAlbum(Album album, String googleDriveId, String userId);
+
     Album createAlbum(CreateAlbumRequest CreateAlbumRequest, String userId) throws GoogleDriveException;
 
     List<Album> retrieveALl(String userId);

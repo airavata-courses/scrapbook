@@ -64,11 +64,11 @@ public class AlbumController {
         return responseEntity;
     }
 
-    @Operation(summary = "update album information to database", description = "This API is responsible for updating album details" +
+    @Operation(summary = "update album name/ description to database", description = "This API is responsible for updating album details" +
             "into database. It stores all information related to album ")
-    @PutMapping
-    public ResponseEntity<Album> update(@RequestBody Album album){
-        return ResponseEntity.ok(albumService.save(album));
+    @PutMapping(path = "/{googleDriveId}")
+    public ResponseEntity<Album> update(@RequestBody Album album, @PathVariable String googleDriveId,@RequestParam("userid") String userId){
+        return ResponseEntity.ok(albumService.updateAlbum(album,googleDriveId,userId));
     }
 
 

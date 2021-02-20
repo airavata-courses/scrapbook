@@ -1,27 +1,32 @@
 package com.iu.scrapbook.service;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Update.update;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
-import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.exception.GoogleDriveException;
+import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * This service is responsible for communicating for google drive and MongoDB
@@ -41,6 +46,9 @@ public class AlbumServiceImpl implements AlbumService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private MongoOperations mongoOperations;
+
     @Value("${scrapbook.googledrive.service.album.baseurl}")
     private String baseUrl;
 
@@ -54,6 +62,23 @@ public class AlbumServiceImpl implements AlbumService{
             // Todo: jyoti <Edit>
         }
       return null;
+    }
+
+    @Override
+    public Album updateAlbum(Album album, String googleDriveId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
+        Update update = new Update().set("name", album.getName());
+        update.set("description",album.getDescription());
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        mongoOperations.updateFirst(query, update, Album.class);
+
+        Album a = albumRepository.findByGoogleDriveId(googleDriveId);
+
+        //TODO: jyoti
+        // Call google drive to update
+        return a;
     }
 
     @Override
