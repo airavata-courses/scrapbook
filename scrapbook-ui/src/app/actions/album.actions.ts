@@ -80,3 +80,28 @@ export class DownloadAlbum {
   static readonly type = '[DOWNLOAD] Album';
   constructor(public albums: Album[]) {}
 }
+
+export class SelectMultipleImages {
+  static readonly type = '[SELECT] Multiple Images';
+  constructor(public image: Image) {}
+}
+
+export class RemoveSelectedImage {
+  static readonly type = '[REMOVE] Selected Images';
+  constructor(public image: Image) {}
+}
+
+export class DownloadSelectedImages {
+  static readonly type = '[DOWNLOAD] Selected Images';
+  constructor() {}
+}
+
+export class DeleteSelectedImages {
+  static readonly type = '[DELETE] Selected Images';
+  constructor() {}
+}
+
+export class RemoveAllSelectedImages {
+  static readonly type = '[REMOVE] All Selected Images';
+  constructor() {}
+}

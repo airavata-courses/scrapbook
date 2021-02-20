@@ -6,13 +6,15 @@ import * as JSZip from 'jszip';
 import { forkJoin } from 'rxjs';
 import { Image } from '../models/image.model';
 import { saveAs } from "file-saver";
+import { Store } from '@ngxs/store';
+import { CloseLoading } from '../actions/ui.actions';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlbumService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   getAlbumsOfUser(id: string) {
     return this.http.get(`${GATEWAY_URL}/album?userid=${id}`);
@@ -65,13 +67,12 @@ export class AlbumService {
 
         zip
         .generateAsync({ type: "blob" })
-        .then(blob => saveAs(blob, `${album.name}.zip`));
+        .then(blob => {
+          saveAs(blob, `${album.name}.zip`);
+          this.store.dispatch(new CloseLoading());
+        });
       })
     })
     
-  }
-
-  zipMultiple(zips: Array<any>) {
-
   }
 }

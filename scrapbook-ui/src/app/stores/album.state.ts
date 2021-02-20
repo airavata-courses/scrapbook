@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum } from '../actions/album.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -23,6 +23,7 @@ export class AlbumStateModel {
   image: any;
   imgBlob: Blob;
   pendingUploads: Array<PendingUploadsStateInterface>;
+  selectedImages: Array<Image>;
 }
 
 @State<AlbumStateModel>({
@@ -35,7 +36,8 @@ export class AlbumStateModel {
     albumInView: null,
     image: null,
     imgBlob: null,
-    pendingUploads: []
+    pendingUploads: [],
+    selectedImages: []
   }
 })
 @Injectable()
@@ -70,6 +72,11 @@ export class AlbumState {
   @Selector()
   static getUploadPanelPendingArray(state: AlbumStateModel) {
     return state.pendingUploads;
+  }
+
+  @Selector()
+  static getSelectedImageState(state: AlbumStateModel) {
+    return state.selectedImages;
   }
 
   @Action(OpenAlbumInfo)
@@ -276,6 +283,51 @@ export class AlbumState {
   @Action(DownloadAlbum)
   downloadAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {albums}: DownloadAlbum) {
     const state = getState();
+    dispatch(new OpenLoading());
     this.albumService.downloadAlbum(albums)
+  }
+
+  @Action(SelectMultipleImages)
+  selectmultipleImages({getState, setState, dispatch}: StateContext<AlbumStateModel>, {image}:SelectMultipleImages) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: [...state.selectedImages, image]
+    })
+  }
+
+  @Action(RemoveSelectedImage)
+  removeSelectedImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {image}:SelectMultipleImages) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: state.selectedImages.filter(i => i.id !== image.id)
+    })
+  }
+
+  @Action(DownloadSelectedImages)
+  downloadSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    const selectedImages = state.selectedImages;
+    this.imageService.downloadMultipleImages(selectedImages, state.albumInView)
+  }
+
+  @Action(DeleteSelectedImages)
+  deleteSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    const selectedImages = state.selectedImages;
+    
+    // this.imageService.downloadMultipleImages(selectedImages)
+  }
+
+  @Action(RemoveAllSelectedImages)
+  removeAllSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: []
+    })
+    
+    // this.imageService.downloadMultipleImages(selectedImages)
   }
 }

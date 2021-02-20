@@ -19,7 +19,8 @@ export interface Image {
   modifiedBy: User;
   modifiedDate: string;
   name: string;
-  size: 124729;
+  size: number;
+  isSelected: boolean;
 }
 
 export interface PendingUploadsStateInterface {
