@@ -13,23 +13,21 @@ export class SidenavComponent implements OnInit {
     {
       name: 'Home',
       icon: faHome,
-      path: '/home'
+      path: '/home',
+      style: false
     },
     {
       name: 'Shared',
       icon: faShareAlt,
-      path: '/shared'
+      path: '/shared',
+      style: false
     },
     {
       name: 'Starred',
       icon: faStar,
-      path: '/starred'
-    },
-    {
-      name: 'Dashboard',
-      icon: faChartLine,
-      path: '/fashboard'
-    },
+      path: '/starred',
+      style: true
+    }
   ];
 
   selectedMenu = 'Home';

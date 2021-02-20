@@ -43,12 +43,5 @@ export class HomeComponent implements OnInit {
     // this.store.dispatch(new FetchUserData(''))
   }
 
-  onSettings() {
-   this.albumViewService.settings$.next(true);
-  }
-
-  onInfo() {
-    this.store.dispatch(new OpenAlbumInfo(this.selectedAlbum.id));
-  }
 
 }

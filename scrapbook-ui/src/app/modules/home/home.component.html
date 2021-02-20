@@ -1,25 +1,14 @@
 <div class="w-100 h-100 px-5">
   <div *ngIf="this.router.url === '/home'; else nav">
-    <p class="h4 text-dark m-0 font-weight-normal">All Albums</p>
+    
+    <p class="h4 text-dark m-0 font-weight-bold" [ngClass]="{'text-secondary': selectedAlbum ? true : false}">All Albums</p>
   </div>
   <ng-template #nav>
-    <div class="d-flex align-items-center w-100">
-      <p class="h4 text-dark m-0 font-weight-normal"><a (click)="router.navigate(['/home'])" class="link cursor text-dark a">All
-        Albums</a> ><span> {{selectedAlbum ? selectedAlbum.name : ''}}</span> </p>
-
-        <button mat-icon-button class="ml-2" (click)="onInfo()">
-          <mat-icon class="text-dark h5 m-0">info</mat-icon>
-        </button>
-        <button mat-icon-button class="ml-1">
-          <mat-icon class="text-dark h5 m-0">share</mat-icon>
-        </button>
-        <button mat-icon-button class="ml-1" (click)="onSettings()">
-          <mat-icon class="text-dark h5 m-0">settings</mat-icon>
-        </button>
+    <div class="d-flex align-items-center w-100" [ngClass]="{'text-secondary': selectedAlbum ? true : false}">
+      <p class="h4 text-dark m-0 font-weight-bold"><a (click)="router.navigate(['/home'])" class="link cursor a" [ngClass]="{'text-secondary': selectedAlbum ? true : false}">All
+        Albums</a> </p>
       </div>
   </ng-template>
 
-  <br>
-  <br>
   <router-outlet></router-outlet>
 </div>

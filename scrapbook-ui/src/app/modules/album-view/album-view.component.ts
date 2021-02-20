@@ -13,6 +13,8 @@ import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings } from 'src/a
 import { Image } from 'src/app/models/image.model';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 
+import { faShareAlt, faInfoCircle, faCog} from "@fortawesome/free-solid-svg-icons";
+
 @Component({
   selector: 'app-album-view',
   templateUrl: './album-view.component.html',
@@ -20,13 +22,16 @@ import { SettingsComponent } from 'src/app/components/settings/settings.componen
 })
 export class AlbumViewComponent implements OnInit {
   album: Album;
+  faShareAlt = faShareAlt;
+  faInfoCircle = faInfoCircle;
+  faCog = faCog;
 
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
-
+    console.log(this.dialog.getDialogById('AlbumSettingsModal'))
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 
@@ -51,6 +56,14 @@ export class AlbumViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onSettings() {
+    this.albumViewService.settings$.next(true);
+   }
+ 
+   onInfo() {
+     this.store.dispatch(new OpenAlbumInfo(this.album));
+   }
+
   showImage(img: Image) {
     this.openImgModal(img);
     this.store.dispatch(new GetImage(img.googleDriveId));
@@ -61,6 +74,7 @@ export class AlbumViewComponent implements OnInit {
   }
 
   openSettingsModal() {
+    
     const config = new MatDialogConfig();
     config.disableClose = true;
     config.autoFocus = false;
@@ -126,6 +140,18 @@ export class AlbumViewComponent implements OnInit {
   downloadImage(data: any) {
     const {img, name} = data;
     this.store.dispatch(new DownloadImage(img, name));
+  }
+
+  editImage(data: any) {
+
+  }
+
+  deleteImage(data: any) {
+
+  }
+
+  starImage(data: any) {
+
   }
 
 }

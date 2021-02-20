@@ -1,5 +1,22 @@
-<div class="w-100 h-100">
+<div class="w-100 h-100 text-dark pt-3">
+  <div class="mb-4 d-flex align-items-center" *ngIf="album">
+    <div class="h5 m-0 font-weight-bold">
+      {{album.name}}
+    </div>
 
+    <button mat-icon-button class="ml-2" (click)="onInfo()">
+      <fa-icon [icon]='faInfoCircle' class="text-dark h6 m-0"></fa-icon>
+      <!-- <mat-icon class="text-dark h6 m-0">info</mat-icon> -->
+    </button>
+    <button mat-icon-button class="ml-1">
+      <fa-icon [icon]='faShareAlt' class="text-dark h6 m-0"></fa-icon>
+      <!-- <mat-icon class="text-dark h5 m-0">share</mat-icon> -->
+    </button>
+    <button mat-icon-button class="ml-1" (click)="onSettings()">
+      <fa-icon [icon]='faCog' class="text-dark h6 m-0"></fa-icon>
+      <!-- <mat-icon class="text-dark h5 m-0">settings</mat-icon> -->
+    </button>
+  </div>
   <div class="w-100 d-flex align-items-center text-muted">
     <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">Name</div>
     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">Owner</div>
@@ -7,14 +24,16 @@
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">Last Modified</div>
   </div>
   <hr>
-  
-  
+
+
 
 
   <div *ngIf="album else loading">
     <div *ngFor="let image of album.images; let i = index">
       <div class="py-3" style="border-bottom: 1px solid #ececec;">
-        <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"></app-image-list-item>
+        <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"
+          (editImage)="editImage($event)" (deleteImage)="deleteImage($event)" (starImage)="starImage($event)">
+        </app-image-list-item>
       </div>
     </div>
   </div>

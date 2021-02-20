@@ -1,3 +1,6 @@
+import { Image } from '../models/image.model';
+import { Album } from '../models/album.model';
+
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
   constructor() {}
@@ -5,7 +8,7 @@ export class FetchAllAlbums {
 
 export class OpenAlbumInfo {
   static readonly type = '[OPEN] Album Info';
-  constructor(public albumId: string, public type?: string) {}
+  constructor(public data: Album | Image, public type?: string) {}
 }
 
 export class CloseAlbumInfo {
@@ -66,4 +69,9 @@ export class DownloadImage {
 export class RemoveUploadPanel {
   static readonly type = '[REMOVE] Upload Panel';
   constructor() {}
+}
+
+export class FetchImagesOfAlbum {
+  static readonly type = '[FETCH] Images of Album';
+  constructor(public googleDriveId: string) {}
 }

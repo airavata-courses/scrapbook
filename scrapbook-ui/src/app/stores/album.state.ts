@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -75,20 +75,20 @@ export class AlbumState {
   }
 
   @Action(OpenAlbumInfo)
-  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId , type}: OpenAlbumInfo) {
+  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
 
     if (type) {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.albumInView.images.find(a => a.id === albumId)
+        albumInfoModalData: data
       });
     } else {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.allAlbumsOfUser.find(a => a.id === albumId)
+        albumInfoModalData: data
       });
     }
 
@@ -185,21 +185,37 @@ export class AlbumState {
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
-    const album = state.allAlbumsOfUser.find(a => a.id === id);
-    const googleDriveId = album.googleDriveId;
-
-    return this.albumService.getAllImagesOfAlbum(googleDriveId).pipe(
-      tap((res: Image[]) => {
+    return this.albumService.getAlbumByID(id).pipe(
+      tap((res: Album) => {
         setState({
           ...state,
-          albumInView: {...album, images: res}
-        });
+          albumInView: res
+        })
+        dispatch(new FetchImagesOfAlbum(res.googleDriveId))
       }),
       catchError((err) => {
         dispatch(new SetPageError('500'));
-        return of('');
+        return of(JSON.stringify(err));
       })
-    );
+    )
+  }
+
+  @Action(FetchImagesOfAlbum)
+  fetchImagesOfAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {googleDriveId}:FetchImagesOfAlbum) {
+    const state = getState();
+    const album = state.albumInView;
+    return this.albumService.getAllImagesOfAlbum(googleDriveId).pipe(
+        tap((res: Image[]) => {
+          setState({
+            ...state,
+            albumInView: {...album, images: res}
+          });
+        }),
+        catchError((err) => {
+          dispatch(new SetPageError('500'));
+          return of(JSON.stringify(err));
+        })
+      );
   }
 
   @Action(RemoveAlbumFromView)

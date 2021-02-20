@@ -2,14 +2,13 @@ import requests
 from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
-import json
-import sys
+from service_utils import user_service
 
 album_api = Blueprint('album_api', __name__)
 
 
 @album_api.route('/album', methods=["POST"])
-@auth.check_user_session()
+@auth.check_user_session
 def createAlbum():
     """
     Used to create an album
@@ -18,10 +17,9 @@ def createAlbum():
     @return - json of the created album with an http status code
     """
     try:
-        #data = request.json
         userID = request.args.get('userid')
-        albumName = request.form.get('name')
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers = request.headers, data = request.data)
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers=request.headers,
+                                 data=request.data)
         response.raise_for_status()
         return response.json(), response.status_code
 
@@ -29,10 +27,31 @@ def createAlbum():
         return err.response.text, err.response.status_code
 
 
+@album_api.route('/album/<googledriveid>', methods=["GET"])
+# @auth.check_user_session
+def getAlbumByID(googledriveid):
+    """
+    retrieving all active albums from the database.
+
+    @params - A GET request that fetches all active albums from the database
+    @return - json formatted list of albums and http status code
+    """
+    try:
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response.raise_for_status()
+        album = response.json()
+        album['createdBy'] = user_service.getUser(album['createdBy'])
+        album['modifiedBy'] = user_service.getUser(album['modifiedBy'])
+
+        return jsonify(album), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
 
 @album_api.route('/album', methods=["GET"])
-@auth.check_user_session()
-def getAlbums():
+@auth.check_user_session
+def getAlbumsOfUser():
     """
     Get all the albums of the user
 
@@ -41,17 +60,19 @@ def getAlbums():
     """
     try:
         userID = request.args.get('userid')
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers = request.headers, data = request.data)
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers=request.headers,
+                                data=request.data)
         response.raise_for_status()
-        return response.content , response.status_code
+        aggregatedResponse = user_service.aggregateUser(response)
+        return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
 
 
 @album_api.route('/album/<googledriveid>/image', methods=["GET"])
-@auth.check_user_session()
-def retreieveImagesByAlbumId(googledriveid):
+# @auth.check_user_session
+def getImagesByAlbumID(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
     
@@ -59,18 +80,19 @@ def retreieveImagesByAlbumId(googledriveid):
     @return - json formatted list of images in the album and http status code
     """
     try:
-        userID = request.args.get('userid')
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/image?userid={userID}')
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/image')
         response.raise_for_status()
-        return response.content, response.status_code
+
+        aggregatedResponse = user_service.aggregateUser(response)
+        return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
 
 
 @album_api.route('/album/all', methods=["GET"])
-@auth.check_user_session()
-def retreieveAllAlbumsInDB():
+@auth.check_user_session
+def getAllAlbums():
     """
     retrieving all active albums from the database.    
     
@@ -80,9 +102,8 @@ def retreieveAllAlbumsInDB():
     try:
         response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/all')
         response.raise_for_status()
-        return response.content, response.status_code
+        aggregatedResponse = user_service.aggregateUser(response)
+        return aggregatedResponse, response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
-
-

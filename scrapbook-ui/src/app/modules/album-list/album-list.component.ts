@@ -18,8 +18,7 @@ export class AlbumListComponent implements OnInit {
   albums: Album[];
   @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
   constructor(private store: Store, public albumListService: AlbumListService) {
-    console.log('ALBUM LIST');
-    const userID = this.store.selectSnapshot(UserState.getUserData)._id;
+    const userID = localStorage.getItem('scrapbook-userid')
     this.store.dispatch(new RemoveAlbumFromView());
     this.store.dispatch(new FetchAllAlbumsOfUser(userID));
 
@@ -33,7 +32,7 @@ export class AlbumListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showAlbumInfo(e: string) {
+  showAlbumInfo(e: Album) {
     this.store.dispatch(new OpenAlbumInfo(e));
   }
 

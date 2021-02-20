@@ -20,6 +20,9 @@ export class ImageListItemComponent implements OnInit {
   @Input() image: Image;
   @Output() showImageInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() showImage: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editImage: EventEmitter<any> = new EventEmitter<any>();
+  @Output() starImage: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteImage: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private dialog: MatDialog) { }
 
@@ -31,7 +34,19 @@ export class ImageListItemComponent implements OnInit {
   }
 
   onShowImageInfo() {
-    this.showImageInfo.emit(this.image.id);
+    this.showImageInfo.emit(this.image);
+  }
+
+  onEditImage() {
+    this.editImage.emit(this.image);
+  }
+
+  onStarImage() {
+    this.starImage.emit(this.image)
+  }
+
+  onDeleteImage() {
+    this.deleteImage.emit(this.image)
   }
 
 }

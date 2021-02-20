@@ -8,15 +8,12 @@ import {
   Logout,
 } from '../actions/user.actions';
 import { User } from '../models/user.model';
-import { StateReset } from 'ngxs-reset-plugin';
 
-import { UIState } from './ui.state';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { AlbumState } from './album.state';
 
 export class UserStateModel {
   userData: any;
@@ -66,6 +63,7 @@ export class UserState {
       _id: user._id,
     };
     localStorage.setItem('scrapbook-token', loggedInUser.token);
+    localStorage.setItem('scrapbook-userid', loggedInUser._id);
 
     setState({
       ...getState(),
@@ -77,6 +75,7 @@ export class UserState {
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
     localStorage.setItem('scrapbook-token', '');
+    localStorage.setItem('scrapbook-userid', '');
     // dispatch(new StateReset(UIState));
     // // dispatch(new StateReset(AlbumState));
     // dispatch(new StateReset(UIState));
