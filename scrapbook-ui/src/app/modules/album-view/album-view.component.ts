@@ -31,7 +31,7 @@ export class AlbumViewComponent implements OnInit {
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
-
+    console.log(this.dialog.getDialogById('AlbumSettingsModal'))
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 
@@ -61,7 +61,7 @@ export class AlbumViewComponent implements OnInit {
    }
  
    onInfo() {
-     this.store.dispatch(new OpenAlbumInfo(this.album.id));
+     this.store.dispatch(new OpenAlbumInfo(this.album));
    }
 
   showImage(img: Image) {
@@ -74,6 +74,7 @@ export class AlbumViewComponent implements OnInit {
   }
 
   openSettingsModal() {
+    
     const config = new MatDialogConfig();
     config.disableClose = true;
     config.autoFocus = false;

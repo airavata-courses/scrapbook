@@ -75,20 +75,20 @@ export class AlbumState {
   }
 
   @Action(OpenAlbumInfo)
-  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId , type}: OpenAlbumInfo) {
+  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
 
     if (type) {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.albumInView.images.find(a => a.id === albumId)
+        albumInfoModalData: data
       });
     } else {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.allAlbumsOfUser.find(a => a.id === albumId)
+        albumInfoModalData: data
       });
     }
 

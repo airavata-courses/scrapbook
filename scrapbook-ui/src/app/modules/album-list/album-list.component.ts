@@ -32,7 +32,7 @@ export class AlbumListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showAlbumInfo(e: string) {
+  showAlbumInfo(e: Album) {
     this.store.dispatch(new OpenAlbumInfo(e));
   }
 

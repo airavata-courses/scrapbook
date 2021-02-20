@@ -31,7 +31,7 @@ export class ImageListItemComponent implements OnInit {
   }
 
   onShowImageInfo() {
-    this.showImageInfo.emit(this.image.id);
+    this.showImageInfo.emit(this.image);
   }
 
 }
