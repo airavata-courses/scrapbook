@@ -4,24 +4,16 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.iu.scrapbook.config.GoogleDriveConfig;
 import com.iu.scrapbook.dto.Image;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This service is responsible for communicating for google drive
@@ -90,5 +82,20 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
         // delete from drive
         googleDriveConfig.getDrive().files().delete(googleId).execute();
         return true;
+    }
+
+    @Override
+    public Image updateImage(Image image) throws Exception {
+
+//       File file =  googleDriveConfig.getDrive().files().get(image.getGoogleDriveId()).execute();
+//        file.setName(image.getName());
+
+        File fileMetadata = new File();
+        fileMetadata.setName(image.getName());
+        // call google drive api to update name
+         googleDriveConfig.getDrive().files().
+                update(image.getGoogleDriveId(), fileMetadata).execute();
+
+        return image;
     }
 }

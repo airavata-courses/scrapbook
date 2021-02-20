@@ -50,4 +50,14 @@ public class GoogleDriveAlbumServiceImpl implements GoogleDriveAlbumService {
         album.setSize(fileMetadata.getSize());
         return album;
     }
+
+    @Override
+    public Album updateAlbum(Album album) throws Exception {
+        File fileMetadata = new File();
+        fileMetadata.setName(album.getName());
+        fileMetadata.setDescription(album.getDescription());
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+        googleDriveConfig.getDrive().files().update(album.getGoogleDriveId(), fileMetadata).execute();
+        return album;
+    }
 }

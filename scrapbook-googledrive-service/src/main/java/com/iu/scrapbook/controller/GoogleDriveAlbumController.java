@@ -57,6 +57,22 @@ public class GoogleDriveAlbumController {
         return responseEntity;
     }
 
+    @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
+            "to google drive with given album name.")
+    @PutMapping
+    public ResponseEntity<Album> updateAlbum(@RequestBody Album album){
+
+        ResponseEntity<Album> responseEntity = null;
+        try {
+            album = googleDriveAlbumService.updateAlbum(album);
+            responseEntity = new ResponseEntity<Album>(album,HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return responseEntity;
+    }
+
 //    @PostMapping(path ="/upload/{album}",consumes = "multipart/form-data")
 //    public ResponseEntity<Image> uploadImageToAlbum(@RequestParam("file") MultipartFile file,
 //                                                    @RequestParam("user") String userId, @PathVariable("album") String album){
