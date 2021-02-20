@@ -8,7 +8,7 @@ image_api = Blueprint('image_api', __name__)
 
 
 @image_api.route('/image/upload/<GoogeDriveID>', methods=["POST"])
-@auth.check_user_session()
+@auth.check_user_session
 def uploadImage(GoogeDriveID):
     """
     This function uploads an image
@@ -29,7 +29,7 @@ def uploadImage(GoogeDriveID):
 
 
 @image_api.route('/image/<GoogeDriveID>', methods=["GET"])
-@auth.check_user_session()
+@auth.check_user_session
 def downloadImage(GoogeDriveID):
     """
     This function downloads an image
