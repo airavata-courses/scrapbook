@@ -42,9 +42,8 @@ export class AuthService {
   }
 
   lougoutFromGoogle() {
-    this.googleAuthService.signOut();
-    this.store.dispatch(new Logout()).subscribe(_ => {
-      this.router.navigate(['/']);
-    });
+    // this.googleAuthService.signOut();
+    return this.http.delete(`${GATEWAY_URL}/logout?id=${localStorage.getItem('scrapbook-userid')}`)
+    
   }
 }

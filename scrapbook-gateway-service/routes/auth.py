@@ -32,7 +32,7 @@ def login():
         return err.response.text, err.response.status_code
 
 
-@authenticate_user_api.route('/logout', methods=["GET"])
+@authenticate_user_api.route('/logout', methods=["DELETE"])
 @auth_service.check_user_session
 def logout():
     """

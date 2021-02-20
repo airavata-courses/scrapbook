@@ -6,8 +6,6 @@ import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
 import { Image, PendingUploadsState, UPLOAD_STATE, PendingUploadsStateInterface } from '../models/image.model';
-import { UserState } from './user.state';
-import { HttpErrorResponse } from '@angular/common/http';
 import { of, from, throwError, forkJoin} from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageService } from '../services/image.service';
@@ -120,7 +118,7 @@ export class AlbumState {
   @Action(CreateAlbum)
   createAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, desc}: CreateAlbum) {
     const state = getState();
-    const userid = this.store.selectSnapshot(UserState.getUserData)._id;
+    const userid = localStorage.getItem('scrapbook-userid')
     return this.albumService.createAlbum(name, userid, desc).pipe(
       tap((response: Album) => {
         // response.images = []
@@ -134,7 +132,7 @@ export class AlbumState {
 
   @Action(Upload)
   uploadFiles({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {files, id}: Upload) {
-    const userid = this.store.selectSnapshot(UserState.getUserData)._id;
+    const userid = localStorage.getItem('scrapbook-userid')
     patchState({
       pendingUploads: []
     });
