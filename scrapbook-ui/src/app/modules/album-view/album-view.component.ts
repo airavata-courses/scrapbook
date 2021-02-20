@@ -3,17 +3,18 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UIState } from 'src/app/stores/ui.state';
 import { ImageModalComponent } from 'src/app/components/image-modal/image-modal.component';
-import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings } from 'src/app/actions/ui.actions';
+import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings, OpenLoading } from 'src/app/actions/ui.actions';
 import { Image } from 'src/app/models/image.model';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 
-import { faShareAlt, faInfoCircle, faCog} from "@fortawesome/free-solid-svg-icons";
+import { faShareAlt, faInfoCircle, faCog, faDownload, faTrash, faTimes} from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-album-view',
@@ -25,10 +26,15 @@ export class AlbumViewComponent implements OnInit {
   faShareAlt = faShareAlt;
   faInfoCircle = faInfoCircle;
   faCog = faCog;
+  faDownload = faDownload;
+  faTrash = faTrash;
+  faTimes = faTimes;
+  selectedImages: Array<Image>;
 
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
+  @Select(AlbumState.getSelectedImageState) selectedImages$: Observable<Array<Image>>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
     console.log(this.dialog.getDialogById('AlbumSettingsModal'))
@@ -52,8 +58,40 @@ export class AlbumViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onRemoveAllSelections() {
+    this.store.dispatch(new RemoveAllSelectedImages())
+  }
+
+  onImageSelect(data) {
+    if (data.value) {
+      this.store.dispatch(new SelectMultipleImages(data.image))
+    } else {
+      this.store.dispatch(new RemoveSelectedImage(data.image))
+    }
+  }
+
+  onMultipleImageDelete() {
+    Swal.fire({
+      title: 'Are you sure you want to delete the selected images?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      confirmButtonColor: '#EB7373',
+      cancelButtonColor: '#737CEB'
+    }).then((result) => {
+      if (result.value) {
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
+    });
+  }
+
+  onMultipleImageDownload() {
+    this.store.dispatch(new OpenLoading())
+    this.store.dispatch(new DownloadSelectedImages())
+  }
+
   onSettings() {
-    console.log('onsettings')
     this.store.dispatch(new OpenSettings());
   }
  
