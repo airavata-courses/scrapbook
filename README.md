@@ -14,6 +14,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 - SpringBoot (Java 15)
 - Flask (Python)
 - MongoDB
+- Redis
 - Google Cloud Storage
 - Apache Kafka
 - RESTful Webservices
@@ -28,17 +29,29 @@ Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/
 
 ## Project Installation
 
+### Dependencies
+
+Make sure you have these dependencies installed in your machine before installing each service.
+
+- Node/NPM
+- Python3.8
+- Java 15
+- MongoDB
+- Redis
+- Angular CLI
+
 ### Repository 
 ```
 $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 ```
 
-### How to Run
+### How to run
 
 Start a service either by going to their respective folders or using the start script
 
-**Start Script** (for linux based systems)
+#### Start Scripts (for linux based systems)
+Each of these commands should be executed in different terminals.
 
 ```shell
 $ ./start.sh <arg> 
@@ -49,7 +62,75 @@ $ # auth : scrapbook-auth-service
 $ # user : scrapbook-user-service
 $ # sess : scrapbook-session-serice
 $ # gw   : scrapbook-gateway-service
+$ # gs   : scrapbook-google-drive-service
+$ # img  : scrapbook-image-service
 ```
+
+### Manual Installation
+
+#### scrapbook-ui
+
+```shell
+$ cd scrapbook-ui
+$ npm install
+$ npm start
+```
+
+#### scrapbook-auth-service
+
+```shell
+$ cd scrapbook-auth-service
+$ python3 -m env env # creating a virtual environment
+$ source env/bin/activate
+$ pip install -r requirements.txt
+$ python app.py
+```
+
+#### scrapbook-session-service
+
+```shell
+$ cd scrapbook-session-service
+$ npm install
+$ npm run dev
+```
+
+#### scrapbook-user-service
+
+```shell
+$ cd scrapbook-user-service
+$ npm install
+$ npm run dev
+```
+
+#### scrapbook-gateway-service
+
+```shell
+$ cd scrapbook-gateway-service
+$ python3 -m env env # creating a virtual environment
+$ source env/bin/activate
+$ pip install -r requirements.txt
+$ python app.py
+```
+
+
+#### scrapbook-google-drive-service
+
+```shell
+$ cd scrapbook-google-drive-service
+$ mvn clean install
+$ cd target
+$ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
+```
+
+#### scrapbook-image-service
+
+```shell
+$ cd scrapbook-image-service
+$ mvn clean install
+$ cd target
+$ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+```
+
 
 ## Documentation
 
