@@ -138,6 +138,7 @@ export class AlbumState {
     });
     dispatch(new OpenUploadingPanel());
     dispatch(new CloseUpload());
+    const albumInView = getState().albumInView;
 
 
     const uploads: Array<PendingUploadsState> = [];
@@ -155,8 +156,14 @@ export class AlbumState {
           setState(
             patch({
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.done}))
-            })
+            }),
+           
           );
+
+          setState({
+            ...getState(),
+            albumInView: {...albumInView, images: [...albumInView.images, res]}
+          })
         }),
         catchError(error => {
           setState(

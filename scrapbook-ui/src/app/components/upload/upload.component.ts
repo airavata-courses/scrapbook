@@ -44,7 +44,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     const isAlbumView = this.store.selectSnapshot(AlbumState.getAlbumInView);
     if (isAlbumView) {
       this.isAlbumView = true;
-      this.selectedAlbum = isAlbumView.id;
+      this.selectedAlbum = isAlbumView.googleDriveId;
     } else {
       this.isAlbumView = false;
     }
@@ -124,7 +124,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     if (this.files.length < 1) {
       return;
     }
-
+    console.log('HERE', this.selectedAlbum)
     this.store.dispatch(new Upload(this.files, this.selectedAlbum));
 
   }
