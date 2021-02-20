@@ -4,12 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-// var redis = require('./config/redis')
+var redis = require('./config/redis')
 
-const connectMongoDB = require('./config/database.js')
-connectMongoDB();
+// const connectMongoDB = require('./config/database.js')
+// connectMongoDB();
 
-// redis.init();
+redis.init();
 
 
 var indexRouter = require('./routes/index');
