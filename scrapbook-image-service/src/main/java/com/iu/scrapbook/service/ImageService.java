@@ -28,5 +28,7 @@ public interface ImageService {
 
     void delete(String googleId, String userId);
 
+    Long deleteAlbumImages(String albumGoogleId, String userId);
+
     Image updateImage(ImageRequest album, String googleDriveId, String userId);
 }

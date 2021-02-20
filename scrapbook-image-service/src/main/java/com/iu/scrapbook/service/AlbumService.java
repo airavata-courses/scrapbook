@@ -26,7 +26,7 @@ public interface AlbumService {
 
     void deleteAll(String userId);
 
-    void deleteByGoogleDriveId(String id);
+    Long deleteByGoogleDriveId(String id,  String userId);
 
     Album addImageToAlbum(Album album,Image image);
 

@@ -6,6 +6,7 @@ import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
+import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,6 +116,20 @@ public class ImageServiceImpl implements ImageService{
     public void delete(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Image.class);
+    }
+
+    @Override
+    public Long deleteAlbumImages(String albumGoogleId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("album.googleDriveId").is(albumGoogleId));
+        query.addCriteria(new Criteria("active").is(true));
+        Update update = new Update().set("active", false);
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        UpdateResult result = mongoTemplate.updateMulti(query,update, Image.class);
+
+        log.info(" Deleted image count "+result.getModifiedCount());
+        return result.getModifiedCount();
     }
 
     @Override

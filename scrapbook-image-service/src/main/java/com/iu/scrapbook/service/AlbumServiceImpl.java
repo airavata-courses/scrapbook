@@ -41,6 +41,9 @@ public class AlbumServiceImpl implements AlbumService{
     private AlbumRepository albumRepository;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
 
     @Autowired
@@ -127,9 +130,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
-    public void deleteByGoogleDriveId(String googleDriveId) {
+    public Long deleteByGoogleDriveId(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Album.class);
+
+       return imageService.deleteAlbumImages(googleDriveId,userId);
     }
 
     @Override

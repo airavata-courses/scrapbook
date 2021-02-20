@@ -117,11 +117,11 @@ public class AlbumController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Delete album from database for given googleDriveId", description = "This API is responsible for " +
-            "deleting album for given googleDriveId from the database. It is soft. It sets all albums as inactive")
+    @Operation(summary = "Delete album and its images from database for given googleDriveId", description = "This API is responsible for " +
+            "deleting album and its images for given googleDriveId from the database. It is soft. It sets all albums/images as inactive and return total count of image being deleted.")
     @DeleteMapping(value = "/{googledriveid}")
-    public ResponseEntity<List<Album>> deleteById(@PathVariable("googledriveid") String googleDriveId){
-        albumService.deleteByGoogleDriveId(googleDriveId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Long> deleteById(@PathVariable("googledriveid") String googleDriveId, @RequestParam("userid") String userId){
+        Long count = albumService.deleteByGoogleDriveId(googleDriveId,userId);
+        return ResponseEntity.ok(count);
     }
 }
