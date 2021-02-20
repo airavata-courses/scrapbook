@@ -18,14 +18,14 @@ def uploadImage(GoogeDriveID):
     try:
         file = request.files['file']
         userID = request.form.get('userid')
-        files = {'file': file.read()}
-        response = requests.post(f'{G_DRIVE_SERVICE_URL__DEV}/image/upload/{GoogeDriveID}', data = {"userid":userID}, files = files)
+        files = {'file': (file.filename, file.read())}
+        response = requests.post(f'{G_DRIVE_SERVICE_URL__DEV}/image/upload/{GoogeDriveID}', data={"userid": userID},
+                                 files=files)
         response.raise_for_status()
         return response.content, response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
-
 
 
 @image_api.route('/image/<GoogeDriveID>', methods=["GET"])
@@ -37,7 +37,8 @@ def downloadImage(GoogeDriveID):
     @return - the file sent over the network alone with a http status code
     """
     try:
-        response = requests.get(f'{G_DRIVE_SERVICE_URL__DEV}/image/{GoogeDriveID}', headers = request.headers, data = request.data)
+        response = requests.get(f'{G_DRIVE_SERVICE_URL__DEV}/image/{GoogeDriveID}', headers=request.headers,
+                                data=request.data)
         response.raise_for_status()
         return response.content, response.status_code
 
