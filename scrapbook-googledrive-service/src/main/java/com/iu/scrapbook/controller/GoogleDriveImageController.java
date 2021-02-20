@@ -3,15 +3,12 @@ package com.iu.scrapbook.controller;
 import com.iu.scrapbook.dto.Image;
 import com.iu.scrapbook.service.GoogleDriveImageService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.OutputStream;
 
 /**
  * This controller contains all APIs related to image
@@ -81,6 +78,22 @@ public class GoogleDriveImageController {
         }catch(Exception e){
             e.printStackTrace();
             responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return responseEntity;
+    }
+
+    @Operation(summary = "Create album to google drive", description = "This API is responsible for creating album " +
+            "to google drive with given album name.")
+    @PutMapping
+    public ResponseEntity<Image> updateImage(@RequestBody Image image){
+
+        ResponseEntity<Image> responseEntity = null;
+        try {
+            image = googleDriveImageService.updateImage(image);
+            responseEntity = new ResponseEntity<Image>(image,HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return responseEntity;
     }

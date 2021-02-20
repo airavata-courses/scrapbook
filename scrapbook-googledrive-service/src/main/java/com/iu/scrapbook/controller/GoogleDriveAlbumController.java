@@ -65,7 +65,7 @@ public class GoogleDriveAlbumController {
         ResponseEntity<Album> responseEntity = null;
         try {
             album = googleDriveAlbumService.updateAlbum(album);
-            responseEntity = new ResponseEntity<Album>(album,HttpStatus.CREATED);
+            responseEntity = new ResponseEntity<Album>(album,HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

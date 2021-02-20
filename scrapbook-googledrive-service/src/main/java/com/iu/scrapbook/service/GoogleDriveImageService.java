@@ -1,5 +1,6 @@
 package com.iu.scrapbook.service;
 
+import com.iu.scrapbook.dto.Album;
 import com.iu.scrapbook.dto.Image;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,5 +16,7 @@ public interface GoogleDriveImageService {
     byte[] downloadImage(String googleId) throws Exception;
 
     Boolean deleteImage(String googleId, String userId) throws Exception;
+
+    Image updateImage(Image image) throws Exception;
 
 }
