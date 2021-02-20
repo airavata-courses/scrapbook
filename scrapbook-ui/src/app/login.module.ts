@@ -16,4 +16,4 @@ export const LoginProviders = {
       },
     ]
   } as SocialAuthServiceConfig,
-}
+};

@@ -9,20 +9,20 @@ export class AlbumService {
   constructor(private http: HttpClient) {}
 
   getAlbumsOfUser(id: string) {
-    let params = new HttpParams().set('userid', id);
-    return this.http.get(`${IMAGE_SERVICE_URL}/album/`, { params: params });
+    const params = new HttpParams().set('userid', id);
+    return this.http.get(`${IMAGE_SERVICE_URL}/album/`, { params });
   }
 
   createAlbum(name: string, id: string, desc?: string) {
-    return this.http.post(`${IMAGE_SERVICE_URL}/album?userid=${id}`, {name: name, description: desc});
+    return this.http.post(`${IMAGE_SERVICE_URL}/album?userid=${id}`, {name, description: desc});
   }
 
   getAllImagesOfAlbum(id: string) {
-    return this.http.get(`${IMAGE_SERVICE_URL}/album/${id}/image`)
+    return this.http.get(`${IMAGE_SERVICE_URL}/album/${id}/image`);
   }
 
   getImage(id: String) {
-    return this.http.get(`${GOOGLE_DRIVE_SERVICE_URL}/image/${id}`, {responseType: 'blob'})
+    return this.http.get(`${GOOGLE_DRIVE_SERVICE_URL}/image/${id}`, {responseType: 'blob'});
   }
 
   uploadFile(file: any, id: string , userid: string) {
@@ -30,10 +30,10 @@ export class AlbumService {
     formData.append('file', file);
     formData.append('userid', userid);
 
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
 
-    return this.http.post<any>(`${GOOGLE_DRIVE_SERVICE_URL}/image/upload/${id}`, formData, {headers: headers})
+    return this.http.post<any>(`${GOOGLE_DRIVE_SERVICE_URL}/image/upload/${id}`, formData, {headers});
   }
 }

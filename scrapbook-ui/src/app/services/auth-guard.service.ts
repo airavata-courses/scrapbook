@@ -12,9 +12,9 @@ export class AuthGuardService implements CanActivate {
   canActivate() {
 
     if (localStorage.getItem('scrapbook-token')) {
-      return true
+      return true;
     }
-    this.router.navigate(['/'])
-    return false
+    this.router.navigate(['/']);
+    return false;
   }
 }

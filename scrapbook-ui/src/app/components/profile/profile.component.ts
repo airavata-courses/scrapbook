@@ -12,7 +12,7 @@ import { Logout } from 'src/app/actions/user.actions';
 })
 export class ProfileComponent implements OnInit {
   @Select(UserState.getUserData) userData$: Observable<any>;
-  
+
   userData: any;
 
   constructor(private router: Router, public store: Store) {
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
 
   logout() {
       this.store.dispatch(new Logout()).subscribe(_ => {
-        this.router.navigate(['/'])
-      })
+        this.router.navigate(['/']);
+      });
   }
 }

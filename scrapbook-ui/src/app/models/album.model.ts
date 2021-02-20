@@ -1,10 +1,10 @@
-import { User } from './user.model'
+import { User } from './user.model';
 import { Image } from './image.model';
 
 
 export interface Album {
-  active?: true
-  createdBy?: string
+  active?: true;
+  createdBy?: string;
   createdDate?: string;
   googleDriveId?: string;
   id?: string;

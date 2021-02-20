@@ -20,7 +20,7 @@
 
     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
       <div class="desc">
-        <div class="h6 m-0 font-weight-normal">{{album.size ? Math.round(album.size/1024) + ' KB': '0 B'}}</div>
+        <div class="h6 m-0 font-weight-normal" style="font-size: 12pt;">{{formatBytes(album.size, 0)}}</div>
       </div>
     </div>
 

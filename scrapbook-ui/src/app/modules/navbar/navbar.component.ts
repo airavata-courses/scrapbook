@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngxs/store';
 import { OpenProfile, OpenUpload } from 'src/app/actions/ui.actions';
 

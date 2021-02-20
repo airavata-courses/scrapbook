@@ -8,7 +8,7 @@ export enum UPLOAD_STATE {
 
 export interface Image {
   active: boolean;
-  album: Album
+  album: Album;
   createdBy: string;
   createdDate: string;
   extension: string;
@@ -18,13 +18,13 @@ export interface Image {
   modifiedBy: string;
   modifiedDate: string;
   name: string;
-  size: 124729
+  size: 124729;
 }
 
 export interface PendingUploadsStateInterface {
   file: any;
   name: string;
-  status: UPLOAD_STATE
+  status: UPLOAD_STATE;
 }
 
 

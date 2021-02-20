@@ -16,7 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService, public router: Router) {}
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
-    //handle your auth error or rethrow
+    // handle your auth error or rethrow
     if (err.status === 401 || err.status === 403) {
         this.router.navigateByUrl(`/login`);
         return of(err.message);
@@ -25,12 +25,12 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
+
     request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${localStorage.getItem('scrapbook-token')}`
       }
     });
-    return next.handle(request).pipe(catchError(x=> this.handleAuthError(x))); 
+    return next.handle(request).pipe(catchError(x => this.handleAuthError(x)));
   }
 }

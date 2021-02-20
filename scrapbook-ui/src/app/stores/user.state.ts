@@ -42,7 +42,7 @@ export class UserState {
   }
 
   @Selector()
-  static getUserToken(state: UserStateModel){  
+  static getUserToken(state: UserStateModel){
     return state.userData.token;
   }
 
@@ -58,7 +58,7 @@ export class UserState {
 
   @Action(PutUserInSession)
   putUserIntoSession({ setState, getState }: StateContext<UserStateModel>, { user }: PutUserInSession) {
-    let loggedInUser: User = {
+    const loggedInUser: User = {
       name: user.name,
       email: user.email,
       photo: user.photo,
@@ -66,12 +66,12 @@ export class UserState {
       _id: user._id,
     };
     localStorage.setItem('scrapbook-token', loggedInUser.token);
-    
+
     setState({
       ...getState(),
       userData: loggedInUser,
       loggedIn: true
-    })
+    });
   }
 
   @Action(Logout)
@@ -84,26 +84,26 @@ export class UserState {
       ...getState(),
       userData: {},
       loggedIn: false
-    })
+    });
   }
 
   @Action(FetchUserData)
-  fetchUserData({ setState, getState, dispatch }: StateContext<UserStateModel>, {email}:FetchUserData) {
+  fetchUserData({ setState, getState, dispatch }: StateContext<UserStateModel>, {email}: FetchUserData) {
     // make call
     return this.userService.fetchUserData(email).pipe(
       tap((res: any) => {
-        console.log(res)
+        console.log(res);
       }),
       catchError((e) => {
         if (e.status === 401) {
-          dispatch(new SetPageError('401'))
+          dispatch(new SetPageError('401'));
         } else if (e.status === 500) {
-          dispatch(new SetPageError('500'))
+          dispatch(new SetPageError('500'));
         } else {
-          dispatch(new SetPageError('500'))
+          dispatch(new SetPageError('500'));
         }
-        return of('')
+        return of('');
       })
-    )
+    );
   }
 }

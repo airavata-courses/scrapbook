@@ -15,7 +15,7 @@ export class CloseAlbumInfo {
 
 export class SelectAlbums {
   static readonly type = '[SELECT] Albums';
-  constructor(public albumId: string){} 
+  constructor(public albumId: string){}
 }
 
 export class FetchAllAlbumsOfUser {

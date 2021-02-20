@@ -27,13 +27,14 @@ import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending
 export class RootComponent {
   title = 'scrapbook';
   user: any;
-  
+
   @Select(UserState.getUserData) userData$: Observable<any>;
 
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
   @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
+  @Select(UIState.getSettingsState) settings$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -52,27 +53,27 @@ export class RootComponent {
     registerIcons(matIconRegistry, domSanitizer);
 
     this.userData$.subscribe((userData) => {
-      if (userData) this.user = userData;
-    })
+      if (userData) { this.user = userData; }
+    });
 
     this.profile$.subscribe((status) => {
-      if (status) this.openProfile();
-      else this.closeProfile();
+      if (status) { this.openProfile(); }
+      else { this.closeProfile(); }
     });
 
     this.info$.subscribe((status) => {
-      if (status) this.openInfoModal();
-      else this.closeInfoModal();
+      if (status) { this.openInfoModal(); }
+      else { this.closeInfoModal(); }
     });
 
     this.upload$.subscribe((status) => {
-      if (status) this.openUploadModal();
-      else this.closeUploadModal();
+      if (status) { this.openUploadModal(); }
+      else { this.closeUploadModal(); }
     });
 
     this.filters$.subscribe((status) => {
-      if (status) this.openFilters();
-      else this.closeFilters();
+      if (status) { this.openFilters(); }
+      else { this.closeFilters(); }
     });
 
     this.uploadPanel$.subscribe((status) => {
@@ -81,10 +82,16 @@ export class RootComponent {
       } else {
         this.closePendingUploadingPanel();
       }
-    })
+    });
   }
 
   ngOnInit(): void {}
+
+
+
+  closeSettingsModal() {
+
+  }
 
   openPendingUploadPanel() {
     const config = new MatDialogConfig();
@@ -94,7 +101,7 @@ export class RootComponent {
     config.width = '500px';
     config.autoFocus = false;
     config.hasBackdrop = false;
-    config.panelClass = 'no-padding'
+    config.panelClass = 'no-padding';
 
     const uploadPendingPanel = this.dialog.open(UploadsPendingPanelComponent, config);
 
@@ -102,7 +109,7 @@ export class RootComponent {
 
     uploadPendingPanel.componentInstance.close.subscribe(_ => {
       this.store.dispatch(new CloseUploadingPanel());
-    })
+    });
 
     uploadPendingPanel.afterClosed().subscribe((_) => {
       this.store.dispatch(new CloseUploadingPanel());
@@ -145,6 +152,10 @@ export class RootComponent {
     }
   }
 
+  openSettings() {
+
+  }
+
   openUploadModal() {
     const config = new MatDialogConfig();
     config.disableClose = false;
@@ -157,8 +168,8 @@ export class RootComponent {
     const uploadDialog = this.dialog.open(UploadComponent, config);
 
     uploadDialog.componentInstance.getAllUsersAlbums.subscribe((data: any) => {
-      this.store.dispatch(new FetchAllAlbumsOfUser(this.user._id))
-    })
+      this.store.dispatch(new FetchAllAlbumsOfUser(this.user._id));
+    });
     uploadDialog.componentInstance.close.subscribe((data) => {
       this.closeUploadModal();
     });
