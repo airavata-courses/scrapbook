@@ -4,6 +4,8 @@ import { Album } from 'src/app/models/album.model';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { formatBytes } from 'src/app/static/util';
+import { Store } from '@ngxs/store';
+import { DownloadAlbum } from 'src/app/actions/album.actions';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class AlbumListItemComponent implements OnInit {
   @Input() album: Album;
   @Output() showAlbumInfo: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, public store: Store) { }
 
   ngOnInit(): void {
   }
@@ -33,6 +35,10 @@ export class AlbumListItemComponent implements OnInit {
 
   goToAlbum() {
     this.router.navigate([this.router.url + `/${this.album.googleDriveId}`]);
+  }
+
+  downloadAlbum() {
+    this.store.dispatch(new DownloadAlbum([this.album]))
   }
 
 }

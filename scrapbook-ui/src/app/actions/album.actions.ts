@@ -75,3 +75,8 @@ export class FetchImagesOfAlbum {
   static readonly type = '[FETCH] Images of Album';
   constructor(public googleDriveId: string) {}
 }
+
+export class DownloadAlbum {
+  static readonly type = '[DOWNLOAD] Album';
+  constructor(public albums: Album[]) {}
+}
