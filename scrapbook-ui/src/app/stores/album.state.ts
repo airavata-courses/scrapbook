@@ -121,7 +121,7 @@ export class AlbumState {
     const userid = localStorage.getItem('scrapbook-userid')
     return this.albumService.createAlbum(name, userid, desc).pipe(
       tap((response: Album) => {
-        // response.images = []
+        dispatch(new CloseLoading());
         setState({
           ...state,
           allAlbumsOfUser: [...state.allAlbumsOfUser, response]
