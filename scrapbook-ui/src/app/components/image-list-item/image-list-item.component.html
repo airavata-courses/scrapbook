@@ -14,7 +14,7 @@
     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
       <div class="desc pr-4">
         <!-- <div class="h6 m-0 font-weight-normal" style="font-size: 10pt;">{{moment(image.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div> -->
-        <div class="text-muted font-italic" style="font-size: 10pt;">{{image.createdBy}}</div>
+        <div class="text-muted font-italic" style="font-size: 10pt;">{{image.createdBy.name}}</div>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
 
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
       <div class="h-100 w-100 d-flex justify-content-between align-items-center">
-        <div class="text-muted desc">{{image.modifiedBy}}</div>
+        <div class="text-muted desc">{{image.modifiedBy.name}}</div>
 
         <!-- <div>
           <img src="https://picsum.photos/id/121/200/300"

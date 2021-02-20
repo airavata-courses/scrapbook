@@ -32,7 +32,7 @@ export class AlbumListItemComponent implements OnInit {
   }
 
   goToAlbum() {
-    this.router.navigate([this.router.url + `/${this.album.id}`]);
+    this.router.navigate([this.router.url + `/${this.album.googleDriveId}`]);
   }
 
 }

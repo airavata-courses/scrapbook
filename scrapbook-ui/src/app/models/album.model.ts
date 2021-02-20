@@ -4,12 +4,12 @@ import { Image } from './image.model';
 
 export interface Album {
   active?: true;
-  createdBy?: string;
+  createdBy?: User;
   createdDate?: string;
   googleDriveId?: string;
   id?: string;
   images?: Array<Image> | null;
-  modifiedBy?: string;
+  modifiedBy?: User;
   modifiedDate?: string;
   name?: string;
   size?: number | null;

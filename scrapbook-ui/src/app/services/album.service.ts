@@ -20,6 +20,10 @@ export class AlbumService {
     return this.http.get(`${GATEWAY_URL}/album/${id}/image`);
   }
 
+  getAlbumByID(id: string) {
+    return this.http.get(`${GATEWAY_URL}/album/${id}`);
+  }
+
   getImage(id: String) {
     return this.http.get(`${GATEWAY_URL}/image/${id}`, {responseType: 'blob'});
   }

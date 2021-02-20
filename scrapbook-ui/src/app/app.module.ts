@@ -57,12 +57,11 @@ import { SettingsComponent } from './components/settings/settings.component';
     HttpClientModule,
     NgxsModule.forRoot([UIState, UserState, DataState, AlbumState], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({
-
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({
+      disabled: environment.production
     }),
-    NgxsStoragePluginModule.forRoot(),
     NgxsResetPluginModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,

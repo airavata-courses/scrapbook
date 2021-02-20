@@ -13,6 +13,8 @@ import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings } from 'src/a
 import { Image } from 'src/app/models/image.model';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 
+import { faShareAlt, faInfoCircle, faCog} from "@fortawesome/free-solid-svg-icons";
+
 @Component({
   selector: 'app-album-view',
   templateUrl: './album-view.component.html',
@@ -20,6 +22,9 @@ import { SettingsComponent } from 'src/app/components/settings/settings.componen
 })
 export class AlbumViewComponent implements OnInit {
   album: Album;
+  faShareAlt = faShareAlt;
+  faInfoCircle = faInfoCircle;
+  faCog = faCog;
 
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
@@ -50,6 +55,14 @@ export class AlbumViewComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onSettings() {
+    this.albumViewService.settings$.next(true);
+   }
+ 
+   onInfo() {
+     this.store.dispatch(new OpenAlbumInfo(this.album.id));
+   }
 
   showImage(img: Image) {
     this.openImgModal(img);

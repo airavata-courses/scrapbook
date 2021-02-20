@@ -8,15 +8,12 @@ import {
   Logout,
 } from '../actions/user.actions';
 import { User } from '../models/user.model';
-import { StateReset } from 'ngxs-reset-plugin';
 
-import { UIState } from './ui.state';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { AlbumState } from './album.state';
 
 export class UserStateModel {
   userData: any;

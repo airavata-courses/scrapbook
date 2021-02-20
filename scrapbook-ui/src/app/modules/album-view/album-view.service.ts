@@ -15,4 +15,7 @@ export class AlbumViewService {
   constructor(public router: Router, public store: Store) {
 
   }
+
+  
+ 
 }

@@ -67,3 +67,8 @@ export class RemoveUploadPanel {
   static readonly type = '[REMOVE] Upload Panel';
   constructor() {}
 }
+
+export class FetchImagesOfAlbum {
+  static readonly type = '[FETCH] Images of Album';
+  constructor(public googleDriveId: string) {}
+}
