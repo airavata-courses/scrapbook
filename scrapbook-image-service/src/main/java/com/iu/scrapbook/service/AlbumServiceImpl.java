@@ -1,27 +1,32 @@
 package com.iu.scrapbook.service;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Update.update;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
-import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.exception.GoogleDriveException;
+import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * This service is responsible for communicating for google drive and MongoDB
@@ -36,12 +41,18 @@ public class AlbumServiceImpl implements AlbumService{
     private AlbumRepository albumRepository;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Value("${scrapbook.googledrive.service.album.baseurl}")
+    @Autowired
+    private MongoOperations mongoOperations;
+
+    @Value("${scrapbook.googledrive.service.baseurl}")
     private String baseUrl;
 
     @Override
@@ -57,6 +68,22 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public Album updateAlbum(Album album, String googleDriveId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
+        Update update = new Update().set("name", album.getName());
+        update.set("description",album.getDescription());
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        mongoOperations.updateFirst(query, update, Album.class);
+
+        Album a = albumRepository.findByGoogleDriveId(googleDriveId);
+
+        ResponseEntity<Album> responseEntity = googleDriveServiceRestTemplate.put(baseUrl+"/album",a,Album.class);
+        return responseEntity.getBody();
+    }
+
+    @Override
     public Album createAlbum(CreateAlbumRequest request, String userId) throws GoogleDriveException {
         List<Album> albums = albumRepository.findByNameAndCreatedBy(request.getName(),userId);
         String albumName = null;
@@ -68,7 +95,7 @@ public class AlbumServiceImpl implements AlbumService{
                 .size(0).description(request.getDescription()).createdBy(userId).modifiedBy(userId).build();
 
         //adding the query params to the URL
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl+"/album")
                 .queryParam("userid", userId);
         ResponseEntity<Album> response = googleDriveServiceRestTemplate.post(uriBuilder.toUriString(),album,Album.class);
 
@@ -103,9 +130,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
-    public void deleteByGoogleDriveId(String googleDriveId) {
+    public Long deleteByGoogleDriveId(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Album.class);
+
+       return imageService.deleteAlbumImages(googleDriveId,userId);
     }
 
     @Override

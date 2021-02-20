@@ -2,15 +2,24 @@ package com.iu.scrapbook.service;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
+import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
+import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.rmi.NoSuchObjectException;
+import java.time.Instant;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
@@ -40,8 +49,11 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private MongoTemplate mongoTemplate;
 
-//    @Autowired
-//    private MongoOperations mongoOperations;
+    @Autowired
+    private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
+
+    @Value("${scrapbook.googledrive.service.baseurl}")
+    private String baseUrl;
 
     @Override
     public Image create(Image image) {
@@ -104,6 +116,38 @@ public class ImageServiceImpl implements ImageService{
     public void delete(String googleDriveId, String userId) {
         mongoTemplate.updateFirst(query(where("googleDriveId").is(googleDriveId)),
                 update("active", false), Image.class);
+        // TODO: Jyoti Call google drive API to delete from there too
+    }
+
+    @Override
+    public Long deleteAlbumImages(String albumGoogleId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("album.googleDriveId").is(albumGoogleId));
+        query.addCriteria(new Criteria("active").is(true));
+        Update update = new Update().set("active", false);
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        UpdateResult result = mongoTemplate.updateMulti(query,update, Image.class);
+
+        log.info(" Deleted image count "+result.getModifiedCount());
+
+        // TODO: Jyoti Call google drive API to delete from there too
+        return result.getModifiedCount();
+    }
+
+    @Override
+    public Image updateImage(ImageRequest request, String googleDriveId, String userId) {
+
+        Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
+        Update update = new Update().set("name", request.getName());
+        update.set("modifiedBy",userId);
+        update.set("modifiedDate", Instant.now());
+        mongoTemplate.updateFirst(query, update, Image.class);
+
+        Image a = imageRepository.findByGoogleDriveId(googleDriveId);
+
+        ResponseEntity<Image> responseEntity = googleDriveServiceRestTemplate.put(baseUrl+"/image",a,Image.class);
+        return responseEntity.getBody();
     }
 
 }
