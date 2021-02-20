@@ -119,12 +119,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.files = [...this.files.slice(0, i), ...this.files.slice(i + 1, this.files.length)];
   }
 
-  async uploadFile(fileInput: any) {
-
+  uploadFile() {
     if (this.files.length < 1) {
       return;
     }
-    console.log('HERE', this.selectedAlbum)
     this.store.dispatch(new Upload(this.files, this.selectedAlbum));
 
   }
