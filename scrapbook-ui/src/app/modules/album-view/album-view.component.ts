@@ -43,10 +43,6 @@ export class AlbumViewComponent implements OnInit {
       }
     });
 
-    this.albumViewService.settings$.subscribe(value => {
-      if (value) { this.store.dispatch(new OpenSettings()); }
-    });
-
     this.settings$.subscribe((status) => {
       if (status) { this.openSettingsModal(); }
       else { this.closeSettingsModal(); }
@@ -57,8 +53,9 @@ export class AlbumViewComponent implements OnInit {
   }
 
   onSettings() {
-    this.albumViewService.settings$.next(true);
-   }
+    console.log('onsettings')
+    this.store.dispatch(new OpenSettings());
+  }
  
    onInfo() {
      this.store.dispatch(new OpenAlbumInfo(this.album));
@@ -74,7 +71,7 @@ export class AlbumViewComponent implements OnInit {
   }
 
   openSettingsModal() {
-    
+    if (this.dialog.getDialogById('AlbumSettingsModal')) return;
     const config = new MatDialogConfig();
     config.disableClose = true;
     config.autoFocus = false;
@@ -86,12 +83,16 @@ export class AlbumViewComponent implements OnInit {
     const albumSettingsDialog = this.dialog.open(SettingsComponent, config);
 
     albumSettingsDialog.componentInstance.close.subscribe(_ => {
-      this.closeSettingsModal();
+      this.store.dispatch(new CloseSettings());
     });
 
     albumSettingsDialog.componentInstance.update.subscribe(data => {
       console.log(data);
     });
+
+    albumSettingsDialog.afterClosed().subscribe(_ => {
+      this.store.dispatch(new CloseSettings());
+    })
   }
 
   closeSettingsModal() {
