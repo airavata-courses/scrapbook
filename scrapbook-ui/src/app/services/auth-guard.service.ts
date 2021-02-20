@@ -11,7 +11,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate() {
 
-    if (localStorage.getItem('scrapbook-token')) {
+    if (localStorage.getItem('scrapbook-userid')) {
       return true;
     }
     this.router.navigate(['/']);

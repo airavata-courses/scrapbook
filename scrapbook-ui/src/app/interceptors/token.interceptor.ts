@@ -28,7 +28,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('scrapbook-token')}`,
         'X-Session': `${localStorage.getItem('scrapbook-userid')}`
       }
     });

@@ -21,6 +21,7 @@ export class AuthService {
   initGoogleLogin() {
     this.googleAuthService.authState.subscribe(
       (user) => {
+        console.log('here?')
         const {name, photoUrl, idToken, email } = user;
         this.store.dispatch(new OpenLoading());
         this.logUserIn({name, photo: photoUrl, token: idToken, email}).toPromise().then( (user: any) => {
@@ -42,7 +43,6 @@ export class AuthService {
 
   lougoutFromGoogle() {
     this.googleAuthService.signOut();
-    localStorage.removeItem('scrapbook-token');
     this.store.dispatch(new Logout()).subscribe(_ => {
       this.router.navigate(['/']);
     });

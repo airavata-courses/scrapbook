@@ -62,8 +62,10 @@ export class UserState {
       token: user.token,
       _id: user._id,
     };
-    localStorage.setItem('scrapbook-token', loggedInUser.token);
     localStorage.setItem('scrapbook-userid', loggedInUser._id);
+    localStorage.setItem('scrapbook-name', loggedInUser.name);
+    localStorage.setItem('scrapbook-email', loggedInUser.email);
+    localStorage.setItem('scrapbook-photo', loggedInUser.photo);
 
     setState({
       ...getState(),
@@ -74,7 +76,6 @@ export class UserState {
 
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
-    localStorage.setItem('scrapbook-token', '');
     localStorage.setItem('scrapbook-userid', '');
     // dispatch(new StateReset(UIState));
     // // dispatch(new StateReset(AlbumState));
