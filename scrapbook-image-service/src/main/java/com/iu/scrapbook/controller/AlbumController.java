@@ -2,6 +2,7 @@ package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.CollaboratorRequest;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
@@ -124,4 +125,21 @@ public class AlbumController {
         Long count = albumService.deleteByGoogleDriveId(googleDriveId,userId);
         return ResponseEntity.ok(count);
     }
+
+    @Operation(summary = "Add collaborators to album for given googleDriveId", description = "This API is responsible for " +
+            "adding collaborators to album for given googleDriveId.")
+    @PutMapping(value = "/{googledriveid}/collaborator")
+    public ResponseEntity<Album> addCollaborators(@PathVariable("googledriveid") String googleDriveId, @RequestBody CollaboratorRequest request, @RequestParam("userid") String userId){
+        Album album = albumService.addCollaborators(googleDriveId,request.getIds(),userId);
+        return ResponseEntity.ok(album);
+    }
+
+    @Operation(summary = "Add collaborators to album for given googleDriveId", description = "This API is responsible for " +
+            "adding collaborators to album for given googleDriveId.")
+    @PutMapping(value = "/{googledriveid}/collaborator/{id}")
+    public ResponseEntity<Album> addCollaborators(@PathVariable("googledriveid") String googleDriveId, @PathVariable("id") String collaboratorId, @RequestParam("userid") String userId){
+        Album album = albumService.addCollaborator(googleDriveId,collaboratorId,userId);
+        return ResponseEntity.ok(album);
+    }
+
 }

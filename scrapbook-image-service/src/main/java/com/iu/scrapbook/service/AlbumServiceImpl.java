@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -148,6 +149,37 @@ public class AlbumServiceImpl implements AlbumService{
         mongoTemplate.updateFirst(query(where("googleDriveId").is(album.getGoogleDriveId())),
                 update("images", images), Album.class);
         return album;
+    }
+
+    @Override
+    public Album addCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId) {
+       Album album = albumRepository.findByGoogleDriveId(googleDriveId);
+        Set<String> collaborators = album.getCollaborators();
+        collaborators.addAll(collaboratorIds);
+
+        addCollaborator(googleDriveId, userId, album, collaborators);
+        return album;
+    }
+
+    @Override
+    public Album addCollaborator(String googleDriveId, String collaboratorId, String userId) {
+
+        Album album = albumRepository.findByGoogleDriveId(googleDriveId);
+        Set<String> collaborators = album.getCollaborators();
+        collaborators.add(collaboratorId);
+        addCollaborator(googleDriveId, userId, album, collaborators);
+        return album;
+    }
+
+    private void addCollaborator(String googleDriveId, String userId, Album album, Set<String> collaborators) {
+        Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
+        Update update = new Update();
+        update.set("modifiedBy", userId);
+        update.set("modifiedDate", Instant.now());
+        update.set("collaborators", collaborators);
+        mongoOperations.updateFirst(query, update, Album.class);
+
+         album = albumRepository.findByGoogleDriveId(googleDriveId);
     }
 
 
