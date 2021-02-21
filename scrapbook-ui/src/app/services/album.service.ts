@@ -36,8 +36,8 @@ export class AlbumService {
     return this.http.get(`${GATEWAY_URL}/image/${id}`, {responseType: 'blob'});
   }
 
-  addCollaborator(user: string) {
-
+  addCollaborator(user: string, owner: string, googleDriveId: string) {
+    return this.http.put(`${GATEWAY_URL}/album/collab/add`, {collabid: user, googleDriveId: googleDriveId, owner: owner})
   }
 
   removeCollaborator(user: string) {

@@ -25,18 +25,16 @@
     </div>
 
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-      <div class="h-100 w-100 d-flex justify-content-end align-items-center">
-        <!-- <div>
-          <img src="https://picsum.photos/id/121/200/300"
+      <div class="h-100 w-100 d-flex justify-content-between align-items-center">
+        <div *ngIf="album.collaborators.length > 0; else spacer">
+          <img *ngFor="let user of getMinCollaborators()" [src]="user.photo" #matToolTip [matTooltip]="user.name"
             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
-          <img src="https://picsum.photos/id/500/200/300"
-            style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
-          <img src="https://picsum.photos/id/600/200/300"
-            style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
-          <img src="https://picsum.photos/id/700/200/300"
-            style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #ececec" />
-          <span class="text-muted px-2">+ 3</span>
-        </div> -->
+          
+          <span class="text-muted px-2" *ngIf="album.collaborators.length > 2"> + {{album.collaborators.length - 2}}</span>
+        </div>
+        <ng-template #spacer>
+          <div></div>
+        </ng-template>
         <div>
           <!-- <button mat-icon-button class="mr-3" [matMenuTriggerFor]="accessReq" aria-label="Request Access" >
             <mat-icon>lock</mat-icon>

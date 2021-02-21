@@ -332,12 +332,20 @@ export class AlbumState {
   }
 
   @Action(AddAlbumCollaborator)
-  addCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: AddAlbumCollaborator) {
+  addCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {collabUser, owner}: AddAlbumCollaborator) {
     const state = getState();
+    return this.albumService.addCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
+      tap((res) => {
+        console.log(res)
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
   }
 
   @Action(RemoveAlbumCollaborator)
-  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: AddAlbumCollaborator) {
+  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: RemoveAlbumCollaborator) {
     const state = getState();
   }
 }

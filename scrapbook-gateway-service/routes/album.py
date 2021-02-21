@@ -42,6 +42,7 @@ def getAlbumByID(googledriveid):
         album = response.json()
         album['createdBy'] = user_service.getUser(album['createdBy'])
         album['modifiedBy'] = user_service.getUser(album['modifiedBy'])
+        album['collaborators'] = user_service.aggregateCollaborator(album)
 
         return jsonify(album), response.status_code
 
@@ -64,6 +65,9 @@ def getAlbumsOfUser():
                                 data=request.data)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
+        for i in range(len(aggregatedResponse)):
+            aggregatedResponse[i]['collaborators'] = user_service.aggregateCollaborator(aggregatedResponse[i])
+
         return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
@@ -104,6 +108,25 @@ def getAllAlbums():
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
         return aggregatedResponse, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/collab/add', methods=["PUT"])
+@auth.check_user_session
+def addCollaborators():
+    try:
+        collabid = request.json['collabid']
+        gid = request.json['googleDriveId']
+        owner = request.json['owner']
+
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}/collaborator/{collabid}?userid={owner}')
+        response.raise_for_status()
+        aggregatedData = response.json()
+        aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
+
+        return aggregatedData, response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code

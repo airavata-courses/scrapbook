@@ -21,3 +21,10 @@ def aggregateUser(response):
         data['modifiedBy'] = getUser(data['modifiedBy'])
         aggregatedResponse.append(data)
     return aggregatedResponse
+
+def aggregateCollaborator(response):
+    aggregatedResponse = []
+    for data in response["collaborators"]:
+        aggregatedResponse.append( getUser(data))
+
+    return aggregatedResponse
