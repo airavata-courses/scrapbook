@@ -9,6 +9,7 @@ import { startWith, map } from 'rxjs/operators';
 import { SearchUserBySubstring, RemoveSearchedUserBySubString } from 'src/app/actions/user.actions';
 import { Album } from 'src/app/models/album.model';
 import { AlbumState } from 'src/app/stores/album.state';
+import { AddAlbumCollaborator } from 'src/app/actions/album.actions';
 
 @Component({
   selector: 'app-collab',
@@ -44,8 +45,8 @@ export class CollabComponent implements OnInit {
     this.close.emit();
   }
 
-  onUserSelect(e) {
-    console.log(e)
+  onUserSelect(e: User) {
+    this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))
   }
 
   onInputChange(e: string) {

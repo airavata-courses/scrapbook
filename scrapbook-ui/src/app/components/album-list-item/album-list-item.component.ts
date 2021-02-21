@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { formatBytes } from 'src/app/static/util';
 import { Store } from '@ngxs/store';
 import { DownloadAlbum } from 'src/app/actions/album.actions';
+import { User } from 'src/app/models/user.model';
 
 
 @Component({
@@ -39,6 +40,20 @@ export class AlbumListItemComponent implements OnInit {
 
   downloadAlbum() {
     this.store.dispatch(new DownloadAlbum([this.album]))
+  }
+
+  getMinCollaborators() {
+    const ac:Array<User> = this.album.collaborators;
+    if(this.album.collaborators.length >= 3) {
+      return [ac[0], ac[1], ac[2]]
+    } else if(this.album.collaborators.length === 2) {
+      return [ac[0], ac[1]]
+    } else if(this.album.collaborators.length === 1) {
+      return [ac[0]]
+    } else {
+      return []
+    }
+
   }
 
 }

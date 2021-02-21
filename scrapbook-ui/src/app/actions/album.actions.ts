@@ -109,7 +109,7 @@ export class RemoveAllSelectedImages {
 
 export class AddAlbumCollaborator {
   static readonly type = '[ADD] Collaborator';
-  constructor(public user: User) {}
+  constructor(public collabUser: User, public owner: User) {}
 }
 
 export class RemoveAlbumCollaborator {
