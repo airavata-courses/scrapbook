@@ -6,18 +6,18 @@ import { Observable } from 'rxjs';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './../../components/profile/profile.component';
-import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel } from '../../actions/ui.actions';
+import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel, CloseCollaborators } from '../../actions/ui.actions';
 import { InfoComponent } from '../../components/info/info.component';
 import { CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from './../../actions/album.actions';
 import { AlbumState } from './../../stores/album.state';
 import { registerIcons } from './../../static/registerIcons';
 import { UploadComponent } from './../../components/upload/upload.component';
 import { FiltersComponent } from './../../components/filters/filters.component';
-import { StateClear } from 'ngxs-reset-plugin';
 import { UIState } from 'src/app/stores/ui.state';
 import { Album } from 'src/app/models/album.model';
 import { UserState } from 'src/app/stores/user.state';
 import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending-panel/uploads-pending-panel.component';
+import { CollabComponent } from 'src/app/components/collab/collab.component';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +35,7 @@ export class RootComponent {
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
   @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
+  @Select(UIState.getCollabModalState) collab$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -83,14 +84,44 @@ export class RootComponent {
         this.closePendingUploadingPanel();
       }
     });
+
+    this.collab$.subscribe((status) => {
+      if (status) {
+        this.openCollabModal()
+      } else {
+        this.closeCollabModal();
+      }
+    })
   }
 
   ngOnInit(): void {}
+  
+  openCollabModal() {
+    const config = new MatDialogConfig();
+    config.disableClose = false;
+    config.autoFocus = true;
+    config.id = 'collabModal';
+    config.width = '650px';
+    config.autoFocus = false;
 
+    const collabModal = this.dialog.open(CollabComponent, config);
 
+    collabModal.componentInstance.close.subscribe(_ => {
+      this.closeCollabModal();
+    })
+  
+    collabModal.afterClosed().subscribe((_) => {
+      this.store.dispatch(new CloseCollaborators());
+    });
+  }
 
-  closeSettingsModal() {
+  closeCollabModal() {
+    const collabModal = this.dialog.getDialogById('collabModal');
 
+    if (collabModal) {
+      this.store.dispatch(new CloseCollaborators());
+      collabModal.close();
+    }
   }
 
   openPendingUploadPanel() {

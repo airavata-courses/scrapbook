@@ -103,3 +103,12 @@ export class CloseSettings {
   constructor() {}
 }
 
+export class OpenCollaborators {
+  static readonly type = '[OPEN] Collaborators';
+  constructor() {}
+}
+
+export class CloseCollaborators {
+  static readonly type = '[CLOSE] Collaborators';
+  constructor() {}
+}

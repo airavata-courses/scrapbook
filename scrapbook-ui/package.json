@@ -32,6 +32,7 @@
     "@types/gapi.auth2": "0.0.52",
     "angularx-social-login": "^3.5.4",
     "bootstrap": "^4.6.0",
+    "file-saver": "^2.0.5",
     "milligram-scss": "^1.4.1",
     "moment": "^2.29.1",
     "ngx-dropzone": "^3.0.0",

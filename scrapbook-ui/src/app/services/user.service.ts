@@ -12,4 +12,8 @@ export class UserService {
   fetchUserData(email: string) {
     return this.http.get(`${GATEWAY_URL}/users/login`);
   }
+
+  fetchUsersBySubstring(sub: string) {
+    return this.http.get(`${GATEWAY_URL}/users?search=${sub}`);
+  }
 }

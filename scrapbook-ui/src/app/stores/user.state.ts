@@ -6,6 +6,8 @@ import {
   GoogleLogin,
   PutUserInSession,
   Logout,
+  SearchUserBySubstring,
+  RemoveSearchedUserBySubString,
 } from '../actions/user.actions';
 import { User } from '../models/user.model';
 
@@ -21,13 +23,15 @@ import { UIState } from './ui.state';
 export class UserStateModel {
   userData: any;
   loggedIn: boolean;
+  searchedUsers: Array<User>;
 }
 
 @State<UserStateModel>({
   name: 'userState',
   defaults: {
     userData: {},
-    loggedIn: false
+    loggedIn: false,
+    searchedUsers: []
   },
 })
 @Injectable()
@@ -49,6 +53,11 @@ export class UserState {
   @Selector()
   static getLoggedInState(state: UserStateModel) {
     return state.loggedIn;
+  }
+
+  @Selector()
+  static getSearchedUser(state: UserStateModel) {
+    return state.searchedUsers;
   }
 
   @Action(GoogleLogin)
@@ -118,5 +127,30 @@ export class UserState {
         return of('');
       })
     );
+  }
+
+  @Action(SearchUserBySubstring)
+  searchUserBySub({ setState, getState, dispatch }: StateContext<UserStateModel>, {sub}: SearchUserBySubstring) {
+    const state = getState();
+    return this.userService.fetchUsersBySubstring(sub).pipe(
+      tap((res: User[]) => {
+        setState({
+          ...state,
+          searchedUsers: res
+        })
+      }),
+      catchError((err) => {
+        return of('no users found');
+      })
+    )
+  }
+
+  @Action(RemoveSearchedUserBySubString)
+  removeSearchedUserBySubString({ setState, getState, dispatch }: StateContext<UserStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      searchedUsers: []
+    })
   }
 }

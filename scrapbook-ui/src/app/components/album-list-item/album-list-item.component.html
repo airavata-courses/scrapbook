@@ -48,9 +48,10 @@
       </div>
       <mat-menu #options>
         <menu mat-menu-item (click)="onShowAlbumInfo()">Info</menu>
+        <menu mat-menu-item (click)="goToAlbum()">Open</menu>
         <menu mat-menu-item>Star</menu>
+        <mat-divider></mat-divider>
         <menu mat-menu-item (click)="downloadAlbum()">Download</menu>
-        <menu mat-menu-item>Open</menu>
       </mat-menu>
       <mat-menu #accessReq>
         <menu mat-menu-item (click)="onShowAlbumInfo()">Request Access</menu>

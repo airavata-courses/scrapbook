@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators } from '../actions/ui.actions';
 import { RemoveImage } from '../actions/album.actions';
 import { PendingUploadsState } from '../models/image.model';
 
@@ -17,6 +17,7 @@ export class UIStateModel {
   imageModalOpen: boolean;
   uploading: boolean;
   albumSettingsOpen: boolean;
+  collabOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -33,7 +34,8 @@ export class UIStateModel {
     navigationStack: [],
     imageModalOpen: false,
     uploading: false,
-    albumSettingsOpen: false
+    albumSettingsOpen: false,
+    collabOpen: false
   }
 })
 @Injectable()
@@ -78,6 +80,11 @@ export class UIState {
   @Selector()
   static getSettingsState(state: UIStateModel) {
     return state.albumSettingsOpen;
+  }
+
+  @Selector()
+  static getCollabModalState(state: UIStateModel) {
+    return state.collabOpen;
   }
 
   @Action(OpenProfile)
@@ -209,6 +216,22 @@ export class UIState {
     setState({
       ...getState(),
       albumSettingsOpen: false
+    });
+  }
+
+  @Action(OpenCollaborators)
+  openCollab({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      collabOpen: true
+    });
+  }
+
+  @Action(CloseCollaborators)
+  closeCollab({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      collabOpen: false
     });
   }
 }
