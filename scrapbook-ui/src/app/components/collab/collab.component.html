@@ -19,7 +19,7 @@
              [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let user of searchedUsers$ | async" [value]="user.name" (click)="user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id) ? '' : onUserSelect(user)" 
-        [ngClass]="{'bg-light': user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id)}" 
+        [ngClass]="{'bg-light': user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id), 'not-allowed': user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id)}" 
         [disabled]="">
           <div class="d-flex justify-content-between align-items-center text-dark">
             <div class="h6 m-0 d-flex align-content-center">
