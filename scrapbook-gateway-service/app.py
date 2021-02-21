@@ -7,6 +7,7 @@ import requests
 from routes.auth import authenticate_user_api
 from routes.album import album_api
 from routes.image import image_api
+from routes.user import user_api
 
 # Defines the Flask app
 app = Flask(__name__)
@@ -21,6 +22,9 @@ app.register_blueprint(album_api)
 
 # download/uploads an image using Gdrive service
 app.register_blueprint(image_api)
+
+app.register_blueprint(user_api)
+
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8081, debug=True)

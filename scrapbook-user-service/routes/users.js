@@ -77,4 +77,25 @@ router.get('/', (req, res) => {
   })
 });
 
+/** 
+ * GET users by prefix
+ * @param req - body contains userid
+ * 
+ * Find all users from the database.
+ */
+router.get('/search/:sub', (req, res) => {
+  const substring = req.params.sub
+  console.log(substring)
+  User.find(
+    { "name": { "$regex": substring, "$options": "i" } },
+    function(err, docs) { 
+      if (err) {
+        res.status(404).send(err)
+      } else {
+        res.status(200).send(docs)
+      }
+    } 
+  );
+});
+
 module.exports = router;
