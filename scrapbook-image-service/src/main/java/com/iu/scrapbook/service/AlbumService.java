@@ -6,6 +6,7 @@ import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jbhushan
@@ -29,5 +30,13 @@ public interface AlbumService {
     Long deleteByGoogleDriveId(String id,  String userId);
 
     Album addImageToAlbum(Album album,Image image);
+
+    Album addCollaborators(String googleDriveId, Set<String> collaboratorIds, String userid);
+
+    Album addCollaborator(String googleDriveId, String collaboratorId, String userId);
+
+    Album removeCollaborator(String googleDriveId, String collaboratorId, String userId);
+
+    Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
 
 }

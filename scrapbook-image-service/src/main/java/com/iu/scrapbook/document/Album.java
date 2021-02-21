@@ -1,13 +1,12 @@
 package com.iu.scrapbook.document;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author jbhushan
@@ -28,12 +27,10 @@ public class Album {
     private String description;
     private String name;
     private long size;
-    @CreatedDate
     private Instant createdDate;
     private Instant modifiedDate;
     private String createdBy;
-    @LastModifiedDate
     private String modifiedBy;
     private boolean active;
-    //private List<Image> images;
+    private Set<String> collaborators = new HashSet<String>();
 }
