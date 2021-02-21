@@ -39,6 +39,7 @@ Make sure you have these dependencies installed in your machine before installin
 - MongoDB
 - Redis
 - Angular CLI
+- Maven
 
 ### Repository 
 ```
@@ -141,6 +142,7 @@ $ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
 ## Project Milestones
 
 - [Project Milestone 1](https://github.com/airavata-courses/scrapbook/wiki/Project-1)
+- [Project Milestone 2](https://github.com/airavata-courses/scrapbook/wiki/Project-2)
 
 ## Team 
 
