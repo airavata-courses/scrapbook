@@ -10,7 +10,6 @@
 
   <div class="card-body px-0">
     <label>Search Users</label>
-
     <form class="example-form">
       <input class="form-control bg-light w-100 border-0" placeholder="Type name to search and click to add..."
              [formControl]="control"
@@ -19,14 +18,16 @@
              (input)="onInputChange(textInput.value)"
              [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let user of searchedUsers$ | async" [value]="user.name" (click)="onUserSelect(user)" [ngClass]="{'bg-secondary': user._id === currentAlbum.createdBy._id}" [disabled]="currentAlbum.collaborators.includes(user._id)">
+        <mat-option *ngFor="let user of searchedUsers$ | async" [value]="user.name" (click)="user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id) ? '' : onUserSelect(user)" 
+        [ngClass]="{'bg-light': user._id === currentAlbum.createdBy._id || computedCollaborators.includes(user._id)}" 
+        [disabled]="">
           <div class="d-flex justify-content-between align-items-center text-dark">
             <div class="h6 m-0 d-flex align-content-center">
               <img [src]="user.photo" style="height: 25px; width: 25px; border-radius: 50%;">
               <span class="pl-2">{{user.name}}</span>
             </div>
             <div class="font-italic">
-              {{ user._id === currentAlbum.createdBy._id ? 'Owner' : currentAlbum.collaborators.includes(user) ? 'Collaborator' : ''}}
+              {{ user._id === currentAlbum.createdBy._id ? 'Owner' : computedCollaborators.includes(user._id) ? 'Collaborator' : ''}}
             </div>
           </div>
         </mat-option>

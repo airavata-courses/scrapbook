@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -357,6 +357,26 @@ export class AlbumState {
         setState({
           ...state,
           albumInView:  {...state.albumInView, collaborators: res.collaborators}
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(EditAlbumSettings)
+  editAlbumSettings({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, desc}: EditAlbumSettings) {
+    dispatch(new OpenLoading())
+    const state = getState();
+    const uid = state.albumInView.createdBy._id;
+    const gid = state.albumInView.googleDriveId;
+    return this.albumService.editAlbumSettings(name, desc, uid, gid).pipe(
+      tap((res: Album) => {
+        dispatch(new CloseLoading())
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, name: res.name, description: res.description}
         })
       }),
       catchError((err) => {

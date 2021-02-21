@@ -26,6 +26,7 @@ export class CollabComponent implements OnInit {
   userString = '';
   currentAlbum: Album;
   faSortDown = faSortDown;
+  computedCollaborators = [];
 
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   
@@ -37,11 +38,19 @@ export class CollabComponent implements OnInit {
     this.albuminView$.subscribe(album => {
       this.userString = '';
       this.currentAlbum = album;
+      this.computeCollabIDs();
     })
     this.currentAlbum = this.store.selectSnapshot(AlbumState.getAlbumInView);
+    this.computeCollabIDs();
   }
 
   ngOnInit(): void { 
+  }
+
+  computeCollabIDs() {
+    this.currentAlbum.collaborators.forEach(i => {
+      this.computedCollaborators.push(i._id)
+    })
   }
 
   onRemoveCollaborator(e: User) {

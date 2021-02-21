@@ -3,7 +3,7 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -129,7 +129,7 @@ export class AlbumViewComponent implements OnInit {
     });
 
     albumSettingsDialog.componentInstance.update.subscribe(data => {
-      console.log(data);
+      this.store.dispatch(new EditAlbumSettings(data.name, data.description))
     });
 
     albumSettingsDialog.afterClosed().subscribe(_ => {
