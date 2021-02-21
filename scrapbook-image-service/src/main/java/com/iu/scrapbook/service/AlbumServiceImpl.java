@@ -157,8 +157,7 @@ public class AlbumServiceImpl implements AlbumService{
         Set<String> collaborators = album.getCollaborators();
         collaborators.addAll(collaboratorIds);
 
-        addCollaborator(googleDriveId, userId, album, collaborators);
-        return album;
+        return updateCollaborator(googleDriveId, userId, album, collaborators);
     }
 
     @Override
@@ -167,19 +166,34 @@ public class AlbumServiceImpl implements AlbumService{
         Album album = albumRepository.findByGoogleDriveId(googleDriveId);
         Set<String> collaborators = album.getCollaborators();
         collaborators.add(collaboratorId);
-        addCollaborator(googleDriveId, userId, album, collaborators);
-        return album;
+        return updateCollaborator(googleDriveId, userId, album, collaborators);
     }
 
-    private void addCollaborator(String googleDriveId, String userId, Album album, Set<String> collaborators) {
+    @Override
+    public Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId) {
+        Album album = albumRepository.findByGoogleDriveId(googleDriveId);
+        Set<String> collaborators = album.getCollaborators();
+        collaborators.removeAll(collaboratorIds);
+
+        return updateCollaborator(googleDriveId, userId, album, collaborators);
+    }
+
+    @Override
+    public Album removeCollaborator(String googleDriveId, String collaboratorId, String userId) {
+        Album album = albumRepository.findByGoogleDriveId(googleDriveId);
+        Set<String> collaborators = album.getCollaborators();
+        collaborators.remove(collaboratorId);
+        return updateCollaborator(googleDriveId, userId, album, collaborators);
+    }
+
+    private Album updateCollaborator(String googleDriveId, String userId, Album album, Set<String> collaborators) {
         Query query = new Query().addCriteria(new Criteria("googleDriveId").is(googleDriveId));
         Update update = new Update();
         update.set("modifiedBy", userId);
         update.set("modifiedDate", Instant.now());
         update.set("collaborators", collaborators);
         mongoOperations.updateFirst(query, update, Album.class);
-
-         album = albumRepository.findByGoogleDriveId(googleDriveId);
+         return albumRepository.findByGoogleDriveId(googleDriveId);
     }
 
 

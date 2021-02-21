@@ -134,11 +134,29 @@ public class AlbumController {
         return ResponseEntity.ok(album);
     }
 
-    @Operation(summary = "Add collaborators to album for given googleDriveId", description = "This API is responsible for " +
-            "adding collaborators to album for given googleDriveId.")
-    @PutMapping(value = "/{googledriveid}/collaborator/{id}")
-    public ResponseEntity<Album> addCollaborators(@PathVariable("googledriveid") String googleDriveId, @PathVariable("id") String collaboratorId, @RequestParam("userid") String userId){
+    @Operation(summary = "Add a collaborator to album for given googleDriveId", description = "This API is responsible for " +
+            "adding a collaborator to album for given googleDriveId.")
+    @PutMapping(value = "/{googledriveid}/collaborator/{collaboratorid}")
+    public ResponseEntity<Album> addCollaborator(@PathVariable("googledriveid") String googleDriveId,
+                                                 @PathVariable("collaboratorid") String collaboratorId, @RequestParam("userid") String userId){
         Album album = albumService.addCollaborator(googleDriveId,collaboratorId,userId);
+        return ResponseEntity.ok(album);
+    }
+
+    @Operation(summary = "remove a collaborator from album for given googleDriveId", description = "This API is responsible for " +
+            "removing a collaborator from album for given googleDriveId.")
+    @DeleteMapping(value = "/{googledriveid}/collaborator/{collaboratorid}")
+    public ResponseEntity<Album> removeCollaborator(@PathVariable("googledriveid") String googleDriveId,
+                                                    @PathVariable("collaboratorid") String collaboratorId, @RequestParam("userid") String userId){
+        Album album = albumService.removeCollaborator(googleDriveId,collaboratorId,userId);
+        return ResponseEntity.ok(album);
+    }
+
+    @Operation(summary = "remove collaborators from album for given googleDriveId", description = "This API is responsible for " +
+            "removing a collaborator from album for given googleDriveId.")
+    @DeleteMapping(value = "/{googledriveid}/collaborator")
+    public ResponseEntity<Album> removeCollaborators(@PathVariable("googledriveid") String googleDriveId, @RequestBody CollaboratorRequest request, @RequestParam("userid") String userId){
+        Album album = albumService.removeCollaborators(googleDriveId,request.getIds(),userId);
         return ResponseEntity.ok(album);
     }
 

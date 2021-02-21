@@ -33,6 +33,10 @@ public interface AlbumService {
 
     Album addCollaborators(String googleDriveId, Set<String> collaboratorIds, String userid);
 
-    Album addCollaborator(String googleDriveId, String collaboratorId, String userid);
+    Album addCollaborator(String googleDriveId, String collaboratorId, String userId);
+
+    Album removeCollaborator(String googleDriveId, String collaboratorId, String userId);
+
+    Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
 
 }
