@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ImageService } from '../services/image.service';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { User } from '../models/user.model';
+import { RemoveSearchedUserBySubString } from '../actions/user.actions';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -336,6 +337,7 @@ export class AlbumState {
     const state = getState();
     return this.albumService.addCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
       tap((res: Album) => {
+        dispatch(new RemoveSearchedUserBySubString())
         setState({
           ...state,
           albumInView: {...state.albumInView, collaborators: res.collaborators}

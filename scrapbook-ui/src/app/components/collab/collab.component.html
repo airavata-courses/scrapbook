@@ -15,6 +15,7 @@
       <input class="form-control bg-light w-100 border-0" placeholder="Type name to search and click to add..."
              [formControl]="control"
              #textInput
+             [(ngModel)]="userString"
              (input)="onInputChange(textInput.value)"
              [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">

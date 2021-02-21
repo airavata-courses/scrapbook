@@ -10,6 +10,8 @@ import { SearchUserBySubstring, RemoveSearchedUserBySubString } from 'src/app/ac
 import { Album } from 'src/app/models/album.model';
 import { AlbumState } from 'src/app/stores/album.state';
 import { AddAlbumCollaborator, RemoveAlbumCollaborator } from 'src/app/actions/album.actions';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-collab',
@@ -33,6 +35,7 @@ export class CollabComponent implements OnInit {
 
   constructor(public store: Store) { 
     this.albuminView$.subscribe(album => {
+      this.userString = '';
       this.currentAlbum = album;
     })
     this.currentAlbum = this.store.selectSnapshot(AlbumState.getAlbumInView);
@@ -42,7 +45,19 @@ export class CollabComponent implements OnInit {
   }
 
   onRemoveCollaborator(e: User) {
-    this.store.dispatch(new RemoveAlbumCollaborator(e, this.currentAlbum.createdBy))
+    Swal.fire({
+      title: `Are you sure you want to remove ${e.name} as a collaborator?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#EB7373',
+      cancelButtonColor: '#737CEB'
+    }).then((result) => {
+      if (result.value) {
+        this.store.dispatch(new RemoveAlbumCollaborator(e, this.currentAlbum.createdBy))
+      }
+    });
   }
 
   onClose() {
@@ -50,7 +65,20 @@ export class CollabComponent implements OnInit {
   }
 
   onUserSelect(e: User) {
-    this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))
+    Swal.fire({
+      title: `Are you sure you want to add ${e.name} as a collaborator?`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, for sure!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#85C685',
+      cancelButtonColor: '#737CEB'
+    }).then((result) => {
+      if (result.value) {
+        this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))
+      }
+    });
+    
   }
 
   onInputChange(e: string) {
