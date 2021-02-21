@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { Store } from '@ngxs/store';
 
@@ -7,14 +7,15 @@ import { Store } from '@ngxs/store';
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(public router: Router, public store: Store) { }
+  constructor(public router: Router, public store: Store, private ngZone: NgZone) { }
 
   canActivate() {
 
-    if (localStorage.getItem('scrapbook-token')) {
-      return true
+    if (localStorage.getItem('scrapbook-userid')) {
+      return true;
     }
-    this.router.navigate(['/'])
-    return false
+    console.log('here')
+    this.ngZone.run(() => this.router.navigate(['/']));
+    return false;
   }
 }

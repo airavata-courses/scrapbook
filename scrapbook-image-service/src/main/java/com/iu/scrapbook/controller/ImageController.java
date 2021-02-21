@@ -1,6 +1,7 @@
 package com.iu.scrapbook.controller;
 
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +95,13 @@ public class ImageController {
     public ResponseEntity<Boolean> delete(@PathVariable("googleid") String googleId, @RequestParam("userid") String userId){
         imageService.delete(googleId, userId);
         return ResponseEntity.ok(true);
+    }
+
+    @Operation(summary = "update image name to database", description = "This API is responsible for updating album details" +
+            "into database. It stores all information related to album ")
+    @PutMapping(path = "/{googleDriveId}")
+    public ResponseEntity<Image> update(@RequestBody ImageRequest request, @PathVariable String googleDriveId, @RequestParam("userid") String userId){
+        return ResponseEntity.ok(imageService.updateImage(request,googleDriveId,userId));
     }
     
 }

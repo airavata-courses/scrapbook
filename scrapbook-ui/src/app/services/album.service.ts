@@ -1,28 +1,57 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { IMAGE_SERVICE_URL, GOOGLE_DRIVE_SERVICE_URL } from '../static/url';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GATEWAY_URL } from '../static/url';
+import { Album } from '../models/album.model';
+import * as JSZip from 'jszip';
+import { forkJoin } from 'rxjs';
+import { Image } from '../models/image.model';
+import { saveAs } from "file-saver";
+import { Store } from '@ngxs/store';
+import { CloseLoading } from '../actions/ui.actions';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlbumService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   getAlbumsOfUser(id: string) {
-    let params = new HttpParams().set('userid', id);
-    return this.http.get(`${IMAGE_SERVICE_URL}/album/`, { params: params });
+    return this.http.get(`${GATEWAY_URL}/album?userid=${id}`);
   }
 
   createAlbum(name: string, id: string, desc?: string) {
-    return this.http.post(`${IMAGE_SERVICE_URL}/album?userid=${id}`, {name: name, description: desc});
+    return this.http.post(`${GATEWAY_URL}/album?userid=${id}`, {name, description: desc});
   }
 
   getAllImagesOfAlbum(id: string) {
-    return this.http.get(`${IMAGE_SERVICE_URL}/album/${id}/image`)
+    return this.http.get(`${GATEWAY_URL}/album/${id}/image`);
+  }
+
+  getAlbumByID(id: string) {
+    return this.http.get(`${GATEWAY_URL}/album/${id}`);
   }
 
   getImage(id: String) {
-    return this.http.get(`${GOOGLE_DRIVE_SERVICE_URL}/image/${id}`, {responseType: 'blob'})
+    return this.http.get(`${GATEWAY_URL}/image/${id}`, {responseType: 'blob'});
+  }
+
+  addCollaborator(user: string, owner: string, googleDriveId: string) {
+    return this.http.put(`${GATEWAY_URL}/album/collab/add`, {collabid: user, googleDriveId: googleDriveId, owner: owner})
+  }
+
+  removeCollaborator(user: string, owner: string, googleDriveId: string) {
+    return this.http.put(`${GATEWAY_URL}/album/collab/remove`, {collabid: user, googleDriveId: googleDriveId, owner: owner})
+  }
+
+  editAlbumSettings(name: string, desc: string, user: string, gid: string) {
+    const payload = {
+      name: name,
+      description: desc,
+      userid: user,
+      gid: gid
+    }
+    return this.http.put(`${GATEWAY_URL}/album/update`, payload)
   }
 
   uploadFile(file: any, id: string , userid: string) {
@@ -30,10 +59,38 @@ export class AlbumService {
     formData.append('file', file);
     formData.append('userid', userid);
 
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
 
-    return this.http.post<any>(`${GOOGLE_DRIVE_SERVICE_URL}/image/upload/${id}`, formData, {headers: headers})
+    return this.http.post<any>(`${GATEWAY_URL}/image/upload/${id}`, formData, {headers});
+  }
+
+  downloadAlbum(a: Album[]) {
+    const requests = [];
+    const album = a[0];
+    
+    this.getAllImagesOfAlbum(album.googleDriveId).toPromise().then((images: Image[]) => {
+      const indexToImg: Record<number, Image> = {};
+      images.forEach((img, i) => {
+        indexToImg[i] = img;
+        requests.push(this.getImage(img.googleDriveId))
+      });
+      forkJoin(...requests).subscribe(res => {
+        const zip = new JSZip();
+        
+        res.forEach((f, i) => {
+          zip.file(`${indexToImg[i].name}`, new Blob([f])); 
+        });
+
+        zip
+        .generateAsync({ type: "blob" })
+        .then(blob => {
+          saveAs(blob, `${album.name}.zip`);
+          this.store.dispatch(new CloseLoading());
+        });
+      })
+    })
+    
   }
 }

@@ -6,18 +6,18 @@ import { Observable } from 'rxjs';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './../../components/profile/profile.component';
-import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel } from '../../actions/ui.actions';
+import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel, CloseCollaborators } from '../../actions/ui.actions';
 import { InfoComponent } from '../../components/info/info.component';
 import { CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from './../../actions/album.actions';
 import { AlbumState } from './../../stores/album.state';
 import { registerIcons } from './../../static/registerIcons';
 import { UploadComponent } from './../../components/upload/upload.component';
 import { FiltersComponent } from './../../components/filters/filters.component';
-import { StateClear } from 'ngxs-reset-plugin';
 import { UIState } from 'src/app/stores/ui.state';
 import { Album } from 'src/app/models/album.model';
 import { UserState } from 'src/app/stores/user.state';
 import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending-panel/uploads-pending-panel.component';
+import { CollabComponent } from 'src/app/components/collab/collab.component';
 
 @Component({
   selector: 'app-root',
@@ -27,13 +27,15 @@ import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending
 export class RootComponent {
   title = 'scrapbook';
   user: any;
-  
+
   @Select(UserState.getUserData) userData$: Observable<any>;
 
   @Select(UIState.getProfileStatus) profile$: Observable<boolean>;
   @Select(UIState.getUploadModalStatus) upload$: Observable<boolean>;
   @Select(UIState.getFiltersStatus) filters$: Observable<boolean>;
   @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
+  @Select(UIState.getSettingsState) settings$: Observable<boolean>;
+  @Select(UIState.getCollabModalState) collab$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -52,27 +54,27 @@ export class RootComponent {
     registerIcons(matIconRegistry, domSanitizer);
 
     this.userData$.subscribe((userData) => {
-      if (userData) this.user = userData;
-    })
+      if (userData) { this.user = userData; }
+    });
 
     this.profile$.subscribe((status) => {
-      if (status) this.openProfile();
-      else this.closeProfile();
+      if (status) { this.openProfile(); }
+      else { this.closeProfile(); }
     });
 
     this.info$.subscribe((status) => {
-      if (status) this.openInfoModal();
-      else this.closeInfoModal();
+      if (status) { this.openInfoModal(); }
+      else { this.closeInfoModal(); }
     });
 
     this.upload$.subscribe((status) => {
-      if (status) this.openUploadModal();
-      else this.closeUploadModal();
+      if (status) { this.openUploadModal(); }
+      else { this.closeUploadModal(); }
     });
 
     this.filters$.subscribe((status) => {
-      if (status) this.openFilters();
-      else this.closeFilters();
+      if (status) { this.openFilters(); }
+      else { this.closeFilters(); }
     });
 
     this.uploadPanel$.subscribe((status) => {
@@ -81,10 +83,46 @@ export class RootComponent {
       } else {
         this.closePendingUploadingPanel();
       }
+    });
+
+    this.collab$.subscribe((status) => {
+      if (status) {
+        this.openCollabModal()
+      } else {
+        this.closeCollabModal();
+      }
     })
   }
 
   ngOnInit(): void {}
+  
+  openCollabModal() {
+    const config = new MatDialogConfig();
+    config.disableClose = false;
+    config.autoFocus = true;
+    config.id = 'collabModal';
+    config.width = '650px';
+    config.autoFocus = false;
+
+    const collabModal = this.dialog.open(CollabComponent, config);
+
+    collabModal.componentInstance.close.subscribe(_ => {
+      this.closeCollabModal();
+    })
+  
+    collabModal.afterClosed().subscribe((_) => {
+      this.store.dispatch(new CloseCollaborators());
+    });
+  }
+
+  closeCollabModal() {
+    const collabModal = this.dialog.getDialogById('collabModal');
+
+    if (collabModal) {
+      this.store.dispatch(new CloseCollaborators());
+      collabModal.close();
+    }
+  }
 
   openPendingUploadPanel() {
     const config = new MatDialogConfig();
@@ -93,8 +131,7 @@ export class RootComponent {
     config.id = 'UploadPendingPanel';
     config.width = '500px';
     config.autoFocus = false;
-    config.hasBackdrop = false;
-    config.panelClass = 'no-padding'
+    config.panelClass = 'no-padding';
 
     const uploadPendingPanel = this.dialog.open(UploadsPendingPanelComponent, config);
 
@@ -102,7 +139,7 @@ export class RootComponent {
 
     uploadPendingPanel.componentInstance.close.subscribe(_ => {
       this.store.dispatch(new CloseUploadingPanel());
-    })
+    });
 
     uploadPendingPanel.afterClosed().subscribe((_) => {
       this.store.dispatch(new CloseUploadingPanel());
@@ -145,6 +182,10 @@ export class RootComponent {
     }
   }
 
+  openSettings() {
+
+  }
+
   openUploadModal() {
     const config = new MatDialogConfig();
     config.disableClose = false;
@@ -157,8 +198,8 @@ export class RootComponent {
     const uploadDialog = this.dialog.open(UploadComponent, config);
 
     uploadDialog.componentInstance.getAllUsersAlbums.subscribe((data: any) => {
-      this.store.dispatch(new FetchAllAlbumsOfUser(this.user._id))
-    })
+      this.store.dispatch(new FetchAllAlbumsOfUser(localStorage.getItem('scrapbook-userid')));
+    });
     uploadDialog.componentInstance.close.subscribe((data) => {
       this.closeUploadModal();
     });

@@ -92,3 +92,23 @@ export class SetPendingUploadRequests {
   static readonly type = '[SET] Pending Upload Requests';
   constructor(public idx: number) {}
 }
+
+export class OpenSettings {
+  static readonly type = '[OPEN] Album Settings';
+  constructor() {}
+}
+
+export class CloseSettings {
+  static readonly type = '[CLOSE] Album Settings';
+  constructor() {}
+}
+
+export class OpenCollaborators {
+  static readonly type = '[OPEN] Collaborators';
+  constructor() {}
+}
+
+export class CloseCollaborators {
+  static readonly type = '[CLOSE] Collaborators';
+  constructor() {}
+}

@@ -1,20 +1,17 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel } from '../actions/album.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
 import { Image, PendingUploadsState, UPLOAD_STATE, PendingUploadsStateInterface } from '../models/image.model';
-import { UserState } from './user.state';
-import { HttpErrorResponse } from '@angular/common/http';
 import { of, from, throwError, forkJoin} from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageService } from '../services/image.service';
 import { patch, updateItem } from '@ngxs/store/operators';
-
-
-
+import { User } from '../models/user.model';
+import { RemoveSearchedUserBySubString } from '../actions/user.actions';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -24,7 +21,9 @@ export class AlbumStateModel {
   albumInView: Album;
   image: any;
   imgBlob: Blob;
-  pendingUploads: Array<PendingUploadsStateInterface>
+  pendingUploads: Array<PendingUploadsStateInterface>;
+  selectedImages: Array<Image>;
+  collaborators: Array<User[]>;
 }
 
 @State<AlbumStateModel>({
@@ -37,7 +36,9 @@ export class AlbumStateModel {
     albumInView: null,
     image: null,
     imgBlob: null,
-    pendingUploads: []
+    pendingUploads: [],
+    selectedImages: [],
+    collaborators: []
   }
 })
 @Injectable()
@@ -74,24 +75,29 @@ export class AlbumState {
     return state.pendingUploads;
   }
 
+  @Selector()
+  static getSelectedImageState(state: AlbumStateModel) {
+    return state.selectedImages;
+  }
+
   @Action(OpenAlbumInfo)
-  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {albumId ,type}:OpenAlbumInfo) {
+  openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
 
     if (type) {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.albumInView.images.find(a => a.id === albumId)
-      })
+        albumInfoModalData: data
+      });
     } else {
       setState({
         ...state,
         albumInfoOpen: true,
-        albumInfoModalData: state.allAlbumsOfUser.find(a => a.id === albumId)
-      })
+        albumInfoModalData: data
+      });
     }
-    
+
   }
 
   @Action(CloseAlbumInfo)
@@ -99,7 +105,7 @@ export class AlbumState {
     setState({
       ...getState(),
       albumInfoOpen: false
-    })
+    });
   }
   @Action(FetchAllAlbumsOfUser)
   fetchAllAlbumsOfUser({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
@@ -108,48 +114,53 @@ export class AlbumState {
     return this.albumService.getAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
 
-        dispatch(new CloseLoading())
-         setState({
+        dispatch(new CloseLoading());
+        setState({
            ...state,
            allAlbumsOfUser: response
-         })
+         });
+      }),
+      catchError((err) => {
+        dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
       })
-    )
+    );
   }
 
   @Action(CreateAlbum)
   createAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, desc}: CreateAlbum) {
     const state = getState();
-    const userid = this.store.selectSnapshot(UserState.getUserData)._id;
+    const userid = localStorage.getItem('scrapbook-userid')
     return this.albumService.createAlbum(name, userid, desc).pipe(
       tap((response: Album) => {
-        // response.images = []
+        dispatch(new CloseLoading());
         setState({
           ...state,
           allAlbumsOfUser: [...state.allAlbumsOfUser, response]
-        })
+        });
       })
-    )
+    );
   }
 
   @Action(Upload)
   uploadFiles({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {files, id}: Upload) {
-    const userid = this.store.selectSnapshot(UserState.getUserData)._id;
+    const userid = localStorage.getItem('scrapbook-userid')
     patchState({
       pendingUploads: []
-    })
+    });
     dispatch(new OpenUploadingPanel());
     dispatch(new CloseUpload());
+    const albumInView = getState().albumInView;
 
-    
-    let uploads: Array<PendingUploadsState> = [];
+
+    const uploads: Array<PendingUploadsState> = [];
     files.forEach((file) => {
-      uploads.push(new PendingUploadsState(file, file.name, UPLOAD_STATE.progress))
-    })
+      uploads.push(new PendingUploadsState(file, file.name, UPLOAD_STATE.progress));
+    });
 
     patchState({
       pendingUploads: uploads
-    })
+    });
 
     const fetch$ = (obj) => {
       return this.albumService.uploadFile(obj.file, id, userid).pipe(
@@ -157,15 +168,21 @@ export class AlbumState {
           setState(
             patch({
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.done}))
-            })
-          )
+            }),
+           
+          );
+
+          setState({
+            ...getState(),
+            albumInView: {...albumInView, images: [...albumInView.images, res]}
+          })
         }),
         catchError(error => {
           setState(
             patch({
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.fail}))
             })
-          )
+          );
           console.log('err:', error.message, obj);
           return of(undefined);
         })
@@ -173,33 +190,45 @@ export class AlbumState {
     };
 
     forkJoin(uploads.map(fetch$)).subscribe(_ => {
-      // setState({
-      //   ...getState(),
-      //   w
-      // })
-    })
-  
+    });
+
   }
-  
+
 
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
-    const album = state.allAlbumsOfUser.find(a => a.id === id);
-    const googleDriveId = album.googleDriveId;
-
-    return this.albumService.getAllImagesOfAlbum(googleDriveId).pipe(
-      tap((res: Image[]) => {
+    return this.albumService.getAlbumByID(id).pipe(
+      tap((res: Album) => {
         setState({
           ...state,
-          albumInView: {...album, images: res}
+          albumInView: res
         })
+        dispatch(new FetchImagesOfAlbum(res.googleDriveId))
       }),
       catchError((err) => {
-        dispatch(new SetPageError('500'));
-        return of('')
+        dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
       })
     )
+  }
+
+  @Action(FetchImagesOfAlbum)
+  fetchImagesOfAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {googleDriveId}:FetchImagesOfAlbum) {
+    const state = getState();
+    const album = state.albumInView;
+    return this.albumService.getAllImagesOfAlbum(googleDriveId).pipe(
+        tap((res: Image[]) => {
+          setState({
+            ...state,
+            albumInView: {...album, images: res}
+          });
+        }),
+        catchError((err) => {
+          dispatch(new SetPageError('500'));
+          return of(JSON.stringify(err));
+        })
+      );
   }
 
   @Action(RemoveAlbumFromView)
@@ -207,26 +236,26 @@ export class AlbumState {
     setState({
       ...getState(),
       albumInView: null
-    })
+    });
   }
 
   @Action(GetImage)
-  getImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}:GetImage) {
+  getImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: GetImage) {
     const state = getState();
     dispatch(new OpenImageModal());
     dispatch(new RemoveImage());
 
     return this.albumService.getImage(id).pipe(
       tap((res) => {
-        let blob = new Blob([res] )
+        const blob = new Blob([res] );
 
         setState({
           ...state,
           imgBlob: blob,
           image: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob))
-        })
+        });
       })
-    )
+    );
   }
 
   @Action(RemoveImage)
@@ -235,7 +264,7 @@ export class AlbumState {
       ...getState(),
       image: null,
       imgBlob: null
-    })
+    });
   }
 
   @Action(DownloadImage)
@@ -243,12 +272,116 @@ export class AlbumState {
     const state = getState();
     this.imageService.downloadImage(img, name, state.imgBlob);
   }
-  
+
   @Action(RemoveUploadPanel)
   removeUploadQueue({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
     setState({
       ...getState(),
       pendingUploads: []
+    });
+  }
+
+  @Action(DownloadAlbum)
+  downloadAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {albums}: DownloadAlbum) {
+    const state = getState();
+    dispatch(new OpenLoading());
+    this.albumService.downloadAlbum(albums)
+  }
+
+  @Action(SelectMultipleImages)
+  selectmultipleImages({getState, setState, dispatch}: StateContext<AlbumStateModel>, {image}:SelectMultipleImages) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: [...state.selectedImages, image]
     })
+  }
+
+  @Action(RemoveSelectedImage)
+  removeSelectedImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {image}:SelectMultipleImages) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: state.selectedImages.filter(i => i.id !== image.id)
+    })
+  }
+
+  @Action(DownloadSelectedImages)
+  downloadSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    const selectedImages = state.selectedImages;
+    this.imageService.downloadMultipleImages(selectedImages, state.albumInView)
+  }
+
+  @Action(DeleteSelectedImages)
+  deleteSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    const selectedImages = state.selectedImages;
+    
+    // this.imageService.downloadMultipleImages(selectedImages)
+  }
+
+  @Action(RemoveAllSelectedImages)
+  removeAllSelectedImages({getState, setState, dispatch}: StateContext<AlbumStateModel>,) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedImages: []
+    })
+    
+    // this.imageService.downloadMultipleImages(selectedImages)
+  }
+
+  @Action(AddAlbumCollaborator)
+  addCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {collabUser, owner}: AddAlbumCollaborator) {
+    const state = getState();
+    return this.albumService.addCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
+      tap((res: Album) => {
+        dispatch(new RemoveSearchedUserBySubString())
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, collaborators: res.collaborators}
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(RemoveAlbumCollaborator)
+  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {collabUser, owner}: RemoveAlbumCollaborator) {
+    const state = getState();
+    return this.albumService.removeCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
+      tap((res: Album) => {
+        setState({
+          ...state,
+          albumInView:  {...state.albumInView, collaborators: res.collaborators}
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(EditAlbumSettings)
+  editAlbumSettings({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, desc}: EditAlbumSettings) {
+    dispatch(new OpenLoading())
+    const state = getState();
+    const uid = state.albumInView.createdBy._id;
+    const gid = state.albumInView.googleDriveId;
+    return this.albumService.editAlbumSettings(name, desc, uid, gid).pipe(
+      tap((res: Album) => {
+        dispatch(new CloseLoading())
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, name: res.name, description: res.description}
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
   }
 }

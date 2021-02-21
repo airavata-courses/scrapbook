@@ -1,3 +1,7 @@
+import { Image } from '../models/image.model';
+import { Album } from '../models/album.model';
+import { User } from '../models/user.model';
+
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
   constructor() {}
@@ -5,7 +9,7 @@ export class FetchAllAlbums {
 
 export class OpenAlbumInfo {
   static readonly type = '[OPEN] Album Info';
-  constructor(public albumId: string, public type?: string) {}
+  constructor(public data: Album | Image, public type?: string) {}
 }
 
 export class CloseAlbumInfo {
@@ -15,7 +19,7 @@ export class CloseAlbumInfo {
 
 export class SelectAlbums {
   static readonly type = '[SELECT] Albums';
-  constructor(public albumId: string){} 
+  constructor(public albumId: string){}
 }
 
 export class FetchAllAlbumsOfUser {
@@ -66,4 +70,54 @@ export class DownloadImage {
 export class RemoveUploadPanel {
   static readonly type = '[REMOVE] Upload Panel';
   constructor() {}
+}
+
+export class FetchImagesOfAlbum {
+  static readonly type = '[FETCH] Images of Album';
+  constructor(public googleDriveId: string) {}
+}
+
+export class DownloadAlbum {
+  static readonly type = '[DOWNLOAD] Album';
+  constructor(public albums: Album[]) {}
+}
+
+export class SelectMultipleImages {
+  static readonly type = '[SELECT] Multiple Images';
+  constructor(public image: Image) {}
+}
+
+export class RemoveSelectedImage {
+  static readonly type = '[REMOVE] Selected Images';
+  constructor(public image: Image) {}
+}
+
+export class DownloadSelectedImages {
+  static readonly type = '[DOWNLOAD] Selected Images';
+  constructor() {}
+}
+
+export class DeleteSelectedImages {
+  static readonly type = '[DELETE] Selected Images';
+  constructor() {}
+}
+
+export class RemoveAllSelectedImages {
+  static readonly type = '[REMOVE] All Selected Images';
+  constructor() {}
+}
+
+export class AddAlbumCollaborator {
+  static readonly type = '[ADD] Collaborator';
+  constructor(public collabUser: User, public owner: User) {}
+}
+
+export class RemoveAlbumCollaborator {
+  static readonly type = '[REMOVE] Collaborator';
+  constructor(public collabUser: User, public owner: User) {}
+}
+
+export class EditAlbumSettings {
+  static readonly type = '[EDIT] Album Settings';
+  constructor(public name: string, public desc: string) {}
 }

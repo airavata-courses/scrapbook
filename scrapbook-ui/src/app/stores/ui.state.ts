@@ -1,8 +1,8 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators } from '../actions/ui.actions';
 import { RemoveImage } from '../actions/album.actions';
-import { PendingUploadsState } from "../models/image.model";
+import { PendingUploadsState } from '../models/image.model';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -16,6 +16,8 @@ export class UIStateModel {
   navigationStack: Array<string>;
   imageModalOpen: boolean;
   uploading: boolean;
+  albumSettingsOpen: boolean;
+  collabOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -31,7 +33,9 @@ export class UIStateModel {
     pageError: '',
     navigationStack: [],
     imageModalOpen: false,
-    uploading: false
+    uploading: false,
+    albumSettingsOpen: false,
+    collabOpen: false
   }
 })
 @Injectable()
@@ -48,17 +52,17 @@ export class UIState {
     return state.uploadOpen;
   }
 
-  @Selector() 
+  @Selector()
   static getFiltersStatus(state: UIStateModel) {
     return state.filterOpen;
   }
 
-  @Selector() 
+  @Selector()
   static getLoading(state: UIStateModel) {
     return state.loading;
   }
 
-  @Selector() 
+  @Selector()
   static getPageErr(state: UIStateModel) {
     return state.pageError;
   }
@@ -73,20 +77,30 @@ export class UIState {
     return state.uploading;
   }
 
+  @Selector()
+  static getSettingsState(state: UIStateModel) {
+    return state.albumSettingsOpen;
+  }
+
+  @Selector()
+  static getCollabModalState(state: UIStateModel) {
+    return state.collabOpen;
+  }
+
   @Action(OpenProfile)
-  openProfile({getState, setState}:StateContext<UIStateModel>) {
+  openProfile({getState, setState}: StateContext<UIStateModel>) {
     setState({
       ...getState(),
       profileOpen: true
-    })
+    });
   }
 
   @Action(CloseProfile)
-  closeProfile({getState, setState}:StateContext<UIStateModel>) {
+  closeProfile({getState, setState}: StateContext<UIStateModel>) {
     setState({
       ...getState(),
       profileOpen: false
-    })
+    });
   }
 
   @Action(OpenUpload)
@@ -94,7 +108,7 @@ export class UIState {
     setState({
       ...getState(),
       uploadOpen: true
-    })
+    });
   }
 
   @Action(CloseUpload)
@@ -102,7 +116,7 @@ export class UIState {
     setState({
       ...getState(),
       uploadOpen: false
-    })
+    });
   }
 
   @Action(OpenFilters)
@@ -110,7 +124,7 @@ export class UIState {
     setState({
       ...getState(),
       filterOpen: true
-    })
+    });
   }
 
   @Action(CloseFilters)
@@ -119,7 +133,7 @@ export class UIState {
     setState({
       ...getState(),
       filterOpen: false
-    })
+    });
   }
 
   @Action(OpenLoading)
@@ -127,7 +141,7 @@ export class UIState {
     setState({
       ...getState(),
       loading: true
-    })
+    });
   }
 
   @Action(CloseLoading)
@@ -135,7 +149,7 @@ export class UIState {
     setState({
       ...getState(),
       loading: false
-    })
+    });
   }
 
   @Action(SetPageError)
@@ -143,7 +157,7 @@ export class UIState {
     setState({
       ...getState(),
       pageError: err
-    })
+    });
   }
 
   @Action(ClearPageError)
@@ -151,7 +165,7 @@ export class UIState {
     setState({
       ...getState(),
       pageError: ''
-    })
+    });
   }
 
   @Action(OpenImageModal)
@@ -159,7 +173,7 @@ export class UIState {
     setState({
       ...getState(),
       imageModalOpen: true
-    })
+    });
   }
 
   @Action(CloseImageModal)
@@ -168,7 +182,7 @@ export class UIState {
     setState({
       ...getState(),
       imageModalOpen: false
-    })
+    });
   }
 
   @Action(OpenUploadingPanel)
@@ -178,7 +192,7 @@ export class UIState {
       ...getState(),
       uploading: true,
       uploadOpen: false,
-    })
+    });
   }
 
   @Action(CloseUploadingPanel)
@@ -186,6 +200,38 @@ export class UIState {
     setState({
       ...getState(),
       uploading: false,
-    })
+    });
+  }
+
+  @Action(OpenSettings)
+  openSettings({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      albumSettingsOpen: true
+    });
+  }
+
+  @Action(CloseSettings)
+  closeSettings({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      albumSettingsOpen: false
+    });
+  }
+
+  @Action(OpenCollaborators)
+  openCollab({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      collabOpen: true
+    });
+  }
+
+  @Action(CloseCollaborators)
+  closeCollab({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    setState({
+      ...getState(),
+      collabOpen: false
+    });
   }
 }

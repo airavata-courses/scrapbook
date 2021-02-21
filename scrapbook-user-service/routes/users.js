@@ -12,7 +12,7 @@ var User = require('../models/user.js')
  * If the user is not found, then add the user and return a 201 status and the user.
  */
 router.post('/login', (req, res) => {
-  const {name, email, photo, token} = req.body
+  const {name, email, photo} = req.body
 
   User.findOne({email: email}, (err, foundUser) => {
     if(err) {
@@ -25,7 +25,6 @@ router.post('/login', (req, res) => {
         name: name,
         email: email,
         photo: photo,
-        token: token
       }).save((err, newUser) => {
         if(err) {
           console.log(err.message)
@@ -54,9 +53,49 @@ router.get('/:id', (req, res) => {
     if (err) {
       res.status(400).send(err)
     } else {
+      console.log(user)
       res.status(200).send(user)
     }
   })
+});
+
+/** 
+ * GET All Users
+ * @param req - body contains userid
+ * 
+ * Find all users from the database.
+ */
+router.get('/', (req, res) => {
+  const userid = req.params.id
+
+  User.find({}, (err, user) => {
+    if (err) {
+      res.status(400).send(err)
+    } else {
+      res.status(200).send(user)
+    }
+  })
+});
+
+/** 
+ * GET users by prefix
+ * @param req - body contains userid
+ * 
+ * Find all users from the database.
+ */
+router.get('/search/:sub', (req, res) => {
+  const substring = req.params.sub
+  console.log(substring)
+  User.find(
+    { "name": { "$regex": substring, "$options": "i" } },
+    function(err, docs) { 
+      if (err) {
+        res.status(404).send(err)
+      } else {
+        res.status(200).send(docs)
+      }
+    } 
+  );
 });
 
 module.exports = router;

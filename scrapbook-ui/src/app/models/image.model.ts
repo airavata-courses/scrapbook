@@ -1,4 +1,5 @@
 import { Album } from './album.model';
+import { User } from './user.model';
 
 export enum UPLOAD_STATE {
   progress = 1,
@@ -8,23 +9,24 @@ export enum UPLOAD_STATE {
 
 export interface Image {
   active: boolean;
-  album: Album
-  createdBy: string;
+  album: Album;
+  createdBy: User;
   createdDate: string;
   extension: string;
   googleDriveId: string;
   id: string;
   mimeType: string;
-  modifiedBy: string;
+  modifiedBy: User;
   modifiedDate: string;
   name: string;
-  size: 124729
+  size: number;
+  isSelected: boolean;
 }
 
 export interface PendingUploadsStateInterface {
   file: any;
   name: string;
-  status: UPLOAD_STATE
+  status: UPLOAD_STATE;
 }
 
 

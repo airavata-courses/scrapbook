@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faHome, faShareAlt, faStar, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faShareAlt, faStar, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,29 +8,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
-  
+
   sidenavMenu = [
     {
       name: 'Home',
       icon: faHome,
-      path: '/home'
+      path: '/home',
+      style: false
     },
     {
       name: 'Shared',
       icon: faShareAlt,
-      path: '/shared'
+      path: '/shared',
+      style: false
     },
     {
       name: 'Starred',
       icon: faStar,
-      path: '/starred'
-    },
-    {
-      name: 'Dashboard',
-      icon: faChartLine,
-      path: '/fashboard'
-    },
-  ]
+      path: '/starred',
+      style: true
+    }
+  ];
 
   selectedMenu = 'Home';
 
@@ -42,7 +40,7 @@ export class SidenavComponent implements OnInit {
   onMenuChange(name: string) {
     const selection = this.sidenavMenu.find(i => i.name === name);
     this.selectedMenu = selection.name;
-    this.router.navigate([selection.path])
+    this.router.navigate([selection.path]);
   }
 
 }

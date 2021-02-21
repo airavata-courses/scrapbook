@@ -15,24 +15,25 @@ import { OpenLoading } from '../actions/ui.actions';
 })
 export class AuthService {
   constructor(public googleAuthService: SocialAuthService, public store: Store, public router: Router, public http: HttpClient, private ngZone: NgZone) {
-    
+
   }
 
   initGoogleLogin() {
     this.googleAuthService.authState.subscribe(
       (user) => {
+        console.log('here?')
         const {name, photoUrl, idToken, email } = user;
         this.store.dispatch(new OpenLoading());
-        this.logUserIn({name: name, photo: photoUrl, token: idToken, email: email}).toPromise().then( (user: any) => {
+        this.logUserIn({name, photo: photoUrl, token: idToken, email}).toPromise().then( (user: any) => {
           this.store.dispatch(new PutUserInSession(user));
           this.ngZone.run(() => this.router.navigate(['/home']));
-        })
+        });
       }
-    )
+    );
   }
 
   logUserIn(user: User) {
-    return this.http.post(`${GATEWAY_URL}/login`, user)
+    return this.http.post(`${GATEWAY_URL}/login`, user);
   }
 
   loginWithGoogle() {
@@ -41,10 +42,8 @@ export class AuthService {
   }
 
   lougoutFromGoogle() {
-    this.googleAuthService.signOut();
-    localStorage.removeItem('scrapbook-token');
-    this.store.dispatch(new Logout()).subscribe(_ => {
-      this.router.navigate(['/'])
-    })
+    // this.googleAuthService.signOut();
+    return this.http.delete(`${GATEWAY_URL}/logout?id=${localStorage.getItem('scrapbook-userid')}`)
+    
   }
 }

@@ -10,19 +10,19 @@ import { AlbumState } from 'src/app/stores/album.state';
   styleUrls: ['./uploads-pending-panel.component.scss']
 })
 export class UploadsPendingPanelComponent implements OnInit {
-  
+
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
   @Select(AlbumState.getUploadPanelPendingArray) uploadsArray$: Observable<any>;
 
   pendingUploads = [];
-  
+
   constructor() {
     this.uploadsArray$.subscribe(arr => {
-      if(arr.length) {
+      if (arr.length) {
         this.pendingUploads = arr;
       }
-    })
+    });
    }
 
   ngOnInit(): void {

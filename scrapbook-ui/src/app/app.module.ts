@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SocialLoginModule } from 'angularx-social-login';
@@ -46,22 +46,23 @@ import { AlbumViewComponent } from './modules/album-view/album-view.component';
 import { ImageListItemComponent } from './components/image-list-item/image-list-item.component';
 import { ImageModalComponent } from './components/image-modal/image-modal.component';
 import { UploadsPendingPanelComponent } from './components/uploads-pending-panel/uploads-pending-panel.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { CollabComponent } from './components/collab/collab.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent, CollabComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     NgxsModule.forRoot([UIState, UserState, DataState, AlbumState], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({
-    
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({
+      disabled: environment.production
     }),
-    NgxsStoragePluginModule.forRoot(),
     NgxsResetPluginModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,

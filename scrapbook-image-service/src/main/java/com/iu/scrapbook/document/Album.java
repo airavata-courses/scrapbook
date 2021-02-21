@@ -5,7 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author jbhushan
@@ -31,5 +32,5 @@ public class Album {
     private String createdBy;
     private String modifiedBy;
     private boolean active;
-    //private List<Image> images;
+    private Set<String> collaborators = new HashSet<String>();
 }

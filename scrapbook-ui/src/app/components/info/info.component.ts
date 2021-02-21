@@ -1,9 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Album } from 'src/app/models/album.model';
-import { Image } from 'src/app/models/image.model';
+import { faTimes,faSortDown } from "@fortawesome/free-solid-svg-icons";
 
-import * as moment from 'moment'
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-info',
@@ -13,10 +12,12 @@ import * as moment from 'moment'
 export class InfoComponent implements OnInit {
   moment = moment;
   Math = Math;
+  faTimes = faTimes;
+  faSortDown = faSortDown;
 
   @Output() infoClose: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {

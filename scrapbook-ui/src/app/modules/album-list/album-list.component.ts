@@ -13,28 +13,27 @@ import { UserState } from 'src/app/stores/user.state';
   styleUrls: ['./album-list.component.scss']
 })
 export class AlbumListComponent implements OnInit {
-  
+
   // @Input() albums: Album[];
   albums: Album[];
   @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
   constructor(private store: Store, public albumListService: AlbumListService) {
-    console.log('ALBUM LIST')
-    const userID = this.store.selectSnapshot(UserState.getUserData)._id
-    this.store.dispatch(new RemoveAlbumFromView())
-    this.store.dispatch(new FetchAllAlbumsOfUser(userID))
+    const userID = localStorage.getItem('scrapbook-userid')
+    this.store.dispatch(new RemoveAlbumFromView());
+    this.store.dispatch(new FetchAllAlbumsOfUser(userID));
 
     this.allAlbumsOfUser$.subscribe(data => {
       if (data) {
         this.albums = data;
       }
-    })
+    });
    }
 
   ngOnInit(): void {
   }
 
-  showAlbumInfo(e: string) {
-    this.store.dispatch(new OpenAlbumInfo(e))
+  showAlbumInfo(e: Album) {
+    this.store.dispatch(new OpenAlbumInfo(e));
   }
 
 }

@@ -3,10 +3,10 @@
     <div class="desc">{{image.name}}</div>
     <div class="ml-5">
       <button mat-icon-button (click)="downloadImage()" class="mr-2">
-        <mat-icon>get_app</mat-icon>
+        <fa-icon [icon]="faDownload" class="h6 m-0 text-dark faicon"></fa-icon>
       </button>
       <button mat-icon-button (click)="onImgModalClose()">
-        <mat-icon>clear</mat-icon>
+        <fa-icon [icon]="faTimes" class="h5 m-0 text-dark faicon"></fa-icon>
       </button>
     </div>
   </div>

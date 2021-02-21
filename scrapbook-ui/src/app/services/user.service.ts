@@ -9,7 +9,11 @@ export class UserService {
 
   constructor(public http: HttpClient) { }
 
-  fetchUserData(email:string) {
-    return this.http.get(`${GATEWAY_URL}/users/login`)
+  fetchUserData(email: string) {
+    return this.http.get(`${GATEWAY_URL}/users/login`);
+  }
+
+  fetchUsersBySubstring(sub: string) {
+    return this.http.get(`${GATEWAY_URL}/users?search=${sub}`);
   }
 }
