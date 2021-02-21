@@ -31,5 +31,5 @@ public class Image {
     private String createdBy;
     private String modifiedBy;
     private Boolean active;
-    private Album album;
+    private String albumGoogleId;
 }
