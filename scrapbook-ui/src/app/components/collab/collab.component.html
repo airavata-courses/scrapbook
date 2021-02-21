@@ -25,7 +25,7 @@
               <span class="pl-2">{{user.name}}</span>
             </div>
             <div class="font-italic">
-              {{ user._id === currentAlbum.createdBy._id ? 'Owner' : ''}}
+              {{ user._id === currentAlbum.createdBy._id ? 'Owner' : currentAlbum.collaborators.includes(user) ? 'Collaborator' : ''}}
             </div>
           </div>
         </mat-option>
@@ -59,12 +59,13 @@
             <button [matMenuTriggerFor]="options" aria-label="Collaborator Options" class="btn btn-light d-flex align-items-center">
               Collaborator <fa-icon [icon]="faSortDown" class="pl-2"></fa-icon>
             </button>
+            <mat-menu #options>
+              <menu mat-menu-item (click)="onRemoveCollaborator(collab)">Remove</menu>
+            </mat-menu>
           </div>
         </div>
       </div>
-      <mat-menu #options>
-        <menu mat-menu-item (click)="onRemoveCollaborator()">Remove</menu>
-      </mat-menu>
+      
     </div>
   </div>
 </div>

@@ -9,7 +9,7 @@ import { startWith, map } from 'rxjs/operators';
 import { SearchUserBySubstring, RemoveSearchedUserBySubString } from 'src/app/actions/user.actions';
 import { Album } from 'src/app/models/album.model';
 import { AlbumState } from 'src/app/stores/album.state';
-import { AddAlbumCollaborator } from 'src/app/actions/album.actions';
+import { AddAlbumCollaborator, RemoveAlbumCollaborator } from 'src/app/actions/album.actions';
 
 @Component({
   selector: 'app-collab',
@@ -28,17 +28,21 @@ export class CollabComponent implements OnInit {
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   
   @Select(UserState.getSearchedUser) searchedUsers$: Observable<User[]>;
+  @Select(AlbumState.getAlbumInView) albuminView$: Observable<Album>;
 
 
   constructor(public store: Store) { 
+    this.albuminView$.subscribe(album => {
+      this.currentAlbum = album;
+    })
     this.currentAlbum = this.store.selectSnapshot(AlbumState.getAlbumInView);
   }
 
   ngOnInit(): void { 
   }
 
-  onRemoveCollaborator() {
-    
+  onRemoveCollaborator(e: User) {
+    this.store.dispatch(new RemoveAlbumCollaborator(e, this.currentAlbum.createdBy))
   }
 
   onClose() {
@@ -53,14 +57,4 @@ export class CollabComponent implements OnInit {
     if (e) this.store.dispatch(new SearchUserBySubstring(e));
     else this.store.dispatch(new RemoveSearchedUserBySubString());
   }
-
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.streets.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
-
 }

@@ -335,8 +335,11 @@ export class AlbumState {
   addCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {collabUser, owner}: AddAlbumCollaborator) {
     const state = getState();
     return this.albumService.addCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
-      tap((res) => {
-        console.log(res)
+      tap((res: Album) => {
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, collaborators: res.collaborators}
+        })
       }),
       catchError((err) => {
         return of(JSON.stringify(err))
@@ -345,7 +348,18 @@ export class AlbumState {
   }
 
   @Action(RemoveAlbumCollaborator)
-  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: RemoveAlbumCollaborator) {
+  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {collabUser, owner}: RemoveAlbumCollaborator) {
     const state = getState();
+    return this.albumService.removeCollaborator(collabUser._id, owner._id, state.albumInView.googleDriveId).pipe(
+      tap((res: Album) => {
+        setState({
+          ...state,
+          albumInView:  {...state.albumInView, collaborators: res.collaborators}
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
   }
 }

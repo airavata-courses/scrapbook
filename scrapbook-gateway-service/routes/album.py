@@ -115,13 +115,32 @@ def getAllAlbums():
 
 @album_api.route('/album/collab/add', methods=["PUT"])
 @auth.check_user_session
-def addCollaborators():
+def addCollaborator():
     try:
         collabid = request.json['collabid']
         gid = request.json['googleDriveId']
         owner = request.json['owner']
 
         response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}/collaborator/{collabid}?userid={owner}')
+        response.raise_for_status()
+        aggregatedData = response.json()
+        aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
+
+        return aggregatedData, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/collab/remove', methods=["PUT"])
+@auth.check_user_session
+def removeCollaborator():
+    try:
+        collabid = request.json['collabid']
+        gid = request.json['googleDriveId']
+        owner = request.json['owner']
+
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}/collaborator/{collabid}?userid={owner}')
         response.raise_for_status()
         aggregatedData = response.json()
         aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())

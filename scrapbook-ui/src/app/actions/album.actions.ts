@@ -114,5 +114,5 @@ export class AddAlbumCollaborator {
 
 export class RemoveAlbumCollaborator {
   static readonly type = '[REMOVE] Collaborator';
-  constructor(public user: User) {}
+  constructor(public collabUser: User, public owner: User) {}
 }
