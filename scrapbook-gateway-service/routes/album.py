@@ -28,7 +28,7 @@ def createAlbum():
 
 
 @album_api.route('/album/<googledriveid>', methods=["GET"])
-# @auth.check_user_session
+@auth.check_user_session
 def getAlbumByID(googledriveid):
     """
     retrieving all active albums from the database.
@@ -71,7 +71,7 @@ def getAlbumsOfUser():
 
 
 @album_api.route('/album/<googledriveid>/image', methods=["GET"])
-# @auth.check_user_session
+@auth.check_user_session
 def getImagesByAlbumID(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
