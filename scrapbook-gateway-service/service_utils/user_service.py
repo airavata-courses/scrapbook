@@ -19,12 +19,16 @@ def aggregateUser(response):
     for data in response.json():
         data['createdBy'] = getUser(data['createdBy'])
         data['modifiedBy'] = getUser(data['modifiedBy'])
+        if 'collaborators' in data:
+            data['collaborators'] = aggregateCollaborator(data)
+
         aggregatedResponse.append(data)
     return aggregatedResponse
+
 
 def aggregateCollaborator(response):
     aggregatedResponse = []
     for data in response["collaborators"]:
-        aggregatedResponse.append( getUser(data))
+        aggregatedResponse.append(getUser(data))
 
     return aggregatedResponse

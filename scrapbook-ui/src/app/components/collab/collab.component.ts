@@ -9,7 +9,9 @@ import { startWith, map } from 'rxjs/operators';
 import { SearchUserBySubstring, RemoveSearchedUserBySubString } from 'src/app/actions/user.actions';
 import { Album } from 'src/app/models/album.model';
 import { AlbumState } from 'src/app/stores/album.state';
-import { AddAlbumCollaborator } from 'src/app/actions/album.actions';
+import { AddAlbumCollaborator, RemoveAlbumCollaborator } from 'src/app/actions/album.actions';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-collab',
@@ -24,21 +26,47 @@ export class CollabComponent implements OnInit {
   userString = '';
   currentAlbum: Album;
   faSortDown = faSortDown;
+  computedCollaborators = [];
 
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
   
   @Select(UserState.getSearchedUser) searchedUsers$: Observable<User[]>;
+  @Select(AlbumState.getAlbumInView) albuminView$: Observable<Album>;
 
 
   constructor(public store: Store) { 
+    this.albuminView$.subscribe(album => {
+      this.userString = '';
+      this.currentAlbum = album;
+      this.computeCollabIDs();
+    })
     this.currentAlbum = this.store.selectSnapshot(AlbumState.getAlbumInView);
+    this.computeCollabIDs();
   }
 
   ngOnInit(): void { 
   }
 
-  onRemoveCollaborator() {
-    
+  computeCollabIDs() {
+    this.currentAlbum.collaborators.forEach(i => {
+      this.computedCollaborators.push(i._id)
+    })
+  }
+
+  onRemoveCollaborator(e: User) {
+    Swal.fire({
+      title: `Are you sure you want to remove ${e.name} as a collaborator?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#EB7373',
+      cancelButtonColor: '#737CEB'
+    }).then((result) => {
+      if (result.value) {
+        this.store.dispatch(new RemoveAlbumCollaborator(e, this.currentAlbum.createdBy))
+      }
+    });
   }
 
   onClose() {
@@ -46,21 +74,24 @@ export class CollabComponent implements OnInit {
   }
 
   onUserSelect(e: User) {
-    this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))
+    Swal.fire({
+      title: `Are you sure you want to add ${e.name} as a collaborator?`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, for sure!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#85C685',
+      cancelButtonColor: '#737CEB'
+    }).then((result) => {
+      if (result.value) {
+        this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))
+      }
+    });
+    
   }
 
   onInputChange(e: string) {
     if (e) this.store.dispatch(new SearchUserBySubstring(e));
     else this.store.dispatch(new RemoveSearchedUserBySubString());
   }
-
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.streets.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
-
 }
