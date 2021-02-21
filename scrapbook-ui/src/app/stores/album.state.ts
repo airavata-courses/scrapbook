@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -10,9 +10,7 @@ import { of, from, throwError, forkJoin} from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageService } from '../services/image.service';
 import { patch, updateItem } from '@ngxs/store/operators';
-
-
-
+import { User } from '../models/user.model';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -24,6 +22,7 @@ export class AlbumStateModel {
   imgBlob: Blob;
   pendingUploads: Array<PendingUploadsStateInterface>;
   selectedImages: Array<Image>;
+  collaborators: Array<User[]>;
 }
 
 @State<AlbumStateModel>({
@@ -37,7 +36,8 @@ export class AlbumStateModel {
     image: null,
     imgBlob: null,
     pendingUploads: [],
-    selectedImages: []
+    selectedImages: [],
+    collaborators: []
   }
 })
 @Injectable()
@@ -118,6 +118,10 @@ export class AlbumState {
            ...state,
            allAlbumsOfUser: response
          });
+      }),
+      catchError((err) => {
+        dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
       })
     );
   }
@@ -185,10 +189,6 @@ export class AlbumState {
     };
 
     forkJoin(uploads.map(fetch$)).subscribe(_ => {
-      // setState({
-      //   ...getState(),
-      //   w
-      // })
     });
 
   }
@@ -206,8 +206,8 @@ export class AlbumState {
         dispatch(new FetchImagesOfAlbum(res.googleDriveId))
       }),
       catchError((err) => {
-        dispatch(new SetPageError('500'));
-        return of(JSON.stringify(err));
+        dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
       })
     )
   }
@@ -329,5 +329,15 @@ export class AlbumState {
     })
     
     // this.imageService.downloadMultipleImages(selectedImages)
+  }
+
+  @Action(AddAlbumCollaborator)
+  addCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: AddAlbumCollaborator) {
+    const state = getState();
+  }
+
+  @Action(RemoveAlbumCollaborator)
+  removeCollaborator({getState, setState, dispatch}: StateContext<AlbumStateModel>, {user}: AddAlbumCollaborator) {
+    const state = getState();
   }
 }

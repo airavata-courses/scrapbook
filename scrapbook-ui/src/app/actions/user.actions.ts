@@ -18,3 +18,14 @@ export class FetchUserData {
   static readonly type = '[FETCH] User Data';
   constructor(public email: string) {}
 }
+
+export class SearchUserBySubstring {
+  static readonly type = '[SEARCH] User by substring';
+  constructor(public sub: string) {}
+}
+
+export class RemoveSearchedUserBySubString {
+  static readonly type = '[REMOVE] User by substring';
+  constructor() {}
+}
+

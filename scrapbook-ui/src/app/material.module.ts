@@ -28,10 +28,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
-
-
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 // Importing required Material Modules
 
@@ -63,7 +60,8 @@ const MatModules = [
   MatStepperModule,
   MatRadioModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

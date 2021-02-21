@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UIState } from 'src/app/stores/ui.state';
 import { ImageModalComponent } from 'src/app/components/image-modal/image-modal.component';
-import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings, OpenLoading } from 'src/app/actions/ui.actions';
+import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings, OpenLoading, OpenCollaborators } from 'src/app/actions/ui.actions';
 import { Image } from 'src/app/models/image.model';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 
@@ -56,6 +56,10 @@ export class AlbumViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onCollab() {
+    this.store.dispatch(new OpenCollaborators());
   }
 
   onRemoveAllSelections() {

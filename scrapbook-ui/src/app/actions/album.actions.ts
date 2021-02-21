@@ -1,5 +1,6 @@
 import { Image } from '../models/image.model';
 import { Album } from '../models/album.model';
+import { User } from '../models/user.model';
 
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
@@ -104,4 +105,14 @@ export class DeleteSelectedImages {
 export class RemoveAllSelectedImages {
   static readonly type = '[REMOVE] All Selected Images';
   constructor() {}
+}
+
+export class AddAlbumCollaborator {
+  static readonly type = '[ADD] Collaborator';
+  constructor(public user: User) {}
+}
+
+export class RemoveAlbumCollaborator {
+  static readonly type = '[REMOVE] Collaborator';
+  constructor(public user: User) {}
 }

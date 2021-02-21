@@ -47,10 +47,11 @@ import { ImageListItemComponent } from './components/image-list-item/image-list-
 import { ImageModalComponent } from './components/image-modal/image-modal.component';
 import { UploadsPendingPanelComponent } from './components/uploads-pending-panel/uploads-pending-panel.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CollabComponent } from './components/collab/collab.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent, CollabComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

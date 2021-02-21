@@ -36,6 +36,14 @@ export class AlbumService {
     return this.http.get(`${GATEWAY_URL}/image/${id}`, {responseType: 'blob'});
   }
 
+  addCollaborator(user: string) {
+
+  }
+
+  removeCollaborator(user: string) {
+    
+  }
+
   uploadFile(file: any, id: string , userid: string) {
     const formData = new FormData();
     formData.append('file', file);
@@ -48,7 +56,7 @@ export class AlbumService {
     return this.http.post<any>(`${GATEWAY_URL}/image/upload/${id}`, formData, {headers});
   }
 
-  async downloadAlbum(a: Album[]) {
+  downloadAlbum(a: Album[]) {
     const requests = [];
     const album = a[0];
     

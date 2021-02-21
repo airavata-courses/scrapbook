@@ -14,4 +14,5 @@ export interface Album {
   name?: string;
   size?: number | null;
   description?: string;
+  collaborators?: Array<User>;
   }
