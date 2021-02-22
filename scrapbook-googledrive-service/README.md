@@ -4,7 +4,7 @@ upload/download image, create album, upload image to album etc.
 
 server port : 9090
 
-###Technologies used:
+### Technologies used:
 
 Java 15
 
@@ -14,9 +14,14 @@ RESTful API
 
 Google drive APIs
 
+Maven
+
 Swagger : for documentation
 
 ### Project Installation
+
+- Port: 9090
+
 $ git clone https://github.com/airavata-courses/scrapbook.git
 
 $ cd scrapbook-googledrive-service
@@ -26,4 +31,9 @@ $ mvn clean install
 $ cd target
 
 $ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> <jar name with extension>
+
+
+### Swagger
+
+http://localhost:9090/swagger-ui/#/
 
