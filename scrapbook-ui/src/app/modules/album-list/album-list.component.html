@@ -1,0 +1,22 @@
+<div class="w-100 mt-4 pt-3">
+  <div class="w-100 d-flex align-items-center text-muted">
+    <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">Name</div>
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">Last Modified</div>
+    <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">Size</div>
+    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">Collaborators</div>
+  </div>
+  <hr>
+  
+  <div *ngIf="albums else loading">
+    <div *ngFor="let album of albums; let i = index">
+      <div class="py-3" style="border-bottom: 1px solid #ececec;">
+        <app-album-list-item (showAlbumInfo)="showAlbumInfo(album)" [album]="album"></app-album-list-item>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div class="d-flex justify-content-center align-items-center w-100 h-100 mt-5">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
+  </ng-template>
+</div>

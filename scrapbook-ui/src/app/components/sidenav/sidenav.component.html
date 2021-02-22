@@ -1,0 +1,10 @@
+<div class="bg-light h-100 min-width pl-4 pt-5 side-nav pr-4">
+  <div *ngFor="let menu of sidenavMenu; let i = index;">
+    <div class="my-3 px-3 py-2 opt d-flex align-items-center justify-content-start"
+      [ngClass]="{'bg-primary': selectedMenu === menu.name, 'text-light': selectedMenu === menu.name, 'text-dark': selectedMenu !== menu.name}"
+      (click)="onMenuChange(menu.name)">
+      <fa-icon [icon]="menu.icon" style="height: 22px; width: 22px" class="h5 m-0"></fa-icon>
+      <div class="pl-3 h6 m-0" >{{menu.name}}</div>
+    </div>
+  </div>
+</div>

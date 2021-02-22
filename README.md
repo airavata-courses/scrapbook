@@ -11,9 +11,10 @@ Scrapbook is a micro-service architecture based application that enables users t
 ## Technology Stack
 
 - Angular 11 (TypeScript)
-- SpringBoot (Java 11)
+- SpringBoot (Java 15)
 - Flask (Python)
 - MongoDB
+- Redis
 - Google Cloud Storage
 - Apache Kafka
 - RESTful Webservices
@@ -28,21 +29,125 @@ Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/
 
 ## Project Installation
 
+### Dependencies
+
+Make sure you have these dependencies installed in your machine before installing each service.
+
+- Node/NPM
+- Python3.8
+- Java 15
+- MongoDB
+- Redis
+- Angular CLI
+- Maven
+
 ### Repository 
 ```
 $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 ```
 
+### How to run
+
+Start a service either by going to their respective folders or using the start script
+
+#### Start Scripts (for linux based systems)
+Each of these commands should be executed in different terminals.
+
+```shell
+$ ./start.sh <arg> 
+$
+$ # Arg Values:
+$ # ui   : scrapbook-ui
+$ # auth : scrapbook-auth-service
+$ # user : scrapbook-user-service
+$ # sess : scrapbook-session-serice
+$ # gw   : scrapbook-gateway-service
+$ # gs   : scrapbook-google-drive-service
+$ # img  : scrapbook-image-service
+```
+
+### Manual Installation
+
+#### scrapbook-ui
+- Port: 4200
+
+```shell
+$ cd scrapbook-ui
+$ npm install
+$ npm start
+```
+
+#### scrapbook-auth-service
+- Port: 5000
+
+```shell
+$ cd scrapbook-auth-service
+$ python3 -m env env # creating a virtual environment
+$ source env/bin/activate
+$ pip install -r requirements.txt
+$ python app.py
+```
+
+#### scrapbook-session-service
+- Port: 3500
+
+```shell
+$ cd scrapbook-session-service
+$ npm install
+$ npm run dev
+```
+
+#### scrapbook-user-service
+- Port: 3000
+
+```shell
+$ cd scrapbook-user-service
+$ npm install
+$ npm run dev
+```
+
+#### scrapbook-gateway-service
+- Port: 8081
+
+```shell
+$ cd scrapbook-gateway-service
+$ python3 -m env env # creating a virtual environment
+$ source env/bin/activate
+$ pip install -r requirements.txt
+$ python app.py
+```
+
+
+#### scrapbook-google-drive-service
+- Port: 9090
+
+```shell
+$ cd scrapbook-google-drive-service
+$ mvn clean install
+$ cd target
+$ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
+```
+
+#### scrapbook-image-service
+- Port: 8080
+
+```shell
+$ cd scrapbook-image-service
+$ mvn clean install
+$ cd target
+$ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+```
+
+
 ## Documentation
 
 - [Wiki](https://github.com/airavata-courses/scrapbook/wiki)
-- [User Stories](https://github.com/airavata-courses/scrapbook/wiki/User-Stories)
-- [User Workflow & UML Diagrams](https://github.com/airavata-courses/scrapbook/wiki/User-Workflows-and-Use-Case-Diagram)
 
 ## Project Milestones
 
 - [Project Milestone 1](https://github.com/airavata-courses/scrapbook/wiki/Project-1)
+- [Project Milestone 2](https://github.com/airavata-courses/scrapbook/wiki/Project-2)
 
 ## Team 
 

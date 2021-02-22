@@ -1,0 +1,66 @@
+<div class="card text-dark px-1">
+  <div class="card-header h5 d-flex w-100 justify-content-between align-items-center p-0">
+    <div>Information</div>
+    <div>
+      <button mat-icon-button (click)="onInfoClose()">
+        <fa-icon [icon]="faTimes" class="h5 m-0 text-dark"></fa-icon>
+      </button>
+    </div>
+  </div>
+  <div class="card-body px-0">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Name</label>
+        <div class="h6 font-weight-normal">{{data.name}}</div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Owner</label>
+        <div class="h6 font-weight-normal">{{data.createdBy.name}}</div>
+      </div>
+    </div>
+    <div class="row mt-3" *ngIf="data.description">
+      <div class="col-12">
+        <label class="text-muted">Description</label>
+        <div class="h6 font-weight-normal">{{data.description}}</div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Created</label>
+        <div class="h6 font-weight-normal">{{moment(data.createdDate).format("H:mm A MMM DD, YYYY")}}</div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Last Edit</label>
+        <div class="h6 font-weight-normal">{{moment(data.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <label class="text-muted">Size</label>
+        <div class="h6 font-weight-normal">{{data.size ? Math.round(data.size/1024) + ' KB': '0 B'}}</div>
+      </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="data.collaborators">
+      <div class="col-12">
+        <label class="text-muted">Collaborators</label>
+        <div *ngFor="let collab of data.collaborators" class="my-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <img [src]="collab.photo" style="width: 45px; height: 45px; border-radius: 50%;">
+              <div class="pl-3">
+                <span class="h6 m-0">{{collab.name}}</span>
+                <div>{{collab.email}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <mat-menu #options>
+          <menu mat-menu-item (click)="onRemoveCollaborator()">Remove</menu>
+        </mat-menu> -->
+    </div>
+  </div>
+  <div class="card-footer text-right p-0">
+    <a class="btn btn-primary" (click)="onInfoClose()">Done</a>
+  </div>
+</div>

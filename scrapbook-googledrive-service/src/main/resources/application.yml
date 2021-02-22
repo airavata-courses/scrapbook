@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: GoogleDriveService
+  servlet:
+    multipart:
+      max-file-size: 3GB
+
+google:
+  service:
+    account:
+      key: classpath:keys/scrapbook.json
+
+server:
+  port: 9090

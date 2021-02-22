@@ -1,0 +1,21 @@
+<div class="card px-0">
+  <div class="card-header h5 d-flex w-100 justify-content-between align-items-center py-2 px-4">
+    <div class="desc">{{image.name}}</div>
+    <div class="ml-5">
+      <button mat-icon-button (click)="downloadImage()" class="mr-2">
+        <fa-icon [icon]="faDownload" class="h6 m-0 text-dark faicon"></fa-icon>
+      </button>
+      <button mat-icon-button (click)="onImgModalClose()">
+        <fa-icon [icon]="faTimes" class="h5 m-0 text-dark faicon"></fa-icon>
+      </button>
+    </div>
+  </div>
+  <div class="card-body d-flex justify-content-center align-items-center p-0" style="max-height: 90vh; overflow: auto;">
+    <div *ngIf="loading else img" class="pb-5 pt-5">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
+    <ng-template #img>
+      <img [src]="imgSrc" class="w-100" />
+    </ng-template>
+  </div>
+</div>
