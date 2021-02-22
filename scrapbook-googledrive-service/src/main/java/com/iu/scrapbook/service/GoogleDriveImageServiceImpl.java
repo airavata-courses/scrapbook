@@ -60,6 +60,8 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
         } else {
             response = imageServiceRestTemplate.post("/image",i, Image.class);
         }
+
+        f.delete();
         return response.getBody();
     }
 
