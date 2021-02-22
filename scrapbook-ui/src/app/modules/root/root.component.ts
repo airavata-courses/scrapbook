@@ -132,6 +132,7 @@ export class RootComponent {
     config.width = '500px';
     config.autoFocus = false;
     config.panelClass = 'no-padding';
+    config.hasBackdrop = false;
 
     const uploadPendingPanel = this.dialog.open(UploadsPendingPanelComponent, config);
 

@@ -70,6 +70,7 @@ $ # img  : scrapbook-image-service
 ### Manual Installation
 
 #### scrapbook-ui
+- Port: 4200
 
 ```shell
 $ cd scrapbook-ui
@@ -78,6 +79,7 @@ $ npm start
 ```
 
 #### scrapbook-auth-service
+- Port: 5000
 
 ```shell
 $ cd scrapbook-auth-service
@@ -88,6 +90,7 @@ $ python app.py
 ```
 
 #### scrapbook-session-service
+- Port: 3500
 
 ```shell
 $ cd scrapbook-session-service
@@ -96,6 +99,7 @@ $ npm run dev
 ```
 
 #### scrapbook-user-service
+- Port: 3000
 
 ```shell
 $ cd scrapbook-user-service
@@ -104,6 +108,7 @@ $ npm run dev
 ```
 
 #### scrapbook-gateway-service
+- Port: 8081
 
 ```shell
 $ cd scrapbook-gateway-service
@@ -115,6 +120,7 @@ $ python app.py
 
 
 #### scrapbook-google-drive-service
+- Port: 9090
 
 ```shell
 $ cd scrapbook-google-drive-service
@@ -124,6 +130,7 @@ $ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.ja
 ```
 
 #### scrapbook-image-service
+- Port: 8080
 
 ```shell
 $ cd scrapbook-image-service
@@ -136,8 +143,6 @@ $ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
 ## Documentation
 
 - [Wiki](https://github.com/airavata-courses/scrapbook/wiki)
-- [User Stories](https://github.com/airavata-courses/scrapbook/wiki/User-Stories)
-- [User Workflow & UML Diagrams](https://github.com/airavata-courses/scrapbook/wiki/User-Workflows-and-Use-Case-Diagram)
 
 ## Project Milestones
 
