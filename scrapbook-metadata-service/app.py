@@ -10,7 +10,7 @@ CORS(app)
 app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
 
-@app.route('/imagequeue', methods=["POST"])
+@app.route('/metadata/queue', methods=["POST"])
 def extract_metadata():
     """
     Image service adds the uploaded to the queue to extract meta data information from the image
@@ -18,7 +18,7 @@ def extract_metadata():
 
     try:
         file = request.files['file']
-        image_id = request.form.get('uniqueIdentifier')
+        image_id = request.form.get('id')
         tags = exifread.process_file(file) 
         #Converting all the values in tag to str (for json serializability)
         for tag in tags.keys():
@@ -30,14 +30,14 @@ def extract_metadata():
         return "Unsuccessful", 500
 
 
-@app.route('/imagequeue', methods=["GET"])
+@app.route('/metadata/fetch', methods=["GET"])
 def retrieve_metadata():
     """
-    Image service adds the uploaded to the queue to extract meta data information from the image
+    Image service fetches the extracted meta data information from the image
     """
 
     try:
-        image_id = request.args.get('uniqueIdentifier')
+        image_id = request.args.get('id')
         tags = mongo.db.metadata.find_one_or_404(image_id)
         return jsonify(tags), 200
     except Exception as e:
@@ -45,4 +45,4 @@ def retrieve_metadata():
 
 
 if __name__ == '__main__':
-    app.run(port = 9696, debug=True)
+    app.run(port = 12000, debug=True)
