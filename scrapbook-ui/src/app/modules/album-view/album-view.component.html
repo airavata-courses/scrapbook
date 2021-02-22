@@ -51,19 +51,25 @@
 
 
 
-  <div *ngIf="album else loading">
-    <div *ngFor="let image of album.images; let i = index">
-      <div class="py-3" style="border-bottom: 1px solid #ececec;">
-        <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"
-          (editImage)="editImage($event)" (deleteImage)="deleteImage($event)" (starImage)="starImage($event)" [selected]="(selectedImages$ | async)"
-          (selectImage)="onImageSelect($event)">
-        </app-image-list-item>
+  <div *ngIf="album && album.images else loading">
+    <div *ngIf="album.images.length > 0 else loading">
+      <div *ngFor="let image of album.images; let i = index">
+        <div class="py-3" style="border-bottom: 1px solid #ececec;">
+          <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"
+            (editImage)="editImage($event)" (deleteImage)="deleteImage($event)" (starImage)="starImage($event)" [selected]="(selectedImages$ | async)"
+            (selectImage)="onImageSelect($event)">
+          </app-image-list-item>
+        </div>
       </div>
     </div>
   </div>
   <ng-template #loading>
-    <div class="d-flex justify-content-center align-items-center w-100 h-100 mt-5">
-      <mat-spinner [diameter]="30"></mat-spinner>
+    <div class="d-flex justify-content-center align-items-center w-100 h-100 mt-5 flex-column">
+      <div>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </div>
+      <br>
+      <div>Fetching images...</div>
     </div>
   </ng-template>
 </div>

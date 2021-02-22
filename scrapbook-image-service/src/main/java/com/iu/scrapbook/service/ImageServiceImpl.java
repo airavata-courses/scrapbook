@@ -10,7 +10,6 @@ import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,11 +17,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.rmi.NoSuchObjectException;
 import java.time.Instant;
 import java.util.List;
 import java.util.MissingResourceException;
-import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -68,29 +65,29 @@ public class ImageServiceImpl implements ImageService{
             throw new MissingResourceException("Album with Id: "+albumId+" is missing", Album.class.getName(),albumId);
         }
         image.setActive(true);
-        image.setAlbum(album);
+        image.setAlbumGoogleId(album.getGoogleDriveId());
         image = imageRepository.insert(image);
         // update album
-        List<Image> images = imageRepository.findByAlbumGoogleDriveIdAndActive(albumId,true);
+        List<Image> images = imageRepository.findByAlbumGoogleIdAndActive(albumId,true);
         Long size = images.stream().mapToLong(i->i.getSize()).sum();
         //album.setSize(size);
         mongoTemplate.updateFirst(query(where("googleDriveId").is(albumId)),
                 update("size", size), Album.class);
 
-        mongoTemplate.updateFirst(query(where("googleDriveId").is(image.getGoogleDriveId())),
-                update("album", album), Image.class);
+//        mongoTemplate.updateFirst(query(where("googleDriveId").is(image.getGoogleDriveId())),
+//                update("albumGoogleId", album.getGoogleDriveId()), Image.class);
        // albumRepository.save(album);
         return image;
     }
 
     @Override
     public List<Image> retrieveAll(String albumGDriveId, String userId) {
-        return imageRepository.findByAlbumGoogleDriveIdAndCreatedByAndActive(albumGDriveId,userId,true);
+        return imageRepository.findByAlbumGoogleIdAndCreatedByAndActive(albumGDriveId,userId,true);
     }
 
     @Override
     public List<Image> retrieveAllImages(String albumGDriveId) {
-        return imageRepository.findByAlbumGoogleDriveIdAndActive(albumGDriveId,true);
+        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,true);
     }
 
     @Override
@@ -122,7 +119,7 @@ public class ImageServiceImpl implements ImageService{
     @Override
     public Long deleteAlbumImages(String albumGoogleId, String userId) {
 
-        Query query = new Query().addCriteria(new Criteria("album.googleDriveId").is(albumGoogleId));
+        Query query = new Query().addCriteria(new Criteria("albumGoogleId").is(albumGoogleId));
         query.addCriteria(new Criteria("active").is(true));
         Update update = new Update().set("active", false);
         update.set("modifiedBy",userId);
