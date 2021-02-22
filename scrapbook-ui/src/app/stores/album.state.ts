@@ -170,10 +170,12 @@ export class AlbumState {
               pendingUploads: updateItem((i: PendingUploadsStateInterface) => i.name === obj.name, patch({...obj, status: UPLOAD_STATE.done}))
             }),
           );
-          setState({
-            ...getState(),
-            albumInView: {...albumInView, images: [...albumInView.images, res]}
-          })
+          if(albumInView) {
+            setState({
+              ...getState(),
+              albumInView: {...albumInView, images: [...albumInView.images, res]}
+            })
+          }
         }),
         catchError(error => {
           setState(
