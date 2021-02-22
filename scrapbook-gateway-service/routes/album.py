@@ -170,3 +170,111 @@ def updateAlbumNameAndDesc():
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
+
+@album_api.route('/album/<googledriveid>', methods=["PUT"])
+@auth.check_user_session
+def updateAlbum(googledriveid):
+    """
+    responsible for updating album details into database
+
+    @params - A PUT request that is used to modify an existing album 
+    @return - http status code
+    """
+    try:
+        print(request)
+        userid = request.form.get('userid')
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userid}', headers = request.headers, data = request.data)
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+@album_api.route('/album', methods=["DELETE"])
+@auth.check_user_session
+def deleteAllAlbumsForUser():
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - A DELETE request that sets all the albums of a specific user to inactive
+    @return - http status code // change this
+    """
+    try:
+        userid = request.json['userid']
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}')
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/<googledriveid>', methods=["GET"])
+@auth.check_user_session
+def retreieveAlbumByID(googledriveid):
+    """
+    retrieve albums from databse with the id = googledriveid
+
+    @params - A GET request that fetches the albums queiried by its GoogleDriveID
+    @return - http status code
+    """
+    try:
+        userid = request.json['userid']
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response.raise_for_status()
+        return response.json(), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+@album_api.route('/album/<googledriveid>', methods=["DELETE"])
+@auth.check_user_session
+def deleteAlbumByID(googledriveid):
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - A DELETE request that sets all the albums of a specific user to inactive
+    @return - http status code
+    """
+    try:
+        userid = request.json['userid']
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+@album_api.route('/album/<googledriveid>/collaborator/<collaboratorid>', methods=["PUT"])
+@auth.check_user_session
+def addSingleCollaborator(googledriveid, collaboratorid):
+    """
+    adding a single collaborator to the database
+
+    @params - googledriveid, collaboratorid
+    @return - json response with http status code
+    """
+    try:
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}', headers = request.headers, data = request.data)
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+@album_api.route('/album/<googledriveid>/collaborator/<collaboratorid>', methods=["DELETE"])
+@auth.check_user_session
+def removeSingleCollaborator(googledriveid, collaboratorid):
+    """
+    removing a single collaborator to the database
+
+    @params - googledriveid, collaboratorid
+    @return - json response with http status code
+    """
+    try:
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}', headers = request.headers, data = request.data)
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
