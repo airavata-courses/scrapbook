@@ -143,8 +143,6 @@ $ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
 ## Documentation
 
 - [Wiki](https://github.com/airavata-courses/scrapbook/wiki)
-- [User Stories](https://github.com/airavata-courses/scrapbook/wiki/User-Stories)
-- [User Workflow & UML Diagrams](https://github.com/airavata-courses/scrapbook/wiki/User-Workflows-and-Use-Case-Diagram)
 
 ## Project Milestones
 
