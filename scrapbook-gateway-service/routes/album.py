@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
 from service_utils import user_service
-
+import sys
 album_api = Blueprint('album_api', __name__)
 
 
@@ -56,7 +56,7 @@ def getAlbumsOfUser():
     """
     Get all the albums of the user
 
-    @params - A GET request that is sent to fetch all the albums that the user has access to
+    @params - userid (arg)
     @return - list of dictionaries with album details and http status code
     """
     try:
@@ -80,7 +80,7 @@ def getImagesByAlbumID(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
     
-    @params - A GET request that fetches all images from a specific album
+    @params - googledriveid (path variable) 
     @return - json formatted list of images in the album and http status code
     """
     try:
@@ -160,13 +160,13 @@ def updateAlbumNameAndDesc():
         userid = request.json['userid']
         gid = request.json['gid']
 
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{gid}?userid={userid}', data={name: name, description: description})
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}?userid={userid}', data={name: name, description: description})
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
         # aggregatedData = response.json()
         # aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
         #
-        return aggregatedResponse, response.status_code
+        return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
@@ -177,15 +177,14 @@ def updateAlbum(googledriveid):
     """
     responsible for updating album details into database
 
-    @params - A PUT request that is used to modify an existing album 
-    @return - http status code
+    @params - googledriveid (path variable) along with userid as args
+    @return - a json response with the album object details
     """
     try:
-        print(request)
-        userid = request.form.get('userid')
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userid}', headers = request.headers, data = request.data)
+        userID = request.form.get('userid')
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}', headers = request.headers, data = request.data)
         response.raise_for_status()
-        return response.content, response.status_code
+        return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
@@ -196,11 +195,11 @@ def deleteAllAlbumsForUser():
     """
     deleting all albums for given user from the database. It is soft. It sets all albums as inactive
 
-    @params - A DELETE request that sets all the albums of a specific user to inactive
-    @return - http status code // change this
+    @params - userid (arg)
+    @return - http status code
     """
     try:
-        userid = request.json['userid']
+        userID = request.args.get('userid')
         response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}')
         response.raise_for_status()
         return response.content, response.status_code
@@ -215,13 +214,13 @@ def retreieveAlbumByID(googledriveid):
     """
     retrieve albums from databse with the id = googledriveid
 
-    @params - A GET request that fetches the albums queiried by its GoogleDriveID
-    @return - http status code
+    @params - googledriveid of the album (path variable) 
+    @return - a json response with the album object details
     """
     try:
-        userid = request.json['userid']
         response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
         response.raise_for_status()
+        print(response.json(), file=sys.stderr)
         return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
@@ -233,12 +232,13 @@ def deleteAlbumByID(googledriveid):
     """
     deleting all albums for given user from the database. It is soft. It sets all albums as inactive
 
-    @params - A DELETE request that sets all the albums of a specific user to inactive
-    @return - http status code
+    @params - googledriveid (path variable) along with userid as args
+    @return - 0 if the album is successfully deleted
     """
     try:
-        userid = request.json['userid']
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        userID = request.args.get('userid')
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}')
+        print(response.json(), file=sys.stderr)
         response.raise_for_status()
         return response.content, response.status_code
 
@@ -251,13 +251,14 @@ def addSingleCollaborator(googledriveid, collaboratorid):
     """
     adding a single collaborator to the database
 
-    @params - googledriveid, collaboratorid
-    @return - json response with http status code
+    @params - googledriveid, collaboratorid (path variables) along with userid as args
+    @return - a json response with the album object details and updated collaborators list
     """
     try:
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}', headers = request.headers, data = request.data)
+        userID = request.args.get('userid')
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}?userid={userID}', headers = request.headers, data = request.data)
         response.raise_for_status()
-        return response.content, response.status_code
+        return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
@@ -268,13 +269,14 @@ def removeSingleCollaborator(googledriveid, collaboratorid):
     """
     removing a single collaborator to the database
 
-    @params - googledriveid, collaboratorid
-    @return - json response with http status code
+    @params - googledriveid, collaboratorid (path variables) along with userid as args
+    @return - a json response with the album object details and updated collaborators list
     """
     try:
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}', headers = request.headers, data = request.data)
+        userID = request.args.get('userid')
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}?userid={userID}', headers = request.headers, data = request.data)
         response.raise_for_status()
-        return response.content, response.status_code
+        return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
