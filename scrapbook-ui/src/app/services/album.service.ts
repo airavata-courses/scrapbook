@@ -40,8 +40,18 @@ export class AlbumService {
     return this.http.put(`${GATEWAY_URL}/album/collab/add`, {collabid: user, googleDriveId: googleDriveId, owner: owner})
   }
 
-  removeCollaborator(user: string) {
-    
+  removeCollaborator(user: string, owner: string, googleDriveId: string) {
+    return this.http.put(`${GATEWAY_URL}/album/collab/remove`, {collabid: user, googleDriveId: googleDriveId, owner: owner})
+  }
+
+  editAlbumSettings(name: string, desc: string, user: string, gid: string) {
+    const payload = {
+      name: name,
+      description: desc,
+      userid: user,
+      gid: gid
+    }
+    return this.http.put(`${GATEWAY_URL}/album/update`, payload)
   }
 
   uploadFile(file: any, id: string , userid: string) {

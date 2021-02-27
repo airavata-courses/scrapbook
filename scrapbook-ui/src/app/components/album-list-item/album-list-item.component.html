@@ -3,7 +3,7 @@
     <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">
       <div class="d-flex align-items-center pr-4 pl-3">
         <!-- <mat-checkbox class="pr-4" color="primary"></mat-checkbox> -->
-        <fa-icon [icon]="faTh" size="2x" class="text-grey"></fa-icon>
+        <fa-icon [icon]="faTh" size="2x" class="text-grey" (click)="goToAlbum()" style="cursor: pointer;"></fa-icon>
         <div class="pl-3 desc">
           <div class="h6 m-0"><a class="text-dark a" (click)="goToAlbum()">{{album.name}}</a></div>
           <div class="text-muted desc" style="font-size: 8pt;">{{album.description}}</div>
