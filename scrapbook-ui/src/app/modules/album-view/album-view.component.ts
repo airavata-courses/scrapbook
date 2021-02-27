@@ -3,7 +3,7 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage, DeleteImages } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage, DeleteImages, DeleteAlbum } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -138,6 +138,10 @@ export class AlbumViewComponent implements OnInit {
     albumSettingsDialog.componentInstance.update.subscribe(data => {
       this.store.dispatch(new EditAlbumSettings(data.name, data.description))
     });
+
+    albumSettingsDialog.componentInstance.delete.subscribe(data => {
+      this.store.dispatch(new DeleteAlbum(this.album.googleDriveId));
+    })
 
     albumSettingsDialog.afterClosed().subscribe(_ => {
       this.store.dispatch(new CloseSettings());

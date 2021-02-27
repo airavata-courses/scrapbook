@@ -91,6 +91,9 @@ export class AlbumService {
         });
       })
     })
-    
   }
+
+  deleteAlbum(albumid: string, userid: string) {
+    return this.http.delete(`${GATEWAY_URL}/album/${albumid}?userid=${userid}`);
+  } 
 }

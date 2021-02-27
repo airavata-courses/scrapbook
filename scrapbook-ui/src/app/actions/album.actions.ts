@@ -146,3 +146,8 @@ export class RemoveImageForAlbum {
   static readonly type = 'REMOVE image from albumin view';
   constructor(public id: string) {}
 }
+
+export class DeleteAlbum {
+  static readonly type = 'DELETe album';
+  constructor(public albumid: string) {}
+}

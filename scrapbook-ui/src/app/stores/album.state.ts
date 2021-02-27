@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
-import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum } from '../actions/album.actions';
+import { Injectable, Inject, NgZone } from '@angular/core';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -12,6 +12,8 @@ import { ImageService } from '../services/image.service';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { User } from '../models/user.model';
 import { RemoveSearchedUserBySubString } from '../actions/user.actions';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -45,7 +47,7 @@ export class AlbumStateModel {
 })
 @Injectable()
 export class AlbumState {
-  constructor(public albumService: AlbumService, public store: Store, private sanitizer: DomSanitizer, public imageService: ImageService) {}
+  constructor(public albumService: AlbumService, public store: Store, private sanitizer: DomSanitizer, public imageService: ImageService, private ngZone:NgZone, private location: Location, private router: Router) {}
 
   @Selector()
   static getInfoModalState(state: AlbumStateModel) {
@@ -213,6 +215,9 @@ export class AlbumState {
     dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumByID(id).pipe(
       tap((res: Album) => {
+        if(!res.active) {
+          this.location.back()
+        }
         setState({
           ...state,
           albumInView: res,
@@ -452,12 +457,25 @@ export class AlbumState {
     this.imageService.deleteImages(images, userid, albumid);
   }
 
-  @Action(RemoveImageForAlbum)
-  removeImageFromAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}:RemoveImageForAlbum) {
+  @Action(DeleteAlbum)
+  deleteAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {albumid}:DeleteAlbum) {
     const state = getState();
-    setState({
-      ...state,
-      albumInView: {...state.albumInView, images: state.albumInView.images.filter(i => i.googleDriveId !== id)}
-    })
+    dispatch(new OpenLoading());
+    const userid = localStorage.getItem('scrapbook-userid');
+    return this.albumService.deleteAlbum(albumid, userid).pipe(
+      tap((res) => {
+        setState({
+          ...state,
+          albumInView: {},
+          selectedImages: []
+        })
+        dispatch(new CloseSettings());
+        this.ngZone.run(() => this.router.navigate(['/home']));
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
   }
+
 }
