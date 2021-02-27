@@ -245,38 +245,3 @@ def deleteAlbumByID(googledriveid):
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
 
-@album_api.route('/album/<googledriveid>/collaborator/<collaboratorid>', methods=["PUT"])
-@auth.check_user_session
-def addSingleCollaborator(googledriveid, collaboratorid):
-    """
-    adding a single collaborator to the database
-
-    @params - googledriveid, collaboratorid (path variables) along with userid as args
-    @return - a json response with the album object details and updated collaborators list
-    """
-    try:
-        userID = request.args.get('userid')
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}?userid={userID}', headers = request.headers, data = request.data)
-        response.raise_for_status()
-        return response.json(), response.status_code
-
-    except requests.exceptions.HTTPError as err:
-        return err.response.text, err.response.status_code
-
-@album_api.route('/album/<googledriveid>/collaborator/<collaboratorid>', methods=["DELETE"])
-@auth.check_user_session
-def removeSingleCollaborator(googledriveid, collaboratorid):
-    """
-    removing a single collaborator to the database
-
-    @params - googledriveid, collaboratorid (path variables) along with userid as args
-    @return - a json response with the album object details and updated collaborators list
-    """
-    try:
-        userID = request.args.get('userid')
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/collaborator/{collaboratorid}?userid={userID}', headers = request.headers, data = request.data)
-        response.raise_for_status()
-        return response.json(), response.status_code
-
-    except requests.exceptions.HTTPError as err:
-        return err.response.text, err.response.status_code
