@@ -136,3 +136,13 @@ export class RenameImage {
   static readonly type = 'RENAME image';
   constructor(public name: string, public imgid: string) {}
 }
+
+export class DeleteImages {
+  static readonly type = 'DELETE Images';
+  constructor(public images: string[], public albumid: string){}
+}
+
+export class RemoveImageForAlbum {
+  static readonly type = 'REMOVE image from albumin view';
+  constructor(public id: string) {}
+}

@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -217,7 +217,8 @@ export class AlbumState {
           ...state,
           albumInView: res,
         })
-        dispatch(new FetchImagesOfAlbum(res.googleDriveId));        
+        dispatch(new FetchImagesOfAlbum(res.googleDriveId));     
+         
       }),
       catchError((err) => {
         dispatch(new SetPageError('401'));
@@ -234,9 +235,11 @@ export class AlbumState {
         tap((res: Image[]) => {
           setState({
             ...state,
+            selectedImages: [],
             albumInView: {...album, images: res}
           });
           dispatch(new CloseAlbumLoading());
+          dispatch(new CloseLoading());
         }),
         catchError((err) => {
           dispatch(new SetPageError('500'));
@@ -439,5 +442,22 @@ export class AlbumState {
         return of(JSON.stringify(err))
       })
     )
+  }
+
+  @Action(DeleteImages)
+  deleteImages({getState, setState, dispatch}: StateContext<AlbumStateModel>, {images, albumid}:DeleteImages) {
+    const state = getState();
+    dispatch(new OpenLoading());
+    const userid = localStorage.getItem('scrapbook-userid');
+    this.imageService.deleteImages(images, userid, albumid);
+  }
+
+  @Action(RemoveImageForAlbum)
+  removeImageFromAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}:RemoveImageForAlbum) {
+    const state = getState();
+    setState({
+      ...state,
+      albumInView: {...state.albumInView, images: state.albumInView.images.filter(i => i.googleDriveId !== id)}
+    })
   }
 }
