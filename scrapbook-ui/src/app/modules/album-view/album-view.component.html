@@ -51,8 +51,8 @@
 
 
 
-  <div *ngIf="album && album.images else loading">
-    <div *ngIf="album.images.length > 0 else loading">
+  <div *ngIf="!(albumLoading$ | async) else loading">
+    <div *ngIf="album && album.images && album.images.length > 0">
       <div *ngFor="let image of album.images; let i = index">
         <div class="py-3" style="border-bottom: 1px solid #ececec;">
           <app-image-list-item (showImageInfo)="showImageInfo($event)" [image]="image" (showImage)="showImage($event)"

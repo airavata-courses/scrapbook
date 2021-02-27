@@ -35,9 +35,9 @@ export class AlbumViewComponent implements OnInit {
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
   @Select(AlbumState.getSelectedImageState) selectedImages$: Observable<Array<Image>>;
+  @Select(AlbumState.getAlbumLoading) albumLoading$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
-    console.log(this.dialog.getDialogById('AlbumSettingsModal'))
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 

@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -24,6 +24,7 @@ export class AlbumStateModel {
   pendingUploads: Array<PendingUploadsStateInterface>;
   selectedImages: Array<Image>;
   collaborators: Array<User[]>;
+  loading: boolean;
 }
 
 @State<AlbumStateModel>({
@@ -38,7 +39,8 @@ export class AlbumStateModel {
     imgBlob: null,
     pendingUploads: [],
     selectedImages: [],
-    collaborators: []
+    collaborators: [],
+    loading: true
   }
 })
 @Injectable()
@@ -80,6 +82,11 @@ export class AlbumState {
     return state.selectedImages;
   }
 
+  @Selector()
+  static getAlbumLoading(state: AlbumStateModel) {
+    return state.loading;
+  }
+
   @Action(OpenAlbumInfo)
   openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
@@ -107,21 +114,25 @@ export class AlbumState {
       albumInfoOpen: false
     });
   }
+
+
   @Action(FetchAllAlbumsOfUser)
   fetchAllAlbumsOfUser({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
     const state = getState();
-
+    dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
 
         dispatch(new CloseLoading());
         setState({
            ...state,
-           allAlbumsOfUser: response
+           allAlbumsOfUser: response,
+           loading: false
          });
       }),
       catchError((err) => {
-        dispatch(new SetPageError('401'));
+        console.log(err)
+        // dispatch(new SetPageError('401'));
         return of(JSON.stringify(err))
       })
     );
@@ -199,13 +210,15 @@ export class AlbumState {
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
+    console.log('HEEEEEE')
+    dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumByID(id).pipe(
       tap((res: Album) => {
         setState({
           ...state,
-          albumInView: res
+          albumInView: res,
         })
-        dispatch(new FetchImagesOfAlbum(res.googleDriveId))
+        dispatch(new FetchImagesOfAlbum(res.googleDriveId));        
       }),
       catchError((err) => {
         dispatch(new SetPageError('401'));
@@ -224,6 +237,7 @@ export class AlbumState {
             ...state,
             albumInView: {...album, images: res}
           });
+          dispatch(new CloseAlbumLoading());
         }),
         catchError((err) => {
           dispatch(new SetPageError('500'));
@@ -384,5 +398,23 @@ export class AlbumState {
         return of(JSON.stringify(err))
       })
     )
+  }
+
+  @Action(StartAlbumLoading)
+  startAlbumLoading({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loading: true
+    })
+  }
+
+  @Action(CloseAlbumLoading)
+  stopAlbumLoading({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loading: false
+    })
   }
 }

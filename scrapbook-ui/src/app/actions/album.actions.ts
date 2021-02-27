@@ -121,3 +121,13 @@ export class EditAlbumSettings {
   static readonly type = '[EDIT] Album Settings';
   constructor(public name: string, public desc: string) {}
 }
+
+export class StartAlbumLoading {
+  static readonly type ='Start Album Loading';
+  constructor() {}
+}
+
+export class CloseAlbumLoading {
+  static readonly type ='Start Album Loading';
+  constructor() {}
+}
