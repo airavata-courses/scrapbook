@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -210,7 +210,6 @@ export class AlbumState {
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
-    console.log('HEEEEEE')
     dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumByID(id).pipe(
       tap((res: Album) => {
@@ -416,5 +415,29 @@ export class AlbumState {
       ...state,
       loading: false
     })
+  }
+
+  @Action(RenameImage)
+  renameImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, imgid}:RenameImage) {
+    const state = getState();
+    const images = [...state.albumInView.images];
+    const userid = localStorage.getItem('scrapbook-userid');
+    dispatch(new OpenLoading());
+    const idx = images.findIndex(i => i.googleDriveId === imgid);
+
+    return this.imageService.renameImage(userid, imgid, name).pipe(
+      tap((res: Image) => {
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, images: [...images.slice(0, idx),res, ...images.slice(idx + 1)]}
+        })
+        dispatch(new CloseLoading())
+        
+      }),
+      catchError((err) => {
+        dispatch(new CloseLoading())
+        return of(JSON.stringify(err))
+      })
+    )
   }
 }

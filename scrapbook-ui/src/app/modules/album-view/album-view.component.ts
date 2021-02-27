@@ -3,7 +3,7 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -185,8 +185,28 @@ export class AlbumViewComponent implements OnInit {
     this.store.dispatch(new DownloadImage(img, name));
   }
 
-  editImage(data: any) {
-
+  async editImage(data: Image) {
+    
+    const { value: imageName } = await Swal.fire({
+      title: 'Edit Image Name',
+      input: 'text',
+      inputLabel: 'Image name',
+      inputPlaceholder: 'Enter Image Name',
+      inputValue: data.name.split('.')[0],
+      confirmButtonText: 'Update',
+      customClass: {
+        header: 'text-left',
+        container: 'd-flex justify-content-start',
+        popup: 'd-flex justify-content-start',
+        title: 'text-left',
+        input: 'bg-light border-0 form-control',
+        confirmButton: 'bg-success',
+      }
+    })
+    
+    if (imageName) {
+       this.store.dispatch(new RenameImage(`${imageName}.${data.extension}`, data.googleDriveId))
+    }
   }
 
   deleteImage(data: any) {

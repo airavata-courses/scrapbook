@@ -131,3 +131,8 @@ export class CloseAlbumLoading {
   static readonly type ='Start Album Loading';
   constructor() {}
 }
+
+export class RenameImage {
+  static readonly type = 'RENAME image';
+  constructor(public name: string, public imgid: string) {}
+}

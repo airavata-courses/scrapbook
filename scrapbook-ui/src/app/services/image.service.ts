@@ -7,6 +7,8 @@ import { saveAs } from "file-saver";
 import { Store } from '@ngxs/store';
 import { CloseLoading } from '../actions/ui.actions';
 import { Album } from '../models/album.model';
+import { HttpClient } from '@angular/common/http';
+import { GATEWAY_URL } from '../static/url';
 
 
 @Injectable({
@@ -14,7 +16,22 @@ import { Album } from '../models/album.model';
 })
 export class ImageService {
 
-  constructor(public albumService: AlbumService, public store: Store) { }
+  constructor(public albumService: AlbumService, public store: Store, public http: HttpClient) { }
+  renameImage(userid: string, googleDriveId: string, name: string) {
+    const payload = {
+      userid: userid,
+      googleDriveId: googleDriveId,
+      name: name
+    }
+
+    console.log(payload)
+
+    return this.http.put(`${GATEWAY_URL}/image/${googleDriveId}`, payload);
+  }
+
+  deleteImages(images: string[]) {
+
+  }
 
   downloadImage(img: any, fileName: string, blob: Blob) {
     const url = window.URL.createObjectURL(blob);
