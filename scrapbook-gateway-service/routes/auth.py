@@ -24,8 +24,10 @@ def login():
         print('user', response.text)
         # Adds user to session after authenticating
         session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set',
-                                         data={"userID": response.json()["_id"], "token": user['token']})
+                                        data={"userID": response.json()["_id"], "token": user['token']})
+        print(session_response.json())
         session_response.raise_for_status()
+        
         return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
