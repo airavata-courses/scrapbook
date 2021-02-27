@@ -38,7 +38,7 @@ def retrieve_metadata():
 
     try:
         image_id = request.args.get('id')
-        tags = mongo.db.metadata.find_one_or_404(image_id)
+        tags = mongo.db.metadata.find_one_or_404({"uniqueIdentifier":image_id})
         return jsonify(tags), 200
     except Exception as e:
         return "Not Found", 404
