@@ -61,7 +61,7 @@ export class CollabComponent implements OnInit {
       confirmButtonText: 'Yes, remove!',
       cancelButtonText: 'Cancel',
       confirmButtonColor: '#EB7373',
-      cancelButtonColor: '#737CEB'
+      cancelButtonColor: '#85C685'
     }).then((result) => {
       if (result.value) {
         this.store.dispatch(new RemoveAlbumCollaborator(e, this.currentAlbum.createdBy))
@@ -81,7 +81,7 @@ export class CollabComponent implements OnInit {
       confirmButtonText: 'Yes, for sure!',
       cancelButtonText: 'Cancel',
       confirmButtonColor: '#85C685',
-      cancelButtonColor: '#737CEB'
+      cancelButtonColor: '#EB7373'
     }).then((result) => {
       if (result.value) {
         this.store.dispatch(new AddAlbumCollaborator(e, this.currentAlbum.createdBy))

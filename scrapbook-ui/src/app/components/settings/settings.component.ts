@@ -18,7 +18,7 @@ export class SettingsComponent implements OnInit {
   faTimes = faTimes;
 
   constructor(@Inject(MAT_DIALOG_DATA) data: any) {
-    this.data = data;
+    this.data = Object.assign({}, data);
   }
 
   ngOnInit(): void {

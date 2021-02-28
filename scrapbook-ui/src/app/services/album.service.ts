@@ -51,7 +51,7 @@ export class AlbumService {
       userid: user,
       gid: gid
     }
-    return this.http.put(`${GATEWAY_URL}/album/update`, payload)
+    return this.http.put(`${GATEWAY_URL}/album/${gid}`, payload)
   }
 
   uploadFile(file: any, id: string , userid: string) {
@@ -91,6 +91,9 @@ export class AlbumService {
         });
       })
     })
-    
   }
+
+  deleteAlbum(albumid: string, userid: string) {
+    return this.http.delete(`${GATEWAY_URL}/album/${albumid}?userid=${userid}`);
+  } 
 }

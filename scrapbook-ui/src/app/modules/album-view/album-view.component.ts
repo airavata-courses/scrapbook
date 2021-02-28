@@ -3,7 +3,7 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage, DeleteImages, DeleteAlbum } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -35,9 +35,9 @@ export class AlbumViewComponent implements OnInit {
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
   @Select(AlbumState.getSelectedImageState) selectedImages$: Observable<Array<Image>>;
+  @Select(AlbumState.getAlbumLoading) albumLoading$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
-    console.log(this.dialog.getDialogById('AlbumSettingsModal'))
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
 
@@ -53,6 +53,12 @@ export class AlbumViewComponent implements OnInit {
       if (status) { this.openSettingsModal(); }
       else { this.closeSettingsModal(); }
     });
+
+    this.selectedImages$.subscribe((data) => {
+      if (data) {
+        this.selectedImages = data;
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -82,9 +88,10 @@ export class AlbumViewComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it',
       confirmButtonColor: '#EB7373',
-      cancelButtonColor: '#737CEB'
+      cancelButtonColor: '#85C685'
     }).then((result) => {
       if (result.value) {
+        this.store.dispatch(new DeleteImages(this.selectedImages.map(i => {return i.googleDriveId}), this.album.googleDriveId))
       } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
     });
@@ -131,6 +138,10 @@ export class AlbumViewComponent implements OnInit {
     albumSettingsDialog.componentInstance.update.subscribe(data => {
       this.store.dispatch(new EditAlbumSettings(data.name, data.description))
     });
+
+    albumSettingsDialog.componentInstance.delete.subscribe(data => {
+      this.store.dispatch(new DeleteAlbum(this.album.googleDriveId));
+    })
 
     albumSettingsDialog.afterClosed().subscribe(_ => {
       this.store.dispatch(new CloseSettings());
@@ -185,12 +196,45 @@ export class AlbumViewComponent implements OnInit {
     this.store.dispatch(new DownloadImage(img, name));
   }
 
-  editImage(data: any) {
-
+  async editImage(data: Image) {
+    
+    const { value: imageName } = await Swal.fire({
+      title: 'Edit Image Name',
+      input: 'text',
+      inputLabel: 'Image name',
+      inputPlaceholder: 'Enter Image Name',
+      inputValue: data.name.split('.')[0],
+      confirmButtonText: 'Update',
+      customClass: {
+        header: 'text-left',
+        container: 'd-flex justify-content-start',
+        popup: 'd-flex justify-content-start',
+        title: 'text-left',
+        input: 'bg-light border-0 form-control',
+        confirmButton: 'bg-success',
+      }
+    })
+    
+    if (imageName) {
+       this.store.dispatch(new RenameImage(`${imageName}.${data.extension}`, data.googleDriveId))
+    }
   }
 
-  deleteImage(data: any) {
-
+  deleteImage(data: Image) {
+    Swal.fire({
+      title: 'Are you sure you want to delete the images?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      confirmButtonColor: '#EB7373',
+      cancelButtonColor: '#85C685'
+    }).then((result) => {
+      if (result.value) {
+        this.store.dispatch(new DeleteImages([data.googleDriveId], this.album.googleDriveId))
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
+    });
   }
 
   starImage(data: any) {

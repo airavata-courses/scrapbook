@@ -1,8 +1,8 @@
 <div class="w-100 text-dark">
 
   <div class="row d-flex align-items-center">
-    <div class="col-xl-5 col-lg-5 col-md-45col-sm-12 col-12">
-      <div class="d-flex align-items-center pr-4">
+    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+      <div class="d-flex align-items-center pr-4 pl-3">
         <mat-checkbox class="pr-4" color="primary" (change)="onImageSelect($event)" [checked]="currentImage.isSelected"></mat-checkbox>
         <fa-icon [icon]="faFileImage" size="2x" class="text-grey"  (click)="onShowImage(currentImage)" style="cursor: pointer;"></fa-icon>
         <div class="pl-3 desc">
@@ -51,13 +51,13 @@
           </button>
         </div>
       </div>
-      <mat-menu #options>
+      <mat-menu #options class="menu">
         <menu mat-menu-item (click)="onShowImageInfo()">Info</menu>
         <menu mat-menu-item (click)="onShowImage(currentImage)">Open</menu>
-        <menu mat-menu-item>Edit</menu>
+        <menu mat-menu-item (click)="onEditImage()">Edit</menu>
         <menu mat-menu-item>Star</menu>
         <mat-divider></mat-divider>
-        <menu mat-menu-item>Delete</menu>
+        <menu mat-menu-item (click)="onDeleteImage()">Delete</menu>
       </mat-menu>
       <mat-menu #accessReq>
       </mat-menu>

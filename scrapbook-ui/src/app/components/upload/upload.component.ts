@@ -27,8 +27,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
   @Select(AlbumState.getAllAlbumsOfUser) allAlbumsOfUser$: Observable<Album[]>;
 
   selectedAlbum = '';
-  newAlbum: string;
-  newAlbumDescription: string;
+  newAlbum: string = '';
+  newAlbumDescription: string = '';
   files: File[] = [];
   currentStep = 0;
   isAlbumView = false;
