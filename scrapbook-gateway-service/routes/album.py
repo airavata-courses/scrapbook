@@ -4,6 +4,7 @@ from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
 from service_utils import user_service
 import sys
+
 album_api = Blueprint('album_api', __name__)
 
 
@@ -151,26 +152,6 @@ def removeCollaborator():
         return err.response.text, err.response.status_code
 
 
-@album_api.route('/album/update', methods=["PUT"])
-@auth.check_user_session
-def updateAlbumNameAndDesc():
-    try:
-        name = request.json['name']
-        description = request.json['description']
-        userid = request.json['userid']
-        gid = request.json['gid']
-
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}?userid={userid}', data={name: name, description: description})
-        response.raise_for_status()
-        aggregatedResponse = user_service.aggregateUser(response)
-        # aggregatedData = response.json()
-        # aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
-        #
-        return jsonify(aggregatedResponse), response.status_code
-
-    except requests.exceptions.HTTPError as err:
-        return err.response.text, err.response.status_code
-
 @album_api.route('/album/<googledriveid>', methods=["PUT"])
 @auth.check_user_session
 def updateAlbum(googledriveid):
@@ -181,13 +162,15 @@ def updateAlbum(googledriveid):
     @return - a json response with the album object details
     """
     try:
-        userID = request.form.get('userid')
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}', headers = request.headers, data = request.data)
+        userID = request.json['userid']
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}',
+                                headers=request.headers, data=request.data)
         response.raise_for_status()
         return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
+
 
 @album_api.route('/album', methods=["DELETE"])
 @auth.check_user_session
@@ -226,6 +209,7 @@ def retreieveAlbumByID(googledriveid):
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
 
+
 @album_api.route('/album/<googledriveid>', methods=["DELETE"])
 @auth.check_user_session
 def deleteAlbumByID(googledriveid):
@@ -244,4 +228,3 @@ def deleteAlbumByID(googledriveid):
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
-

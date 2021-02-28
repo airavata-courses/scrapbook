@@ -57,13 +57,15 @@ def renameImage(GoogeDriveID):
     try:
         userID = request.json.get('userid')
         name = request.json['name']
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}', headers=request.headers,
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}',
+                                headers=request.headers,
                                 data=request.data)
         response.raise_for_status()
         return response.json(), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
+
 
 @image_api.route('/image/<GoogeDriveID>', methods=["DELETE"])
 @auth.check_user_session
@@ -75,8 +77,9 @@ def deleteImage(GoogeDriveID):
     """
     try:
         userID = request.args.get('userid')
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}', headers=request.headers,
-                                data=request.data)
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}',
+                                   headers=request.headers,
+                                   data=request.data)
         response.raise_for_status()
         return response.content, response.status_code
 

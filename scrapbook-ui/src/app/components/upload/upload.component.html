@@ -28,7 +28,7 @@
             <div class="mt-4">
               <input class="form-control border-0 bg-light w-75 mr-3 py-2 w-100" placeholder="Album name..." [(ngModel)]="newAlbum" >
               <textarea class="form-control border-0 bg-light w-75 mr-3 py-2 mt-3 w-100" placeholder="Album description..." rows="3" [(ngModel)]="newAlbumDescription" ></textarea>
-              <button class="btn btn-primary mt-3" (click)="createAlbum()">Add</button>
+              <button class="btn btn-primary mt-3" (click)="createAlbum()" [disabled]="!newAlbum.trim()">Add</button>
             </div>
           </div></div>
         
