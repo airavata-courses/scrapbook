@@ -25,7 +25,7 @@ def predict_image():
         file = request.files['file']
         image_id = request.form.get('id')
         detections = get_predictions(file) 
-        class_tags = {"image_id": image_id, "classLabels": detections}
+        class_tags = {"id": image_id, "classLabels": detections}
         mongo.db.classtags.insert_one(class_tags)
         return "Successfully added", 200
     except Exception as e:
@@ -43,8 +43,9 @@ def retrieve_classlabels():
 
     try:
         image_id = request.args.get('id')
-        print(image_id, file=sys.stderr)
-        tags = mongo.db.classtags.find_one_or_404({"image_id":image_id})
+        tags = mongo.db.classtags.find_one_or_404({"id":image_id})
+        #to preserve JSON serializability
+        del tags['_id']
         return jsonify(tags), 200
     except Exception as e:
         return "Not Found", 404
