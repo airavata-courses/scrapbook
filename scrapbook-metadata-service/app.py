@@ -23,7 +23,7 @@ def extract_metadata():
         #Converting all the values in tag to str (for json serializability)
         for tag in tags.keys():
             tags[tag] = str(tags[tag]) 
-        meta_data = {"uniqueIdentifier": image_id, "tags": tags}
+        meta_data = {"id": image_id, "tags": tags}
         mongo.db.metadata.insert_one(meta_data)
         return "Successfully added", 200
     except Exception as e:
@@ -38,10 +38,12 @@ def retrieve_metadata():
 
     try:
         image_id = request.args.get('id')
-        tags = mongo.db.metadata.find_one_or_404({"uniqueIdentifier":image_id})
+        tags = mongo.db.metadata.find_one_or_404({"id": image_id})
+        #remove it cause it is not json serializable
+        del tags['_id']
         return jsonify(tags), 200
     except Exception as e:
-        return "Not Found", 404
+        return str(e), 404
 
 
 if __name__ == '__main__':
