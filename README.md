@@ -126,7 +126,7 @@ $ python app.py
 $ cd scrapbook-google-drive-service
 $ mvn clean install
 $ cd target
-$ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
+$ java -jar -D spring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
 ```
 
 #### scrapbook-image-service
@@ -136,7 +136,7 @@ $ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.ja
 $ cd scrapbook-image-service
 $ mvn clean install
 $ cd target
-$ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+$ java -jar -D spring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
 ```
 
 
