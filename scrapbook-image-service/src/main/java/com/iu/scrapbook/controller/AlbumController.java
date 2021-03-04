@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 /**
  * This controller contains all APIs related to image
  *
@@ -89,6 +88,13 @@ public class AlbumController {
         return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl(userId));
     }
 
+    @Operation(summary = "Retrieve all active shared albums for given user from database", description = "This API is responsible for " +
+            "retrieving all active shared albums for given user from the database.")
+    @GetMapping(path="/shared")
+    public ResponseEntity<List<Album>> sharedAlbums(@RequestParam("userid") String userId){
+        log.info("Request for retrieving all active album ");
+        return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveSharedAlbum(userId));
+    }
 
     @Operation(summary = "Retrieve album from database for given userId and googleDriveId", description = "This API is responsible for " +
             "retrieving album for given user and and googleDriveId from the database.")

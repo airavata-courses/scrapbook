@@ -125,6 +125,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public List<Album> retrieveSharedAlbum(String userId) {
+       return albumRepository.findByCollaboratorsIn(userId);
+    }
+
+    @Override
     public void deleteAll(String userId) {
         mongoTemplate.updateMulti(query(where("createdBy").is(userId)),
                 update("active", false), Album.class);

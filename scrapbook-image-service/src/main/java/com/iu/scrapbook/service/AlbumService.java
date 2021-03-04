@@ -25,6 +25,8 @@ public interface AlbumService {
 
     List<Album> retrieveALl();
 
+    List<Album> retrieveSharedAlbum(String userId);
+
     void deleteAll(String userId);
 
     Long deleteByGoogleDriveId(String id,  String userId);
