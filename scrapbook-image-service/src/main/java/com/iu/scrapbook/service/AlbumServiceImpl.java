@@ -201,5 +201,10 @@ public class AlbumServiceImpl implements AlbumService{
          return albumRepository.findByGoogleDriveId(googleDriveId);
     }
 
+    @Override
+    public List<Album>  retrieveDeletedImage(String userId) {
+        return albumRepository.findByCreatedByAndActive(userId,false);
+    }
+
 
 }

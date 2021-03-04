@@ -91,6 +91,11 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
+    public List<Image> retrieveInactiveImages(String albumGDriveId, Boolean active) {
+        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,false);
+    }
+
+    @Override
     public List<Image> retrieveAll(String userId) {
         return imageRepository.findByCreatedByAndActive(userId,true);
     }

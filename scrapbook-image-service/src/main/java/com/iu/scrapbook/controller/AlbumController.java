@@ -113,6 +113,18 @@ public class AlbumController {
     @GetMapping("/{googledriveid}/image")
     public ResponseEntity<List<Image>> retrieveAllImages(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
+                body(imageService.retrieveInactiveImages(googleDriveId,false));
+    }
+
+    /**
+     *
+     * @return album created
+     */
+    @Operation(summary = "Retrieve all images from database for given album and userId", description = "This API is responsible for " +
+            "retrieving all images for given user and album from the database.")
+    @GetMapping("/{googledriveid}/image/inactive")
+    public ResponseEntity<List<Image>> retrieveInactiveImages(@PathVariable("googledriveid") String googleDriveId){
+        return ResponseEntity.status(HttpStatus.OK).
                 body(imageService.retrieveAllImages(googleDriveId));
     }
 
@@ -164,6 +176,18 @@ public class AlbumController {
     public ResponseEntity<Album> removeCollaborators(@PathVariable("googledriveid") String googleDriveId, @RequestBody CollaboratorRequest request, @RequestParam("userid") String userId){
         Album album = albumService.removeCollaborators(googleDriveId,request.getIds(),userId);
         return ResponseEntity.ok(album);
+    }
+
+    /**
+     *
+     * @return album created
+     */
+    @Operation(summary = "Retrieve all deleted albums from database for userId as owner", description = "This API is responsible for " +
+            "retrieving all deleted albums for given user as owner")
+    @GetMapping(value = "/inactive")
+    public ResponseEntity<List<Album>> retrieveDeletedImage(@RequestParam("userid") String userId){
+        return ResponseEntity.status(HttpStatus.OK).
+                body(albumService.retrieveDeletedImage(userId));
     }
 
 }

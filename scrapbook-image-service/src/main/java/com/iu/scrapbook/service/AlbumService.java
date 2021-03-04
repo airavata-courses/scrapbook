@@ -41,4 +41,6 @@ public interface AlbumService {
 
     Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
 
+    List<Album> retrieveDeletedImage(String userId);
+
 }

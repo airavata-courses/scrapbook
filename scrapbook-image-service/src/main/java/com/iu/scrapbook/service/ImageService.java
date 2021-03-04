@@ -1,6 +1,5 @@
 package com.iu.scrapbook.service;
 
-import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.ImageRequest;
 
@@ -19,6 +18,8 @@ public interface ImageService {
     List<Image> retrieveAll(String albumGDriveId, String userId);
 
     List<Image> retrieveAllImages(String albumGDriveId);
+
+    List<Image> retrieveInactiveImages(String albumGDriveId,Boolean active);
 
     List<Image> retrieveAll(String userId);
 
