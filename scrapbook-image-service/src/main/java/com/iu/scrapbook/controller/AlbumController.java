@@ -4,6 +4,8 @@ import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CollaboratorRequest;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
+import com.iu.scrapbook.dto.SearchImageRequest;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
 import com.iu.scrapbook.exception.GoogleDriveException;
@@ -14,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
-
 
 /**
  * This controller contains all APIs related to image
@@ -89,6 +91,13 @@ public class AlbumController {
         return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveALl(userId));
     }
 
+    @Operation(summary = "Retrieve all active shared albums for given user from database", description = "This API is responsible for " +
+            "retrieving all active shared albums for given user from the database.")
+    @GetMapping(path="/shared")
+    public ResponseEntity<List<Album>> sharedAlbums(@RequestParam("userid") String userId){
+        log.info("Request for retrieving all active album ");
+        return ResponseEntity.status(HttpStatus.OK).body(albumService.retrieveSharedAlbum(userId));
+    }
 
     @Operation(summary = "Retrieve album from database for given userId and googleDriveId", description = "This API is responsible for " +
             "retrieving album for given user and and googleDriveId from the database.")
@@ -106,6 +115,18 @@ public class AlbumController {
             "retrieving all images for given user and album from the database.")
     @GetMapping("/{googledriveid}/image")
     public ResponseEntity<List<Image>> retrieveAllImages(@PathVariable("googledriveid") String googleDriveId){
+        return ResponseEntity.status(HttpStatus.OK).
+                body(imageService.retrieveInactiveImages(googleDriveId,false));
+    }
+
+    /**
+     *
+     * @return album created
+     */
+    @Operation(summary = "Retrieve all images from database for given album and userId", description = "This API is responsible for " +
+            "retrieving all images for given user and album from the database.")
+    @GetMapping("/{googledriveid}/image/inactive")
+    public ResponseEntity<List<Image>> retrieveInactiveImages(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
                 body(imageService.retrieveAllImages(googleDriveId));
     }
@@ -158,6 +179,41 @@ public class AlbumController {
     public ResponseEntity<Album> removeCollaborators(@PathVariable("googledriveid") String googleDriveId, @RequestBody CollaboratorRequest request, @RequestParam("userid") String userId){
         Album album = albumService.removeCollaborators(googleDriveId,request.getIds(),userId);
         return ResponseEntity.ok(album);
+    }
+
+    @Operation(summary = "Retrieve all deleted albums from database for userId as owner", description = "This API is responsible for " +
+            "retrieving all deleted albums for given user as owner")
+    @GetMapping(value = "/inactive")
+    public ResponseEntity<List<Album>> retrieveDeletedAlbum(@RequestParam("userid") String userId){
+        return ResponseEntity.status(HttpStatus.OK).
+                body(albumService.retrieveDeletedAlbum(userId));
+    }
+
+
+    @Operation(summary = "Search all albums from given search criteria for userId as owner", description = "This API is responsible for " +
+            "searching all albums for given search criteria")
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Album>> search(SearchAlbumRequest request, @RequestParam("userid") String userId){
+        ResponseEntity<List<Album>> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
+        } catch (ParseException e) {
+            responseEntity = ResponseEntity.badRequest().build();
+        }
+        return responseEntity;
+    }
+
+    @Operation(summary = "Search all images in an album from given search criteria for userId as owner", description = "This API is responsible for " +
+            "searching all images in an album for given search criteria")
+    @GetMapping(value = "/{albumdriveid}/image/search")
+    public ResponseEntity<List<Image>> search(SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId) {
+        ResponseEntity<List<Image>> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.status(HttpStatus.OK).body(imageService.search(request, albumId,userId));
+        } catch (ParseException e) {
+            responseEntity = ResponseEntity.badRequest().build();
+        }
+        return responseEntity;
     }
 
 }
