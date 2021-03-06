@@ -40,7 +40,6 @@ public interface AlbumService {
     Album removeCollaborator(String googleDriveId, String collaboratorId, String userId);
 
     Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
-
-    List<Album> retrieveDeletedImage(String userId);
+    List<Album> retrieveDeletedAlbum(String userId);
 
 }

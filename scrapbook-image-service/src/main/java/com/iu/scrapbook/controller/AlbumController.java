@@ -178,16 +178,12 @@ public class AlbumController {
         return ResponseEntity.ok(album);
     }
 
-    /**
-     *
-     * @return album created
-     */
     @Operation(summary = "Retrieve all deleted albums from database for userId as owner", description = "This API is responsible for " +
             "retrieving all deleted albums for given user as owner")
     @GetMapping(value = "/inactive")
-    public ResponseEntity<List<Album>> retrieveDeletedImage(@RequestParam("userid") String userId){
+    public ResponseEntity<List<Album>> retrieveDeletedAlbum(@RequestParam("userid") String userId){
         return ResponseEntity.status(HttpStatus.OK).
-                body(albumService.retrieveDeletedImage(userId));
+                body(albumService.retrieveDeletedAlbum(userId));
     }
 
 }

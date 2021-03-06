@@ -184,6 +184,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public List<Album> retrieveDeletedAlbum(String userId) {
+        return albumRepository.findByCreatedByAndActive(userId,false);
+    }
+
+    @Override
     public Album removeCollaborator(String googleDriveId, String collaboratorId, String userId) {
         Album album = albumRepository.findByGoogleDriveId(googleDriveId);
         Set<String> collaborators = album.getCollaborators();
@@ -200,11 +205,5 @@ public class AlbumServiceImpl implements AlbumService{
         mongoOperations.updateFirst(query, update, Album.class);
          return albumRepository.findByGoogleDriveId(googleDriveId);
     }
-
-    @Override
-    public List<Album>  retrieveDeletedImage(String userId) {
-        return albumRepository.findByCreatedByAndActive(userId,false);
-    }
-
 
 }
