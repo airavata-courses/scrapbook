@@ -3,6 +3,7 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.ImageRequest;
+import com.iu.scrapbook.dto.SearchImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
@@ -150,6 +151,35 @@ public class ImageServiceImpl implements ImageService{
 
         ResponseEntity<Image> responseEntity = googleDriveServiceRestTemplate.put(baseUrl+"/image",a,Image.class);
         return responseEntity.getBody();
+    }
+
+    @Override
+    public List<Image> search(SearchImageRequest request, String albumId, String userId) {
+        String name = request.getName();
+        Instant startCreatedDate = request.getStartCreatedDate();
+        Instant startModifiedDate = request.getStartModifiedDate();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("active").is(true));
+        query.addCriteria(Criteria.where("createdBy").is(userId));
+        query.addCriteria(Criteria.where("albumGoogleId").is(albumId));
+
+        if(name!=null){
+            query.addCriteria(Criteria.where("name").is(name));
+        }
+
+        if(startCreatedDate != null){
+            query.addCriteria(Criteria.where("createdDate").gte(startCreatedDate));
+            query.addCriteria(Criteria.where("createdDate").lte(request.getEndCreatedDate() != null ?
+                    request.getEndCreatedDate() : Instant.now()));
+        }
+
+        if(startModifiedDate != null){
+            query.addCriteria(Criteria.where("modifiedDate").gte(startModifiedDate));
+            query.addCriteria(Criteria.where("modifiedDate").lte(request.getEndModifiedDate() != null ?
+                    request.getEndModifiedDate() : Instant.now()));
+        }
+        List<Image>  images = mongoTemplate.find(query,Image.class);
+        return images;
     }
 
 }

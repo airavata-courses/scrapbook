@@ -5,6 +5,7 @@ import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CollaboratorRequest;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.dto.SearchAlbumRequest;
+import com.iu.scrapbook.dto.SearchImageRequest;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
 import com.iu.scrapbook.exception.GoogleDriveException;
@@ -188,11 +189,18 @@ public class AlbumController {
     }
 
 
-    @Operation(summary = "Retrieve all albums from given search criteria for userId as owner", description = "This API is responsible for " +
-            "retrieving all albums for given search criteria")
+    @Operation(summary = "Search all albums from given search criteria for userId as owner", description = "This API is responsible for " +
+            "searching all albums for given search criteria")
     @GetMapping(value = "/search")
     public ResponseEntity<List<Album>> search(SearchAlbumRequest request, @RequestParam("userid") String userId){
         return ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
+    }
+
+    @Operation(summary = "Search all images in an album from given search criteria for userId as owner", description = "This API is responsible for " +
+            "searching all images in an album for given search criteria")
+    @GetMapping(value = "/{albumdriveid}/image/search")
+    public ResponseEntity<List<Image>> search(SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId){
+        return ResponseEntity.status(HttpStatus.OK).body(imageService.search(request,albumId,userId));
     }
 
 }
