@@ -201,7 +201,7 @@ public class AlbumServiceImpl implements AlbumService{
         query.addCriteria(Criteria.where("createdBy").is(userId));
 
         if(name!=null){
-            query.addCriteria(Criteria.where("name").is(name));
+            query.addCriteria(Criteria.where("name").regex(".*"+name+".*"));
         }
 
         if(startCreatedDate != null){

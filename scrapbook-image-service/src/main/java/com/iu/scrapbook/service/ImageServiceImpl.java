@@ -166,7 +166,7 @@ public class ImageServiceImpl implements ImageService{
         query.addCriteria(Criteria.where("albumGoogleId").is(albumId));
 
         if(name!=null){
-            query.addCriteria(Criteria.where("name").is(name));
+            query.addCriteria(Criteria.where("name").regex(".*"+name+".*"));
         }
 
         if(startCreatedDate != null){
