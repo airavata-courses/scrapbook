@@ -4,6 +4,7 @@ import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.dto.SearchImageRequest;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -34,5 +35,5 @@ public interface ImageService {
 
     Image updateImage(ImageRequest album, String googleDriveId, String userId);
 
-    List<Image> search(SearchImageRequest request, String albumId, String userId);
+    List<Image> search(SearchImageRequest request, String albumId, String userId) throws ParseException;
 }

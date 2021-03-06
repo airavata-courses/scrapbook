@@ -6,6 +6,7 @@ import com.iu.scrapbook.dto.CreateAlbumRequest;
 import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -44,5 +45,5 @@ public interface AlbumService {
 
     List<Album> retrieveDeletedAlbum(String userId);
 
-    List<Album> search(SearchAlbumRequest request, String userId);
+    List<Album> search(SearchAlbumRequest request, String userId) throws ParseException;
 }

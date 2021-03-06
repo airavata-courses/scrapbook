@@ -2,8 +2,6 @@ package com.iu.scrapbook.dto;
 
 import lombok.*;
 
-import java.time.Instant;
-
 /**
  * @author jyotibhushan
  */
@@ -16,8 +14,8 @@ import java.time.Instant;
 public class SearchAlbumRequest {
 
     private String name;
-    private Instant startCreatedDate;
-    private Instant endCreatedDate;
-    private Instant startModifiedDate;
-    private Instant endModifiedDate;
+    private String startCreatedDate;
+    private String endCreatedDate;
+    private String startModifiedDate;
+    private String endModifiedDate;
 }

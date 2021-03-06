@@ -7,6 +7,7 @@ import com.iu.scrapbook.dto.SearchImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.repository.ImageRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
+import com.iu.scrapbook.util.DateUtil;
 import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -154,10 +156,10 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public List<Image> search(SearchImageRequest request, String albumId, String userId) {
+    public List<Image> search(SearchImageRequest request, String albumId, String userId) throws ParseException {
         String name = request.getName();
-        Instant startCreatedDate = request.getStartCreatedDate();
-        Instant startModifiedDate = request.getStartModifiedDate();
+        String startCreatedDate = request.getStartCreatedDate();
+        String startModifiedDate = request.getStartModifiedDate();
         Query query = new Query();
         query.addCriteria(Criteria.where("active").is(true));
         query.addCriteria(Criteria.where("createdBy").is(userId));
@@ -168,15 +170,15 @@ public class ImageServiceImpl implements ImageService{
         }
 
         if(startCreatedDate != null){
-            query.addCriteria(Criteria.where("createdDate").gte(startCreatedDate));
-            query.addCriteria(Criteria.where("createdDate").lte(request.getEndCreatedDate() != null ?
-                    request.getEndCreatedDate() : Instant.now()));
+            query.addCriteria(Criteria.where("createdDate").gte(DateUtil.convert(startCreatedDate))
+                    .lte(request.getEndCreatedDate() != null ?
+                            DateUtil.convert(request.getEndCreatedDate()) : Instant.now()));
         }
 
         if(startModifiedDate != null){
-            query.addCriteria(Criteria.where("modifiedDate").gte(startModifiedDate));
-            query.addCriteria(Criteria.where("modifiedDate").lte(request.getEndModifiedDate() != null ?
-                    request.getEndModifiedDate() : Instant.now()));
+            query.addCriteria(Criteria.where("modifiedDate").gte(DateUtil.convert(startModifiedDate))
+                    .lte(request.getEndModifiedDate() != null ?
+                            DateUtil.convert(request.getEndModifiedDate()) : Instant.now()));
         }
         List<Image>  images = mongoTemplate.find(query,Image.class);
         return images;

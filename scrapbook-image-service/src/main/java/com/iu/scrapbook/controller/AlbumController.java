@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -193,14 +194,26 @@ public class AlbumController {
             "searching all albums for given search criteria")
     @GetMapping(value = "/search")
     public ResponseEntity<List<Album>> search(SearchAlbumRequest request, @RequestParam("userid") String userId){
-        return ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
+        ResponseEntity<List<Album>> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
+        } catch (ParseException e) {
+            responseEntity = ResponseEntity.badRequest().build();
+        }
+        return responseEntity;
     }
 
     @Operation(summary = "Search all images in an album from given search criteria for userId as owner", description = "This API is responsible for " +
             "searching all images in an album for given search criteria")
     @GetMapping(value = "/{albumdriveid}/image/search")
-    public ResponseEntity<List<Image>> search(SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId){
-        return ResponseEntity.status(HttpStatus.OK).body(imageService.search(request,albumId,userId));
+    public ResponseEntity<List<Image>> search(SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId) {
+        ResponseEntity<List<Image>> responseEntity = null;
+        try {
+            responseEntity = ResponseEntity.status(HttpStatus.OK).body(imageService.search(request, albumId,userId));
+        } catch (ParseException e) {
+            responseEntity = ResponseEntity.badRequest().build();
+        }
+        return responseEntity;
     }
 
 }
