@@ -3,6 +3,7 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
@@ -186,6 +187,34 @@ public class AlbumServiceImpl implements AlbumService{
     @Override
     public List<Album> retrieveDeletedAlbum(String userId) {
         return albumRepository.findByCreatedByAndActive(userId,false);
+    }
+
+    @Override
+    public List<Album> search(SearchAlbumRequest request, String userId) {
+        String name = request.getName();
+        Instant startCreatedDate = request.getStartCreatedDate();
+        Instant startModifiedDate = request.getStartModifiedDate();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("active").is(true));
+        query.addCriteria(Criteria.where("createdBy").is(userId));
+
+        if(name!=null){
+            query.addCriteria(Criteria.where("name").is(name));
+        }
+
+        if(startCreatedDate != null){
+            query.addCriteria(Criteria.where("createdDate").gte(startCreatedDate));
+            query.addCriteria(Criteria.where("createdDate").lte(request.getEndCreatedDate() != null ?
+                    request.getEndCreatedDate() : Instant.now()));
+        }
+
+        if(startModifiedDate != null){
+            query.addCriteria(Criteria.where("modifiedDate").gte(startModifiedDate));
+            query.addCriteria(Criteria.where("modifiedDate").lte(request.getEndModifiedDate() != null ?
+                    request.getEndModifiedDate() : Instant.now()));
+        }
+        List<Album>  albums = mongoTemplate.find(query,Album.class);
+        return albums;
     }
 
     @Override

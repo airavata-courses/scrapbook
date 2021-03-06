@@ -4,6 +4,7 @@ import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CollaboratorRequest;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.service.AlbumService;
 import com.iu.scrapbook.service.ImageService;
 import com.iu.scrapbook.exception.GoogleDriveException;
@@ -184,6 +185,14 @@ public class AlbumController {
     public ResponseEntity<List<Album>> retrieveDeletedAlbum(@RequestParam("userid") String userId){
         return ResponseEntity.status(HttpStatus.OK).
                 body(albumService.retrieveDeletedAlbum(userId));
+    }
+
+
+    @Operation(summary = "Retrieve all albums from given search criteria for userId as owner", description = "This API is responsible for " +
+            "retrieving all albums for given search criteria")
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Album>> search(SearchAlbumRequest request, @RequestParam("userid") String userId){
+        return ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
     }
 
 }

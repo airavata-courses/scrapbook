@@ -3,6 +3,7 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 
 import java.util.List;
@@ -40,6 +41,8 @@ public interface AlbumService {
     Album removeCollaborator(String googleDriveId, String collaboratorId, String userId);
 
     Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
+
     List<Album> retrieveDeletedAlbum(String userId);
 
+    List<Album> search(SearchAlbumRequest request, String userId);
 }
