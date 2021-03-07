@@ -158,6 +158,16 @@ export class GetSharedAlbumsOfUser {
   constructor() {}
 }
 export class SearchAndFilterAlbums {
-  static readonly type = 'SEARCH and Filter';
+  static readonly type = 'SEARCH and Filter Albums';
   constructor(public searchText?: string, public payload?: any) {}
+}
+
+export class SearchAndFilterImages {
+  static readonly type = 'Search and Filter Images';
+  constructor(public searchText?: string, public payload?: any) {}
+}
+
+export class ClearSearchText {
+  static readonly type = 'Clear Search Text';
+  constructor() {}
 }

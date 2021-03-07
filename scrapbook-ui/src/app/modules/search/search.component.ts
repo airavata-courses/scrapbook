@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { Filters } from 'src/app/models/search.model';
-import { SearchAndFilterAlbums } from 'src/app/actions/album.actions';
+import { SearchAndFilterAlbums, SearchAndFilterImages } from 'src/app/actions/album.actions';
 
 @Component({
   selector: 'app-search',
@@ -20,19 +20,18 @@ export class SearchComponent implements OnInit {
   faFilter = faFilter;
   txtQuery: string;
   txtQueryChanged: Subject<string> = new Subject<string>();
-  filters: Filters = {
-    startCreatedDate: '',
-    endCreatedDate: '',
-    startModifiedDate: '',
-    endModifiedDate: ''
-  }
 
   constructor(private store: Store, private router: Router) { 
     this.txtQueryChanged
      .pipe(debounceTime(500), distinctUntilChanged())
      .subscribe(model => {
-         this.txtQuery = model;
-        this.store.dispatch(new SearchAndFilterAlbums(model, null))
+        this.txtQuery = model;
+        if(this.getMode() === 1) {
+          this.store.dispatch(new SearchAndFilterAlbums(model, null));
+        }
+        else if(this.getMode() === 2) {
+          this.store.dispatch(new SearchAndFilterImages(model, null))
+        }
      });
   }
 
@@ -51,8 +50,12 @@ export class SearchComponent implements OnInit {
     // 1 - album
     // 2 - image
 
-    const sp = this.router.url.split('/');
-
+    const routerSplit = this.router.url.split('/');
+    if(routerSplit.length === 2) {
+      return 1
+    } else if(routerSplit.length === 3) {
+      return 2
+    }
   }
 
 }

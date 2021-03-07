@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums} from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText} from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -30,6 +30,7 @@ export class AlbumStateModel {
   loading: boolean;
   filters: any;
   searchText: string;
+  imageFilters: any;
 }
 
 @State<AlbumStateModel>({
@@ -47,7 +48,9 @@ export class AlbumStateModel {
     collaborators: [],
     loading: true,
     filters: null,
-    searchText: null
+    searchText: null,
+    imageFilters: { 
+    }
   }
 })
 @Injectable()
@@ -474,7 +477,7 @@ export class AlbumState {
 
   @Action(SearchAndFilterAlbums)
   searchAndFilterAlbums({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
-    dispatch(new StartAlbumLoading());
+    dispatch(new OpenLoading());
     const state = getState();
     let objPayload = {
       filters: payload ? payload : state.filters,
@@ -501,6 +504,38 @@ export class AlbumState {
         return of(JSON.stringify(err))
       })
     );
+  }
+
+  @Action(SearchAndFilterImages)
+  searchAndFilterImages({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterImages) {
+    console.log('filtering images');
+    // dispatch(new StartAlbumLoading());
+    // const state = getState();
+    // let objPayload = {
+    //   filters: payload ? payload : state.filters,
+    //   searchText: searchText ? searchText : state.searchText
+    // }
+
+    // const id = localStorage.getItem('scrapbook-userid');
+
+    // return this.albumService.searchAndFilterImages({...objPayload.filters, name: objPayload.searchText}, id)
+    // .pipe(
+    //   tap((response: Album[]) => {
+    //     dispatch(new CloseLoading());
+    //     setState({
+    //        ...state,
+    //        allAlbumsOfUser: response,
+    //        loading: false,
+    //        filters: payload ? payload : state.filters,
+    //       searchText: searchText ? searchText : state.searchText
+    //      });
+    //   }),
+    //   catchError((err) => {
+    //     console.log(err)
+    //     // dispatch(new SetPageError('401'));
+    //     return of(JSON.stringify(err))
+    //   })
+    // );
   }
 
   @Action(DeleteAlbum)
@@ -543,6 +578,14 @@ export class AlbumState {
         return of(JSON.stringify(err))
       })
     );
+  }
+
+  @Action(ClearSearchText)
+  clearSearchText({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    setState({
+      ...getState(),
+      searchText: null
+    })
   }
 
 }

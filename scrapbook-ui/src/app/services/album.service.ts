@@ -150,4 +150,38 @@ export class AlbumService {
 
     return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, obj);
   }
+
+  searchAndFilterImages(payload: any, userid: string) {
+    let obj = {};
+    if (payload['createdDateFilter']) {
+      let creationSplit = payload.createdDateFilter.split(' - ');
+      if (creationSplit.length > 1) {
+        let [start, end] = creationSplit;
+        start = moment(start).format('MM/DD/yyyy');
+        end = moment(end).format('MM/DD/yyyy');
+        if (end === 'Invalid date') end = null;
+        obj['startCreatedDate'] = start;
+        obj['endCreatedDate'] = end;
+      }
+    }
+
+    if (payload['modifiedDateFilter']) {
+      let modifiedSplit = payload.modifiedDateFilter.split(' - ');
+
+      if (modifiedSplit.length > 1) {
+        let [start, end] = modifiedSplit;
+        start = moment(start).format('MM/DD/yyyy');
+        end = moment(end).format('MM/DD/yyyy');
+        if (end === 'Invalid date') end = null;
+        obj['startModifiedDate'] = start;
+        obj['endModifiedDate'] = end;
+      }
+    }
+
+    if (payload['name']) {
+      obj['name'] = payload.name;
+    }
+
+    return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, obj);
+  }
 }
