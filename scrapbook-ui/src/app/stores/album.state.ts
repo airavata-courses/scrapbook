@@ -46,8 +46,8 @@ export class AlbumStateModel {
     selectedImages: [],
     collaborators: [],
     loading: true,
-    filters: {startCreatedDate: '', startModifiedDate: '', endCreatedDate: '', endModifiedDate: ''},
-    searchText: ''
+    filters: {startCreatedDate: null, startModifiedDate: null, endCreatedDate: null, endModifiedDate: null},
+    searchText: null
   }
 })
 @Injectable()

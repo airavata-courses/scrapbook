@@ -4,6 +4,7 @@ from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
 from service_utils import user_service
 import sys
+import json
 
 album_api = Blueprint('album_api', __name__)
 
@@ -212,8 +213,7 @@ def retreieveAlbumByID(googledriveid):
 def searchAndFilterAlbum():
     try:
         userid = request.args.get('userid')
-
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.data)
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.json)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
 
