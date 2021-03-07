@@ -89,6 +89,11 @@ export class UIState {
     return state.collabOpen;
   }
 
+  @Selector() 
+  static getTab(state: UIStateModel) {
+    return state.tab;
+  }
+
   @Action(OpenProfile)
   openProfile({getState, setState}: StateContext<UIStateModel>) {
     setState({

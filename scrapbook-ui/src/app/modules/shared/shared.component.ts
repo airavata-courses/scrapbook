@@ -21,7 +21,7 @@ export class SharedComponent implements OnInit {
   constructor(public store: Store, public router: Router, public albumListService: AlbumListService, public albumViewService: AlbumViewService) { 
     this.store.dispatch(new GetSharedAlbumsOfUser());
     this.userAlbums$.subscribe(data => {
-      if (data) {
+      if (data.length) {
         console.log(data)
         this.albumListService.data$.next(data);
       }

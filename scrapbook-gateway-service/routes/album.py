@@ -66,9 +66,6 @@ def getAlbumsOfUser():
                                 data=request.data)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
-        # for i in range(len(aggregatedResponse)):
-        #     aggregatedResponse[i]['collaborators'] = user_service.aggregateCollaborator(aggregatedResponse[i])
-
         return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
@@ -225,6 +222,21 @@ def deleteAlbumByID(googledriveid):
         print(response.json(), file=sys.stderr)
         response.raise_for_status()
         return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/shared', methods=["GET"])
+@auth.check_user_session
+def getSharedAlbumsOfUser():
+    try:
+        userID = request.args.get('userid')
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/shared?userid={userID}')
+        response.raise_for_status()
+        aggregatedResponse = user_service.aggregateUser(response)
+        print(aggregatedResponse)
+        return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code

@@ -485,8 +485,6 @@ export class AlbumState {
     dispatch(new StartAlbumLoading());
     return this.albumService.getSharedAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
-
-        dispatch(new CloseLoading());
         setState({
            ...state,
            allAlbumsOfUser: response,
