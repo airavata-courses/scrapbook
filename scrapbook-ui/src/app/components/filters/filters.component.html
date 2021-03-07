@@ -1,6 +1,6 @@
 <div class="w-100 text-dark">
   <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="mode === 2">
       <div class="h6">Photo Meta Data</div>
     </div>
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -9,9 +9,9 @@
         <label class="text-muted mt-2">Created Date</label>
         <mat-radio-group
           class="radio-group"
-          [(ngModel)]="filters.creationDate"
+          [(ngModel)]="createdDateFilter"
           >
-          <mat-radio-button value='Any'>Any</mat-radio-button>
+          <mat-radio-button value=''>Any</mat-radio-button>
           <mat-radio-button [value]="creationDateRange.get('start').value + ' - ' + creationDateRange.get('end').value" (click)="createdDatePicker.open()">
             <mat-form-field appearance="none" floatLabel="never" class="text-dark">
               <mat-date-range-input [formGroup]="creationDateRange" [rangePicker]="createdDatePicker">
@@ -27,9 +27,9 @@
         <label class="text-muted mt-2">Last Edit Date</label>
         <mat-radio-group
           class="radio-group"
-          [(ngModel)]="filters.lastEditDate"
+          [(ngModel)]="modifiedDateFilter"
           >
-          <mat-radio-button value='Any'>Any</mat-radio-button>
+          <mat-radio-button value=''>Any</mat-radio-button>
           <mat-radio-button [value]="lastEditDateRange.get('start').value + ' - ' + lastEditDateRange.get('end').value" (click)="lastEditDatePicker.open()">
             <mat-form-field appearance="none" floatLabel="never" class="text-dark">
               <mat-date-range-input [formGroup]="lastEditDateRange" [rangePicker]="lastEditDatePicker">

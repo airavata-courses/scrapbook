@@ -18,6 +18,7 @@ import { Album } from 'src/app/models/album.model';
 import { UserState } from 'src/app/stores/user.state';
 import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending-panel/uploads-pending-panel.component';
 import { CollabComponent } from 'src/app/components/collab/collab.component';
+import { Filters } from 'src/app/models/search.model';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,7 @@ export class RootComponent {
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
+  @Select(AlbumState.getFilters) Filters$: Observable<Filters>;
 
 
   constructor(
