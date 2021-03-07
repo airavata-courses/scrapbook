@@ -207,6 +207,21 @@ def retreieveAlbumByID(googledriveid):
         return err.response.text, err.response.status_code
 
 
+@album_api.route('/album/search', methods=["POST"])
+@auth.check_user_session
+def searchAndFilterAlbum():
+    try:
+        userid = request.args.get('userid')
+
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.data)
+        response.raise_for_status()
+        aggregatedResponse = user_service.aggregateUser(response)
+
+        return jsonify(aggregatedResponse), response.status_code
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
 @album_api.route('/album/<googledriveid>', methods=["DELETE"])
 @auth.check_user_session
 def deleteAlbumByID(googledriveid):
