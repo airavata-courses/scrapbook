@@ -112,3 +112,8 @@ export class CloseCollaborators {
   static readonly type = '[CLOSE] Collaborators';
   constructor() {}
 }
+
+export class ChangeTab {
+  static readonly type = '[CHANGE] Tab';
+  constructor(public tab: string) {}
+}
