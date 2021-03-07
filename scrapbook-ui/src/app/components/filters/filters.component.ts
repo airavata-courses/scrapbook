@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
+import { Store, Select } from '@ngxs/store';
+import { AlbumState } from 'src/app/stores/album.state';
+import { Observable } from 'rxjs';
+import { Filters } from 'src/app/models/search.model';
+import { SearchAndFilterAlbums } from 'src/app/actions/album.actions';
 
 @Component({
   selector: 'app-filters',
@@ -17,13 +22,26 @@ export class FiltersComponent implements OnInit {
     end: new FormControl()
   });
 
-  filters = {
-    creationDate: 'Any',
-    lastEditDate: 'Any'
-  };
+  filters;
+
+  @Select(AlbumState.getFilters) filters$: Observable<Filters>;
 
 
-  constructor() { }
+  constructor(public store: Store) { 
+
+    this.filters$.subscribe(val => {
+      if(val) {
+        this.filters = JSON.parse(JSON.stringify(val));
+        if (val.startCreatedDate === '') {
+          this.filters.startCreatedDate = 'Any';
+        }
+        if (val.startModifiedDate === '') {
+          this.filters.startModifiedDate = 'Any';
+        }
+      }
+      
+    })
+  }
 
   ngOnInit(): void {
 
@@ -33,17 +51,26 @@ export class FiltersComponent implements OnInit {
 
 
   updateCreationDate() {
-    this.filters.creationDate = this.creationDateRange.get('start').value + ' - ' + this.creationDateRange.get('end').value;
+    this.filters.startCreatedDate = this.creationDateRange.get('start').value;
+    this.filters.endCreatedDate = this.creationDateRange.get('end').value;
   }
 
   updateLastEditDate() {
-    this.filters.lastEditDate = this.lastEditDateRange.get('start').value + ' - ' + this.lastEditDateRange.get('end').value;
+    this.filters.startModifiedDate = this.lastEditDateRange.get('start').value;
+    this.filters.endModifiedDate =  this.lastEditDateRange.get('end').value;
   }
 
-
-
   onApplyFilters() {
-    console.log(this.filters);
+    let payload: Filters = {startCreatedDate: '', endCreatedDate: '', startModifiedDate: '', endModifiedDate: ''};
+    for(let key in this.filters) {
+      if (!this.filters[key] || this.filters[key]==='Any') {
+        payload[key] = '';
+        continue;
+      } else {
+        payload[key] = moment(this.filters[key]).format('MM/DD/yyyy'); 
+      }
+    }
+    this.store.dispatch(new SearchAndFilterAlbums('', payload));
   }
 
   convertDateFromDatepicker(date: string) {

@@ -1,6 +1,7 @@
 import { Image } from '../models/image.model';
 import { Album } from '../models/album.model';
 import { User } from '../models/user.model';
+import { Filters } from "../models/search.model";
 
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
@@ -155,4 +156,8 @@ export class DeleteAlbum {
 export class GetSharedAlbumsOfUser {
   static readonly type = 'GET SHARED ALBUMS';
   constructor() {}
+}
+export class SearchAndFilterAlbums {
+  static readonly type = 'SEARCH and Filter';
+  constructor(public searchText?: string, public payload?: Filters) {}
 }

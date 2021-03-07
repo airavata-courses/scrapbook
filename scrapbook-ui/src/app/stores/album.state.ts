@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums} from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -14,6 +14,7 @@ import { User } from '../models/user.model';
 import { RemoveSearchedUserBySubString } from '../actions/user.actions';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Filters } from '../models/search.model';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -27,6 +28,8 @@ export class AlbumStateModel {
   selectedImages: Array<Image>;
   collaborators: Array<User[]>;
   loading: boolean;
+  filters: Filters;
+  searchText: string;
 }
 
 @State<AlbumStateModel>({
@@ -42,7 +45,9 @@ export class AlbumStateModel {
     pendingUploads: [],
     selectedImages: [],
     collaborators: [],
-    loading: true
+    loading: true,
+    filters: {startCreatedDate: '', startModifiedDate: '', endCreatedDate: '', endModifiedDate: ''},
+    searchText: ''
   }
 })
 @Injectable()
@@ -87,6 +92,16 @@ export class AlbumState {
   @Selector()
   static getAlbumLoading(state: AlbumStateModel) {
     return state.loading;
+  }
+
+  @Selector()
+  static getFilters(state: AlbumStateModel) {
+    return state.filters;
+  }
+
+  @Selector()
+  static getSearchText(state: AlbumStateModel) {
+    return state.searchText;
   }
 
   @Action(OpenAlbumInfo)
@@ -455,6 +470,36 @@ export class AlbumState {
     dispatch(new OpenLoading());
     const userid = localStorage.getItem('scrapbook-userid');
     this.imageService.deleteImages(images, userid, albumid);
+  }
+
+  @Action(SearchAndFilterAlbums)
+  searchAndFilterAlbums({getState, setState, dispatch}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
+    dispatch(new StartAlbumLoading());
+    const state = getState();
+    setState({
+      ...state,
+      filters: payload ? payload : state.filters,
+      searchText: searchText ? searchText : state.searchText
+    })
+    const id = localStorage.getItem('scrapbook-userid');
+    const updatedState = getState();
+
+    return this.albumService.searchAndFilterAlbums({...updatedState.filters, name: updatedState.searchText}, id)
+    // .pipe(
+    //   tap((response: Album[]) => {
+    //     dispatch(new CloseLoading());
+    //     setState({
+    //        ...state,
+    //        allAlbumsOfUser: response,
+    //        loading: false
+    //      });
+    //   }),
+    //   catchError((err) => {
+    //     console.log(err)
+    //     // dispatch(new SetPageError('401'));
+    //     return of(JSON.stringify(err))
+    //   })
+    // );
   }
 
   @Action(DeleteAlbum)

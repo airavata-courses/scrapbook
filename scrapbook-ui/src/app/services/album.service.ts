@@ -100,4 +100,8 @@ export class AlbumService {
   deleteAlbum(albumid: string, userid: string) {
     return this.http.delete(`${GATEWAY_URL}/album/${albumid}?userid=${userid}`);
   } 
+
+  searchAndFilterAlbums(payload: any, userid: string) {
+    return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, payload);
+  }
 }
