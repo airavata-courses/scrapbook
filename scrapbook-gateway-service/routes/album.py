@@ -213,10 +213,12 @@ def retreieveAlbumByID(googledriveid):
 def searchAndFilterAlbum():
     try:
         userid = request.args.get('userid')
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.json)
+        print(request.data)
+        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.data,
+                                 headers=headers)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
-
         return jsonify(aggregatedResponse), response.status_code
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code

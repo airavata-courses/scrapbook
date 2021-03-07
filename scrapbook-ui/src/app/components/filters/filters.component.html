@@ -9,9 +9,9 @@
         <label class="text-muted mt-2">Created Date</label>
         <mat-radio-group
           class="radio-group"
-          [(ngModel)]="filters.startCreatedDate"
+          [(ngModel)]="createdDateFilter"
           >
-          <mat-radio-button value='Any'>Any</mat-radio-button>
+          <mat-radio-button value=''>Any</mat-radio-button>
           <mat-radio-button [value]="creationDateRange.get('start').value + ' - ' + creationDateRange.get('end').value" (click)="createdDatePicker.open()">
             <mat-form-field appearance="none" floatLabel="never" class="text-dark">
               <mat-date-range-input [formGroup]="creationDateRange" [rangePicker]="createdDatePicker">
@@ -27,9 +27,9 @@
         <label class="text-muted mt-2">Last Edit Date</label>
         <mat-radio-group
           class="radio-group"
-          [(ngModel)]="filters.startModifiedDate"
+          [(ngModel)]="modifiedDateFilter"
           >
-          <mat-radio-button value='Any'>Any</mat-radio-button>
+          <mat-radio-button value=''>Any</mat-radio-button>
           <mat-radio-button [value]="lastEditDateRange.get('start').value + ' - ' + lastEditDateRange.get('end').value" (click)="lastEditDatePicker.open()">
             <mat-form-field appearance="none" floatLabel="never" class="text-dark">
               <mat-date-range-input [formGroup]="lastEditDateRange" [rangePicker]="lastEditDatePicker">

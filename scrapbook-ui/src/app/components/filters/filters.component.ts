@@ -23,15 +23,16 @@ export class FiltersComponent implements OnInit {
     end: new FormControl()
   });
 
-  filters;
+  createdDateFilter = ''
+  modifiedDateFilter = ''
+  filters: Filters = {startCreatedDate: '', startModifiedDate: '', endCreatedDate: '', endModifiedDate: ''}
   mode: number;
 
-  @Select(AlbumState.getFilters) filters$: Observable<Filters>;
+  @Select(AlbumState.getFilters) filters$: Observable<any>;
 
 
   constructor(public store: Store, public router: Router) { 
 
-    console.log(router.url.split('/'))
     if(router.url.split('/').length === 2) {
       this.mode = 1;
     } else if (router.url.split('/').length === 3) {
@@ -40,13 +41,13 @@ export class FiltersComponent implements OnInit {
 
     this.filters$.subscribe(val => {
       if(val) {
-        this.filters = JSON.parse(JSON.stringify(val));
-        if (val.startCreatedDate === '') {
-          this.filters.startCreatedDate = 'Any';
-        }
-        if (val.startModifiedDate === '') {
-          this.filters.startModifiedDate = 'Any';
-        }
+       this.createdDateFilter = val.createdDateFilter;
+       this.creationDateRange.get('start').setValue(new Date(val.createdDateFilter.split(' - ')[0]));
+       this.creationDateRange.get('end').setValue(new Date(val.createdDateFilter.split(' - ')[1]));
+        
+       this.modifiedDateFilter = val.modifiedDateFilter;
+       this.lastEditDateRange.get('start').setValue(new Date(val.modifiedDateFilter.split(' - ')[0]));
+       this.lastEditDateRange.get('end').setValue(new Date(val.modifiedDateFilter.split(' - ')[1]));
       }
       
     })
@@ -60,26 +61,15 @@ export class FiltersComponent implements OnInit {
 
 
   updateCreationDate() {
-    this.filters.startCreatedDate = this.creationDateRange.get('start').value;
-    this.filters.endCreatedDate = this.creationDateRange.get('end').value;
+    this.createdDateFilter = this.creationDateRange.get('start').value + ' - ' + this.creationDateRange.get('end').value;
   }
 
   updateLastEditDate() {
-    this.filters.startModifiedDate = this.lastEditDateRange.get('start').value;
-    this.filters.endModifiedDate =  this.lastEditDateRange.get('end').value;
+    this.modifiedDateFilter = this.lastEditDateRange.get('start').value + ' - ' + this.lastEditDateRange.get('end').value;
   }
 
   onApplyFilters() {
-    let payload: Filters = {startCreatedDate: '', endCreatedDate: '', startModifiedDate: '', endModifiedDate: ''};
-    for(let key in this.filters) {
-      if (!this.filters[key] || this.filters[key]==='Any') {
-        payload[key] = null;
-        continue;
-      } else {
-        payload[key] = moment(this.filters[key]).format('MM/DD/yyyy'); 
-      }
-    }
-    this.store.dispatch(new SearchAndFilterAlbums('', payload));
+    this.store.dispatch(new SearchAndFilterAlbums('', {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
   }
 
   convertDateFromDatepicker(date: string) {

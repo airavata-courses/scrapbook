@@ -8,6 +8,8 @@ import { Image } from '../models/image.model';
 import { saveAs } from "file-saver";
 import { Store } from '@ngxs/store';
 import { CloseLoading } from '../actions/ui.actions';
+import { Filters } from '../models/search.model';
+import * as moment from 'moment';
 
 
 @Injectable({
@@ -102,6 +104,27 @@ export class AlbumService {
   } 
 
   searchAndFilterAlbums(payload: any, userid: string) {
-    return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, payload);
+    let obj = {}
+    let creationSplit = payload.createdDateFilter.split(' - ');
+    let modifiedSplit = payload.modifiedDateFilter.split(' - ')
+    if(creationSplit.length > 1) {
+      let [start, end] = creationSplit;
+      start = moment(start).format('MM/DD/yyyy');
+      end = moment(end).format('MM/DD/yyyy');
+      if(end === 'Invalid date') end = null;
+      obj['startCreatedDate'] = start;
+      obj['endCreatedDate'] = end;
+    }
+
+    if(modifiedSplit.length > 1) {
+      let [start, end] = modifiedSplit;
+      start = moment(start).format('MM/DD/yyyy');
+      end = moment(end).format('MM/DD/yyyy');
+      if(end === 'Invalid date') end = null;
+      obj['startModifiedDate'] = start;
+      obj['endModifiedDate'] = end;
+    }
+
+    return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, obj);
   }
 }

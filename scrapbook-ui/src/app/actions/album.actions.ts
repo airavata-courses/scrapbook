@@ -159,5 +159,5 @@ export class GetSharedAlbumsOfUser {
 }
 export class SearchAndFilterAlbums {
   static readonly type = 'SEARCH and Filter';
-  constructor(public searchText?: string, public payload?: Filters) {}
+  constructor(public searchText?: string, public payload?: any) {}
 }

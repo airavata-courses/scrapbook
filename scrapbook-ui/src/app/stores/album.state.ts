@@ -28,7 +28,7 @@ export class AlbumStateModel {
   selectedImages: Array<Image>;
   collaborators: Array<User[]>;
   loading: boolean;
-  filters: Filters;
+  filters: any;
   searchText: string;
 }
 
@@ -46,7 +46,7 @@ export class AlbumStateModel {
     selectedImages: [],
     collaborators: [],
     loading: true,
-    filters: {startCreatedDate: null, startModifiedDate: null, endCreatedDate: null, endModifiedDate: null},
+    filters: null,
     searchText: null
   }
 })
@@ -473,33 +473,37 @@ export class AlbumState {
   }
 
   @Action(SearchAndFilterAlbums)
-  searchAndFilterAlbums({getState, setState, dispatch}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
+  searchAndFilterAlbums({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
     dispatch(new StartAlbumLoading());
     const state = getState();
-    setState({
-      ...state,
+    patchState({
       filters: payload ? payload : state.filters,
       searchText: searchText ? searchText : state.searchText
     })
-    const id = localStorage.getItem('scrapbook-userid');
-    const updatedState = getState();
 
-    return this.albumService.searchAndFilterAlbums({...updatedState.filters, name: updatedState.searchText}, id)
-    // .pipe(
-    //   tap((response: Album[]) => {
-    //     dispatch(new CloseLoading());
-    //     setState({
-    //        ...state,
-    //        allAlbumsOfUser: response,
-    //        loading: false
-    //      });
-    //   }),
-    //   catchError((err) => {
-    //     console.log(err)
-    //     // dispatch(new SetPageError('401'));
-    //     return of(JSON.stringify(err))
-    //   })
-    // );
+    let objPayload = {
+      filters: payload ? payload : state.filters,
+      searchText: searchText ? searchText : state.searchText
+    }
+    const id = localStorage.getItem('scrapbook-userid');
+
+    return this.albumService.searchAndFilterAlbums({...objPayload.filters, name: objPayload.searchText}, id)
+    .pipe(
+      tap((response: Album[]) => {
+        dispatch(new CloseLoading());
+        setState({
+           ...state,
+           allAlbumsOfUser: response,
+           loading: false,
+           
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
   }
 
   @Action(DeleteAlbum)
