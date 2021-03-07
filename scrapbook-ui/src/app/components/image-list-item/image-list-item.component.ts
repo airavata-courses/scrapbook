@@ -21,6 +21,7 @@ export class ImageListItemComponent implements OnInit, OnChanges {
   faFileImage = faFileImage;
   formatBytes = formatBytes;
   currentImage: Image;
+  currentUserid: string;
 
   @Input() image: Image;
   @Input() selected: any;
@@ -31,7 +32,9 @@ export class ImageListItemComponent implements OnInit, OnChanges {
   @Output() deleteImage: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectImage: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private dialog: MatDialog, private store: Store) { }
+  constructor(private dialog: MatDialog, private store: Store) { 
+    this.currentUserid = localStorage.getItem('scrapbook-userid');
+  }
 
   ngOnInit(): void {
   }

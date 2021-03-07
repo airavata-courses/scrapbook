@@ -30,6 +30,7 @@ export class AlbumViewComponent implements OnInit {
   faTrash = faTrash;
   faTimes = faTimes;
   selectedImages: Array<Image>;
+  currentuUserid: string;
 
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
@@ -40,6 +41,8 @@ export class AlbumViewComponent implements OnInit {
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
+
+    this.currentuUserid = localStorage.getItem('scrapbook-userid');
 
     this.store.dispatch(new PutAlbumInView(albumId));
 
@@ -117,6 +120,14 @@ export class AlbumViewComponent implements OnInit {
 
   showImageInfo(e) {
     this.store.dispatch(new OpenAlbumInfo(e, 't'));
+  }
+
+  canDelete(): boolean {
+    const userid = localStorage.getItem('scrapbook-userid');
+    for(let i of this.selectedImages) {
+      if(i.createdBy._id !== userid) return false;
+    }
+    return true;
   }
 
   openSettingsModal() {
