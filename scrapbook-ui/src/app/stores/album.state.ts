@@ -49,8 +49,7 @@ export class AlbumStateModel {
     loading: true,
     filters: null,
     searchText: null,
-    imageFilters: { 
-    }
+    imageFilters: null
   }
 })
 @Injectable()
@@ -105,6 +104,11 @@ export class AlbumState {
   @Selector()
   static getSearchText(state: AlbumStateModel) {
     return state.searchText;
+  }
+
+  @Selector()
+  static getImageFilters(state: AlbumStateModel) {
+    return state.imageFilters;
   }
 
   @Action(OpenAlbumInfo)
@@ -480,8 +484,18 @@ export class AlbumState {
     dispatch(new OpenLoading());
     const state = getState();
     let objPayload = {
-      filters: payload ? payload : state.filters,
-      searchText: searchText ? searchText : state.searchText
+      filters: payload === null ? payload : state.filters,
+      searchText: searchText === null ? searchText : state.searchText
+    }
+
+    if(searchText === null) {
+      objPayload.filters = payload;
+      objPayload.searchText = state.searchText
+    }
+
+    if(payload === null) {
+      objPayload.searchText = searchText;
+      objPayload.filters = state.filters;
     }
 
     const id = localStorage.getItem('scrapbook-userid');
@@ -508,34 +522,44 @@ export class AlbumState {
 
   @Action(SearchAndFilterImages)
   searchAndFilterImages({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterImages) {
-    console.log('filtering images');
-    // dispatch(new StartAlbumLoading());
-    // const state = getState();
-    // let objPayload = {
-    //   filters: payload ? payload : state.filters,
-    //   searchText: searchText ? searchText : state.searchText
-    // }
+    dispatch(new StartAlbumLoading());
+    const state = getState();
+    let objPayload = {
+      filters: payload ? payload : state.filters,
+      searchText: searchText ? searchText : state.searchText
+    }
 
-    // const id = localStorage.getItem('scrapbook-userid');
+    if(searchText === null) {
+      objPayload.filters = payload;
+      objPayload.searchText = state.searchText
+    }
 
-    // return this.albumService.searchAndFilterImages({...objPayload.filters, name: objPayload.searchText}, id)
-    // .pipe(
-    //   tap((response: Album[]) => {
-    //     dispatch(new CloseLoading());
-    //     setState({
-    //        ...state,
-    //        allAlbumsOfUser: response,
-    //        loading: false,
-    //        filters: payload ? payload : state.filters,
-    //       searchText: searchText ? searchText : state.searchText
-    //      });
-    //   }),
-    //   catchError((err) => {
-    //     console.log(err)
-    //     // dispatch(new SetPageError('401'));
-    //     return of(JSON.stringify(err))
-    //   })
-    // );
+    if(payload === null) {
+      objPayload.searchText = searchText;
+      objPayload.filters = state.filters;
+    }
+
+    const id = localStorage.getItem('scrapbook-userid');
+    const googledriveid = state.albumInView.googleDriveId;
+
+    return this.albumService.searchAndFilterImages({...objPayload.filters, name: objPayload.searchText}, id, googledriveid)
+    .pipe(
+      tap((response: any) => {
+        dispatch(new CloseLoading());
+        setState({
+           ...state,
+           loading: false,
+           albumInView: {...state.albumInView, images: response},
+           filters: payload ? payload : state.filters,
+           searchText: searchText ? searchText : state.searchText
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
   }
 
   @Action(DeleteAlbum)
@@ -584,7 +608,8 @@ export class AlbumState {
   clearSearchText({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
     setState({
       ...getState(),
-      searchText: null
+      searchText: null,
+      filters: null
     })
   }
 

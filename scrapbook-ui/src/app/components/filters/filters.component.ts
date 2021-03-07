@@ -5,7 +5,7 @@ import { Store, Select } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { Filters } from 'src/app/models/search.model';
-import { SearchAndFilterAlbums } from 'src/app/actions/album.actions';
+import { SearchAndFilterAlbums, SearchAndFilterImages } from 'src/app/actions/album.actions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -49,16 +49,18 @@ export class FiltersComponent implements OnInit {
        this.lastEditDateRange.get('start').setValue(new Date(val.modifiedDateFilter.split(' - ')[0]));
        this.lastEditDateRange.get('end').setValue(new Date(val.modifiedDateFilter.split(' - ')[1]));
       }
-      
     })
+
+    // if(this.getMode() === 1) {
+      
+    // } else if(this.getMode() === 2) {
+    //   // if(val) {
+
+    //   // }
+    // }
   }
 
-  ngOnInit(): void {
-
-
-  }
-
-
+  ngOnInit(): void { }
 
   updateCreationDate() {
     this.createdDateFilter = this.creationDateRange.get('start').value + ' - ' + this.creationDateRange.get('end').value;
@@ -69,13 +71,26 @@ export class FiltersComponent implements OnInit {
   }
 
   onApplyFilters() {
-    this.store.dispatch(new SearchAndFilterAlbums('', {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
+    if(this.getMode() === 1) {
+      this.store.dispatch(new SearchAndFilterAlbums(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
+    } else if (this.getMode() === 2) {
+      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
+    }
   }
 
   convertDateFromDatepicker(date: string) {
     const dateObj = new Date(date);
     const momentObj = moment(dateObj);
     return momentObj.format('YYYY-MM-DD');
+  }
+
+  getMode() {
+    const routerSplit = this.router.url.split('/');
+    if(routerSplit.length === 2) {
+      return 1
+    } else if(routerSplit.length === 3) {
+      return 2
+    }
   }
 
 

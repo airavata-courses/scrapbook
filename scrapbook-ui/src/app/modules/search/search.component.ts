@@ -47,9 +47,6 @@ export class SearchComponent implements OnInit {
   }
   
   getMode() {
-    // 1 - album
-    // 2 - image
-
     const routerSplit = this.router.url.split('/');
     if(routerSplit.length === 2) {
       return 1

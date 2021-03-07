@@ -151,7 +151,7 @@ export class AlbumService {
     return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, obj);
   }
 
-  searchAndFilterImages(payload: any, userid: string) {
+  searchAndFilterImages(payload: any, userid: string, googledriveid) {
     let obj = {};
     if (payload['createdDateFilter']) {
       let creationSplit = payload.createdDateFilter.split(' - ');
@@ -182,6 +182,6 @@ export class AlbumService {
       obj['name'] = payload.name;
     }
 
-    return this.http.post(`${GATEWAY_URL}/album/search?userid=${userid}`, obj);
+    return this.http.post(`${GATEWAY_URL}/album/image/search?userid=${userid}&googledriveid=${googledriveid}`, obj);
   }
 }
