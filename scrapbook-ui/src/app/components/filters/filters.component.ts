@@ -6,6 +6,7 @@ import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { Filters } from 'src/app/models/search.model';
 import { SearchAndFilterAlbums } from 'src/app/actions/album.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-filters',
@@ -23,11 +24,19 @@ export class FiltersComponent implements OnInit {
   });
 
   filters;
+  mode: number;
 
   @Select(AlbumState.getFilters) filters$: Observable<Filters>;
 
 
-  constructor(public store: Store) { 
+  constructor(public store: Store, public router: Router) { 
+
+    console.log(router.url.split('/'))
+    if(router.url.split('/').length === 2) {
+      this.mode = 1;
+    } else if (router.url.split('/').length === 3) {
+      this.mode = 2
+    }
 
     this.filters$.subscribe(val => {
       if(val) {
@@ -64,7 +73,7 @@ export class FiltersComponent implements OnInit {
     let payload: Filters = {startCreatedDate: '', endCreatedDate: '', startModifiedDate: '', endModifiedDate: ''};
     for(let key in this.filters) {
       if (!this.filters[key] || this.filters[key]==='Any') {
-        payload[key] = '';
+        payload[key] = null;
         continue;
       } else {
         payload[key] = moment(this.filters[key]).format('MM/DD/yyyy'); 
