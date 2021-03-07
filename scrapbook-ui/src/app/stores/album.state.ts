@@ -476,15 +476,11 @@ export class AlbumState {
   searchAndFilterAlbums({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
     dispatch(new StartAlbumLoading());
     const state = getState();
-    patchState({
-      filters: payload ? payload : state.filters,
-      searchText: searchText ? searchText : state.searchText
-    })
-
     let objPayload = {
       filters: payload ? payload : state.filters,
       searchText: searchText ? searchText : state.searchText
     }
+
     const id = localStorage.getItem('scrapbook-userid');
 
     return this.albumService.searchAndFilterAlbums({...objPayload.filters, name: objPayload.searchText}, id)
@@ -495,7 +491,8 @@ export class AlbumState {
            ...state,
            allAlbumsOfUser: response,
            loading: false,
-           
+           filters: payload ? payload : state.filters,
+          searchText: searchText ? searchText : state.searchText
          });
       }),
       catchError((err) => {
