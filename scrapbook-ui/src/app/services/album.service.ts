@@ -54,6 +54,10 @@ export class AlbumService {
     return this.http.put(`${GATEWAY_URL}/album/${gid}`, payload)
   }
 
+  getSharedAlbumsOfUser(userid: string) {
+    return this.http.get(`${GATEWAY_URL}/album/shared?userid=${userid}`)
+  }
+
   uploadFile(file: any, id: string , userid: string) {
     const formData = new FormData();
     formData.append('file', file);

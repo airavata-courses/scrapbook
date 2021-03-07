@@ -151,3 +151,8 @@ export class DeleteAlbum {
   static readonly type = 'DELETe album';
   constructor(public albumid: string) {}
 }
+
+export class GetSharedAlbumsOfUser {
+  static readonly type = 'GET SHARED ALBUMS';
+  constructor() {}
+}

@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum } from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser } from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -476,6 +476,27 @@ export class AlbumState {
         return of(JSON.stringify(err))
       })
     )
+  }
+
+  @Action(GetSharedAlbumsOfUser)
+  fetchSharedAlbumsofUser({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    const id = localStorage.getItem('scrapbook-userid')
+    dispatch(new StartAlbumLoading());
+    return this.albumService.getSharedAlbumsOfUser(id).pipe(
+      tap((response: Album[]) => {
+        setState({
+           ...state,
+           allAlbumsOfUser: response,
+           loading: false
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
   }
 
 }

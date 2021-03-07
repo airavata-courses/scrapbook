@@ -20,9 +20,8 @@ export class AlbumListComponent implements OnInit {
   @Select(AlbumState.getAlbumLoading) albumLoading$: Observable<boolean>;
 
   constructor(private store: Store, public albumListService: AlbumListService) {
-    const userID = localStorage.getItem('scrapbook-userid')
+    
     this.store.dispatch(new RemoveAlbumFromView());
-    this.store.dispatch(new FetchAllAlbumsOfUser(userID));
 
     this.allAlbumsOfUser$.subscribe(data => {
       if (data) {
