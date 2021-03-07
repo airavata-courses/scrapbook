@@ -116,19 +116,19 @@ public class AlbumController {
     @GetMapping("/{googledriveid}/image")
     public ResponseEntity<List<Image>> retrieveAllImages(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
-                body(imageService.retrieveInactiveImages(googleDriveId,false));
+                body(imageService.retrieveImages(googleDriveId,true));
     }
 
     /**
      *
      * @return album created
      */
-    @Operation(summary = "Retrieve all images from database for given album and userId", description = "This API is responsible for " +
-            "retrieving all images for given user and album from the database.")
+    @Operation(summary = "Retrieve all inactive images from database for given album", description = "This API is responsible for " +
+            "retrieving all images and album from the database.")
     @GetMapping("/{googledriveid}/image/inactive")
     public ResponseEntity<List<Image>> retrieveInactiveImages(@PathVariable("googledriveid") String googleDriveId){
         return ResponseEntity.status(HttpStatus.OK).
-                body(imageService.retrieveAllImages(googleDriveId));
+                body(imageService.retrieveImages(googleDriveId,false));
     }
 
     @Operation(summary = "Delete all albums from database for given userId", description = "This API is responsible for " +
@@ -192,8 +192,8 @@ public class AlbumController {
 
     @Operation(summary = "Search all albums from given search criteria for userId as owner", description = "This API is responsible for " +
             "searching all albums for given search criteria")
-    @GetMapping(value = "/search")
-    public ResponseEntity<List<Album>> search(SearchAlbumRequest request, @RequestParam("userid") String userId){
+    @PostMapping(value = "/search")
+    public ResponseEntity<List<Album>> search(@RequestBody SearchAlbumRequest request, @RequestParam("userid") String userId){
         ResponseEntity<List<Album>> responseEntity = null;
         try {
             responseEntity = ResponseEntity.status(HttpStatus.OK).body(albumService.search(request,userId));
@@ -205,8 +205,8 @@ public class AlbumController {
 
     @Operation(summary = "Search all images in an album from given search criteria for userId as owner", description = "This API is responsible for " +
             "searching all images in an album for given search criteria")
-    @GetMapping(value = "/{albumdriveid}/image/search")
-    public ResponseEntity<List<Image>> search(SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId) {
+    @PostMapping(value = "/{albumdriveid}/image/search")
+    public ResponseEntity<List<Image>> search(@RequestBody SearchImageRequest request, @PathVariable("albumdriveid") String albumId, @RequestParam("userid") String userId) {
         ResponseEntity<List<Image>> responseEntity = null;
         try {
             responseEntity = ResponseEntity.status(HttpStatus.OK).body(imageService.search(request, albumId,userId));

@@ -19,9 +19,9 @@ public interface ImageService {
 
     List<Image> retrieveAll(String albumGDriveId, String userId);
 
-    List<Image> retrieveAllImages(String albumGDriveId);
+//    List<Image> retrieveAllImages(String albumGDriveId);
 
-    List<Image> retrieveInactiveImages(String albumGDriveId,Boolean active);
+    List<Image> retrieveImages(String albumGDriveId,Boolean active);
 
     List<Image> retrieveAll(String userId);
 

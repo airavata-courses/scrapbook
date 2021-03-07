@@ -88,14 +88,14 @@ public class ImageServiceImpl implements ImageService{
         return imageRepository.findByAlbumGoogleIdAndCreatedByAndActive(albumGDriveId,userId,true);
     }
 
-    @Override
-    public List<Image> retrieveAllImages(String albumGDriveId) {
-        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,true);
-    }
+//    @Override
+//    public List<Image> retrieveAllImages(String albumGDriveId) {
+//        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,true);
+//    }
 
     @Override
-    public List<Image> retrieveInactiveImages(String albumGDriveId, Boolean active) {
-        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,false);
+    public List<Image> retrieveImages(String albumGDriveId, Boolean active) {
+        return imageRepository.findByAlbumGoogleIdAndActive(albumGDriveId,active);
     }
 
     @Override
