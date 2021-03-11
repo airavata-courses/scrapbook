@@ -1,9 +1,10 @@
 package com.iu.scrapbook.service;
 
-import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.ImageRequest;
+import com.iu.scrapbook.dto.SearchImageRequest;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -18,7 +19,9 @@ public interface ImageService {
 
     List<Image> retrieveAll(String albumGDriveId, String userId);
 
-    List<Image> retrieveAllImages(String albumGDriveId);
+//    List<Image> retrieveAllImages(String albumGDriveId);
+
+    List<Image> retrieveImages(String albumGDriveId,Boolean active);
 
     List<Image> retrieveAll(String userId);
 
@@ -31,4 +34,6 @@ public interface ImageService {
     Long deleteAlbumImages(String albumGoogleId, String userId);
 
     Image updateImage(ImageRequest album, String googleDriveId, String userId);
+
+    List<Image> search(SearchImageRequest request, String albumId, String userId) throws ParseException;
 }

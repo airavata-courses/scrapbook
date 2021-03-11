@@ -3,8 +3,10 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +27,8 @@ public interface AlbumService {
 
     List<Album> retrieveALl();
 
+    List<Album> retrieveSharedAlbum(String userId);
+
     void deleteAll(String userId);
 
     Long deleteByGoogleDriveId(String id,  String userId);
@@ -39,4 +43,7 @@ public interface AlbumService {
 
     Album removeCollaborators(String googleDriveId, Set<String> collaboratorIds, String userId);
 
+    List<Album> retrieveDeletedAlbum(String userId);
+
+    List<Album> search(SearchAlbumRequest request, String userId) throws ParseException;
 }

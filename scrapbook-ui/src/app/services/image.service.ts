@@ -7,6 +7,9 @@ import { saveAs } from "file-saver";
 import { Store } from '@ngxs/store';
 import { CloseLoading } from '../actions/ui.actions';
 import { Album } from '../models/album.model';
+import { HttpClient } from '@angular/common/http';
+import { GATEWAY_URL } from '../static/url';
+import { PutAlbumInView, FetchImagesOfAlbum } from '../actions/album.actions';
 
 
 @Injectable({
@@ -14,7 +17,33 @@ import { Album } from '../models/album.model';
 })
 export class ImageService {
 
-  constructor(public albumService: AlbumService, public store: Store) { }
+  constructor(public albumService: AlbumService, public store: Store, public http: HttpClient) { }
+  renameImage(userid: string, googleDriveId: string, name: string) {
+    const payload = {
+      userid: userid,
+      googleDriveId: googleDriveId,
+      name: name
+    }
+
+    console.log(payload)
+
+    return this.http.put(`${GATEWAY_URL}/image/${googleDriveId}`, payload);
+  }
+
+  deleteImages(images: string[], userid: string, albumid?: string) {
+    const requests = []
+    let counter = 0;
+    const makeReq = (id: string) => {return this.http.delete(`${GATEWAY_URL}/image/${id}?userid=${userid}`)}
+    images.forEach((img, i) => {
+      requests.push(makeReq(img))
+      counter += 1
+    });
+
+    forkJoin(...requests).subscribe(res => {
+      this.store.dispatch(new FetchImagesOfAlbum(albumid))
+    })
+
+  }
 
   downloadImage(img: any, fileName: string, blob: Blob) {
     const url = window.URL.createObjectURL(blob);

@@ -1,6 +1,7 @@
 import { Image } from '../models/image.model';
 import { Album } from '../models/album.model';
 import { User } from '../models/user.model';
+import { Filters } from "../models/search.model";
 
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
@@ -120,4 +121,53 @@ export class RemoveAlbumCollaborator {
 export class EditAlbumSettings {
   static readonly type = '[EDIT] Album Settings';
   constructor(public name: string, public desc: string) {}
+}
+
+export class StartAlbumLoading {
+  static readonly type ='Start Album Loading';
+  constructor() {}
+}
+
+export class CloseAlbumLoading {
+  static readonly type ='Start Album Loading';
+  constructor() {}
+}
+
+export class RenameImage {
+  static readonly type = 'RENAME image';
+  constructor(public name: string, public imgid: string) {}
+}
+
+export class DeleteImages {
+  static readonly type = 'DELETE Images';
+  constructor(public images: string[], public albumid: string){}
+}
+
+export class RemoveImageForAlbum {
+  static readonly type = 'REMOVE image from albumin view';
+  constructor(public id: string) {}
+}
+
+export class DeleteAlbum {
+  static readonly type = 'DELETe album';
+  constructor(public albumid: string) {}
+}
+
+export class GetSharedAlbumsOfUser {
+  static readonly type = 'GET SHARED ALBUMS';
+  constructor() {}
+}
+export class SearchAndFilterAlbums {
+  static readonly type = 'SEARCH and Filter Albums';
+  constructor(public searchText?: string, public payload?: any) {}
+}
+
+export class SearchAndFilterImages {
+  static readonly type = 'Search and Filter Images';
+  constructor(public searchText?: string, public payload?: any) {}
+}
+
+export class ClearSearchText {
+  static readonly type = 'Clear Search Text';
+  constructor() {}
 }

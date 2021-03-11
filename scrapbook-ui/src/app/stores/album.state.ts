@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
-import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings } from '../actions/album.actions';
+import { Injectable, Inject, NgZone } from '@angular/core';
+import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText} from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -12,6 +12,9 @@ import { ImageService } from '../services/image.service';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { User } from '../models/user.model';
 import { RemoveSearchedUserBySubString } from '../actions/user.actions';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { Filters } from '../models/search.model';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -24,6 +27,10 @@ export class AlbumStateModel {
   pendingUploads: Array<PendingUploadsStateInterface>;
   selectedImages: Array<Image>;
   collaborators: Array<User[]>;
+  loading: boolean;
+  filters: any;
+  searchText: string;
+  imageFilters: any;
 }
 
 @State<AlbumStateModel>({
@@ -38,12 +45,16 @@ export class AlbumStateModel {
     imgBlob: null,
     pendingUploads: [],
     selectedImages: [],
-    collaborators: []
+    collaborators: [],
+    loading: true,
+    filters: null,
+    searchText: null,
+    imageFilters: null
   }
 })
 @Injectable()
 export class AlbumState {
-  constructor(public albumService: AlbumService, public store: Store, private sanitizer: DomSanitizer, public imageService: ImageService) {}
+  constructor(public albumService: AlbumService, public store: Store, private sanitizer: DomSanitizer, public imageService: ImageService, private ngZone:NgZone, private location: Location, private router: Router) {}
 
   @Selector()
   static getInfoModalState(state: AlbumStateModel) {
@@ -80,6 +91,26 @@ export class AlbumState {
     return state.selectedImages;
   }
 
+  @Selector()
+  static getAlbumLoading(state: AlbumStateModel) {
+    return state.loading;
+  }
+
+  @Selector()
+  static getFilters(state: AlbumStateModel) {
+    return state.filters;
+  }
+
+  @Selector()
+  static getSearchText(state: AlbumStateModel) {
+    return state.searchText;
+  }
+
+  @Selector()
+  static getImageFilters(state: AlbumStateModel) {
+    return state.imageFilters;
+  }
+
   @Action(OpenAlbumInfo)
   openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
@@ -107,21 +138,25 @@ export class AlbumState {
       albumInfoOpen: false
     });
   }
+
+
   @Action(FetchAllAlbumsOfUser)
   fetchAllAlbumsOfUser({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: FetchAllAlbumsOfUser) {
     const state = getState();
-
+    dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumsOfUser(id).pipe(
       tap((response: Album[]) => {
 
         dispatch(new CloseLoading());
         setState({
            ...state,
-           allAlbumsOfUser: response
+           allAlbumsOfUser: response,
+           loading: false
          });
       }),
       catchError((err) => {
-        dispatch(new SetPageError('401'));
+        console.log(err)
+        // dispatch(new SetPageError('401'));
         return of(JSON.stringify(err))
       })
     );
@@ -199,13 +234,18 @@ export class AlbumState {
   @Action(PutAlbumInView)
   putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
+    dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumByID(id).pipe(
       tap((res: Album) => {
+        if(!res.active) {
+          this.location.back()
+        }
         setState({
           ...state,
-          albumInView: res
+          albumInView: res,
         })
-        dispatch(new FetchImagesOfAlbum(res.googleDriveId))
+        dispatch(new FetchImagesOfAlbum(res.googleDriveId));     
+         
       }),
       catchError((err) => {
         dispatch(new SetPageError('401'));
@@ -222,8 +262,11 @@ export class AlbumState {
         tap((res: Image[]) => {
           setState({
             ...state,
+            selectedImages: [],
             albumInView: {...album, images: res}
           });
+          dispatch(new CloseAlbumLoading());
+          dispatch(new CloseLoading());
         }),
         catchError((err) => {
           dispatch(new SetPageError('500'));
@@ -385,4 +428,189 @@ export class AlbumState {
       })
     )
   }
+
+  @Action(StartAlbumLoading)
+  startAlbumLoading({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loading: true
+    })
+  }
+
+  @Action(CloseAlbumLoading)
+  stopAlbumLoading({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loading: false
+    })
+  }
+
+  @Action(RenameImage)
+  renameImage({getState, setState, dispatch}: StateContext<AlbumStateModel>, {name, imgid}:RenameImage) {
+    const state = getState();
+    const images = [...state.albumInView.images];
+    const userid = localStorage.getItem('scrapbook-userid');
+    dispatch(new OpenLoading());
+    const idx = images.findIndex(i => i.googleDriveId === imgid);
+
+    return this.imageService.renameImage(userid, imgid, name).pipe(
+      tap((res: Image) => {
+        setState({
+          ...state,
+          albumInView: {...state.albumInView, images: [...images.slice(0, idx),res, ...images.slice(idx + 1)]}
+        })
+        dispatch(new CloseLoading())
+        
+      }),
+      catchError((err) => {
+        dispatch(new CloseLoading())
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(DeleteImages)
+  deleteImages({getState, setState, dispatch}: StateContext<AlbumStateModel>, {images, albumid}:DeleteImages) {
+    const state = getState();
+    dispatch(new OpenLoading());
+    const userid = localStorage.getItem('scrapbook-userid');
+    this.imageService.deleteImages(images, userid, albumid);
+  }
+
+  @Action(SearchAndFilterAlbums)
+  searchAndFilterAlbums({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterAlbums) {
+    dispatch(new OpenLoading());
+    const state = getState();
+    let objPayload = {
+      filters: payload === null ? payload : state.filters,
+      searchText: searchText === null ? searchText : state.searchText
+    }
+
+    if(searchText === null) {
+      objPayload.filters = payload;
+      objPayload.searchText = state.searchText
+    }
+
+    if(payload === null) {
+      objPayload.searchText = searchText;
+      objPayload.filters = state.filters;
+    }
+
+    const id = localStorage.getItem('scrapbook-userid');
+
+    return this.albumService.searchAndFilterAlbums({...objPayload.filters, name: objPayload.searchText}, id)
+    .pipe(
+      tap((response: Album[]) => {
+        dispatch(new CloseLoading());
+        setState({
+           ...state,
+           allAlbumsOfUser: response,
+           loading: false,
+           filters: payload ? payload : state.filters,
+          searchText: searchText ? searchText : state.searchText
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
+  }
+
+  @Action(SearchAndFilterImages)
+  searchAndFilterImages({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {searchText, payload}: SearchAndFilterImages) {
+    dispatch(new StartAlbumLoading());
+    const state = getState();
+    let objPayload = {
+      filters: payload ? payload : state.filters,
+      searchText: searchText ? searchText : state.searchText
+    }
+
+    if(searchText === null) {
+      objPayload.filters = payload;
+      objPayload.searchText = state.searchText
+    }
+
+    if(payload === null) {
+      objPayload.searchText = searchText;
+      objPayload.filters = state.filters;
+    }
+
+    const id = localStorage.getItem('scrapbook-userid');
+    const googledriveid = state.albumInView.googleDriveId;
+
+    return this.albumService.searchAndFilterImages({...objPayload.filters, name: objPayload.searchText}, id, googledriveid)
+    .pipe(
+      tap((response: any) => {
+        dispatch(new CloseLoading());
+        setState({
+           ...state,
+           loading: false,
+           albumInView: {...state.albumInView, images: response},
+           filters: payload ? payload : state.filters,
+           searchText: searchText ? searchText : state.searchText
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
+  }
+
+  @Action(DeleteAlbum)
+  deleteAlbum({getState, setState, dispatch}: StateContext<AlbumStateModel>, {albumid}:DeleteAlbum) {
+    const state = getState();
+    dispatch(new OpenLoading());
+    const userid = localStorage.getItem('scrapbook-userid');
+    return this.albumService.deleteAlbum(albumid, userid).pipe(
+      tap((res) => {
+        setState({
+          ...state,
+          albumInView: {},
+          selectedImages: []
+        })
+        dispatch(new CloseSettings());
+        this.ngZone.run(() => this.router.navigate(['/home']));
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(GetSharedAlbumsOfUser)
+  fetchSharedAlbumsofUser({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    const id = localStorage.getItem('scrapbook-userid')
+    dispatch(new StartAlbumLoading());
+    return this.albumService.getSharedAlbumsOfUser(id).pipe(
+      tap((response: Album[]) => {
+        setState({
+           ...state,
+           allAlbumsOfUser: response,
+           loading: false
+         });
+      }),
+      catchError((err) => {
+        console.log(err)
+        // dispatch(new SetPageError('401'));
+        return of(JSON.stringify(err))
+      })
+    );
+  }
+
+  @Action(ClearSearchText)
+  clearSearchText({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    setState({
+      ...getState(),
+      searchText: null,
+      filters: null
+    })
+  }
+
 }

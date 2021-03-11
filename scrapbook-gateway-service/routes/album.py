@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
 from config import IMAGE_SERVICE_URL__DEV
 from service_utils import user_service
+import sys
+import json
 
 album_api = Blueprint('album_api', __name__)
 
@@ -56,7 +58,7 @@ def getAlbumsOfUser():
     """
     Get all the albums of the user
 
-    @params - A GET request that is sent to fetch all the albums that the user has access to
+    @params - userid (arg)
     @return - list of dictionaries with album details and http status code
     """
     try:
@@ -65,9 +67,6 @@ def getAlbumsOfUser():
                                 data=request.data)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
-        # for i in range(len(aggregatedResponse)):
-        #     aggregatedResponse[i]['collaborators'] = user_service.aggregateCollaborator(aggregatedResponse[i])
-
         return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
@@ -80,7 +79,7 @@ def getImagesByAlbumID(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
     
-    @params - A GET request that fetches all images from a specific album
+    @params - googledriveid (path variable) 
     @return - json formatted list of images in the album and http status code
     """
     try:
@@ -151,22 +150,125 @@ def removeCollaborator():
         return err.response.text, err.response.status_code
 
 
-@album_api.route('/album/update', methods=["PUT"])
+@album_api.route('/album/<googledriveid>', methods=["PUT"])
 @auth.check_user_session
-def updateAlbumNameAndDesc():
-    try:
-        name = request.json['name']
-        description = request.json['description']
-        userid = request.json['userid']
-        gid = request.json['gid']
+def updateAlbum(googledriveid):
+    """
+    responsible for updating album details into database
 
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{gid}?userid={userid}', data={name: name, description: description})
+    @params - googledriveid (path variable) along with userid as args
+    @return - a json response with the album object details
+    """
+    try:
+        userID = request.json['userid']
+        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}',
+                                headers=request.headers, data=request.data)
+        response.raise_for_status()
+        return response.json(), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album', methods=["DELETE"])
+@auth.check_user_session
+def deleteAllAlbumsForUser():
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - userid (arg)
+    @return - http status code
+    """
+    try:
+        userID = request.args.get('userid')
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}')
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/<googledriveid>', methods=["GET"])
+@auth.check_user_session
+def retreieveAlbumByID(googledriveid):
+    """
+    retrieve albums from databse with the id = googledriveid
+
+    @params - googledriveid of the album (path variable) 
+    @return - a json response with the album object details
+    """
+    try:
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response.raise_for_status()
+        return response.json(), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/search', methods=["POST"])
+@auth.check_user_session
+def searchAndFilterAlbum():
+    try:
+        userid = request.args.get('userid')
+        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.data,
+                                 headers=headers)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
-        # aggregatedData = response.json()
-        # aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
-        #
-        return aggregatedResponse, response.status_code
+        return jsonify(aggregatedResponse), response.status_code
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
 
+
+@album_api.route('/album/<googledriveid>', methods=["DELETE"])
+@auth.check_user_session
+def deleteAlbumByID(googledriveid):
+    """
+    deleting all albums for given user from the database. It is soft. It sets all albums as inactive
+
+    @params - googledriveid (path variable) along with userid as args
+    @return - 0 if the album is successfully deleted
+    """
+    try:
+        userID = request.args.get('userid')
+        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}')
+        print(response.json(), file=sys.stderr)
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/shared', methods=["GET"])
+@auth.check_user_session
+def getSharedAlbumsOfUser():
+    try:
+        userID = request.args.get('userid')
+        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/shared?userid={userID}')
+        response.raise_for_status()
+        aggregatedResponse = user_service.aggregateUser(response)
+        print(aggregatedResponse)
+        return jsonify(aggregatedResponse), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+
+@album_api.route('/album/image/search', methods=["POST"])
+@auth.check_user_session
+def searchAndFilterImage():
+    try:
+        userid = request.args.get('userid')
+        googledriveid = request.args.get('googledriveid')
+        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/image/search?userid={userid}',
+                                 data=request.data,
+                                 headers=headers)
+        response.raise_for_status()
+        aggregatedResponse = user_service.aggregateUser(response)
+        return jsonify(aggregatedResponse), response.status_code
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code

@@ -8,6 +8,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { AlbumViewComponent } from './modules/album-view/album-view.component';
 import { AlbumListComponent } from './modules/album-list/album-list.component';
+import { SharedComponent } from './modules/shared/shared.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,22 @@ const routes: Routes = [
 
         ]
       },
+      {
+        path: 'shared',
+        component: SharedComponent,
+        canActivate: [AuthGuardService],
+        children: [
+          {
+            path: ':album',
+            component: AlbumViewComponent
+          },
+          {
+            path: '',
+            component: AlbumListComponent
+          },
 
+        ]
+      },
       {
         path: 'starred',
         component: StarredComponent,
