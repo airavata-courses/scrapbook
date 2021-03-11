@@ -4,6 +4,8 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.iu.scrapbook.config.GoogleDriveConfig;
 import com.iu.scrapbook.dto.Image;
+import com.iu.scrapbook.producer.Message;
+import com.iu.scrapbook.producer.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,11 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
     @Autowired
     private ImageServiceRestTemplate imageServiceRestTemplate;
 
+    @Autowired
+    private Producer producer;
+
     @Override
     public Image uploadImage(MultipartFile image, String userId, String albumGoogleId) throws Exception {
-
 
         // Normalize file name
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
@@ -66,6 +70,9 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
 
         f.delete();
         log.info("Uploaded "+fileName+" size: "+i.getSize());
+       // producer.sendMessage(uploadedFile.getId());
+        producer.sendMessage(Message.builder().imageId(uploadedFile.getId()).imageName(i.getName())
+                .albumId(albumGoogleId).image(image.getBytes()).build());
         return response.getBody();
     }
 

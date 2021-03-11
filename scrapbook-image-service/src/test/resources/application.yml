@@ -5,5 +5,4 @@ spring:
 scrapbook:
   googledrive:
     service:
-      album:
-        baseurl: http://localhost:9090/album
+      baseurl: http://localhost:9090
