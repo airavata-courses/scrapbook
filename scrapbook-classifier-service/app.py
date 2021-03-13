@@ -22,7 +22,7 @@ INTERRUPT_EVENT = Event()
 
 bus = FlaskKafka(INTERRUPT_EVENT,
                  bootstrap_servers=",".join(["localhost:9092"]),
-                 group_id="consumer-grp-id"
+                 group_id="consumer-grp-id-1"
                  )
 
 
@@ -34,15 +34,18 @@ def listen_kill_server():
 
 
 @bus.handle('image')
-def extract_metadata(msg):
+def extract_classes(msg):
     try:
+        print("debug1")
         json_msg = json.loads(msg.value)
         imageStr = base64.b64decode(str(json_msg['image']))
         image = Image.open(io.BytesIO(imageStr))
         filename = json_msg['imageName']
         image_id = json_msg['imageId']
         albumID = json_msg['albumId']
+        print("newdbug1")
         detections = get_predictions(image) 
+        print(detections)
         class_tags = {"albumid":albumID, "imageid": image_id, "classLabels": detections}
         mongo.db.classtags.insert_one(class_tags)
     except Exception as e:
@@ -50,7 +53,7 @@ def extract_metadata(msg):
     
 
 @app.route('/image/fetch/all', methods=["GET"])
-def retrieve_autofill():
+def autofill_data():
     """
     Image service fetches the extracted meta data information from the image
     """
@@ -88,6 +91,8 @@ def retrieve_classlabels():
 
 
 if __name__ == '__main__':
+    bus.run()
+    listen_kill_server()
     app.run(port=10001, debug=True)
 
 
