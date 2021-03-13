@@ -11,3 +11,5 @@ scrapbook:
   googledrive:
     service:
         baseurl: http://localhost:9090
+  metadata:
+        baseurl: http://localhost:12000/metadata/match

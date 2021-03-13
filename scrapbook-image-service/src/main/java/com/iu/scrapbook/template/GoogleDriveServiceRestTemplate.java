@@ -47,6 +47,11 @@ public class GoogleDriveServiceRestTemplate {
                 body, response);
     }
 
+    public <U,T> ResponseEntity<T> post1(String url, U body, Class<T> response){
+        return restTemplate.postForEntity(url,
+                body, response);
+    }
+
     public <T> ResponseEntity<T> put(String url, T body, Class<T> response){
         HttpEntity<T> request = new HttpEntity<T>(body);
         return restTemplate.exchange(url,HttpMethod.PUT, request,response);

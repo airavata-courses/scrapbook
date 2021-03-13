@@ -2,6 +2,7 @@ package com.iu.scrapbook.service;
 
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
+import com.iu.scrapbook.dto.ImageIdList;
 import com.iu.scrapbook.dto.ImageRequest;
 import com.iu.scrapbook.dto.SearchImageRequest;
 import com.iu.scrapbook.repository.AlbumRepository;
@@ -18,11 +19,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.List;
 import java.util.MissingResourceException;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -52,8 +55,14 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private GoogleDriveServiceRestTemplate googleDriveServiceRestTemplate;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Value("${scrapbook.googledrive.service.baseurl}")
     private String baseUrl;
+
+    @Value("${scrapbook.metadata.baseurl}")
+    private String mdUrl;
 
     @Override
     public Image create(Image image) {
@@ -181,6 +190,19 @@ public class ImageServiceImpl implements ImageService{
                             DateUtil.convert(request.getEndModifiedDate()) : Instant.now()));
         }
         List<Image>  images = mongoTemplate.find(query,Image.class);
+
+        if(request.getMetadata() != null){
+            List<String> imageids = images.stream().map(i -> i.getGoogleDriveId()).collect(Collectors.toList());
+            request.getMetadata().setImageIds(imageids);
+            ResponseEntity<ImageIdList> idList = restTemplate.postForEntity(mdUrl,request.getMetadata(),ImageIdList.class);
+            if(idList.getBody() != null) {
+                imageids = idList.getBody().getImageIds();
+                System.out.println("Size before: " + images.size());
+                List<String> finalImageids = imageids;
+                images.stream().filter(image -> finalImageids.contains(image.getGoogleDriveId())).collect(Collectors.toList());
+                System.out.println("Size after: " + images.size());
+            }
+        }
         return images;
     }
 
