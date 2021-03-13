@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
 from config import G_DRIVE_SERVICE_URL__DEV, IMAGE_SERVICE_URL__DEV
 import sys
+from service_utils import user_service
 
 image_api = Blueprint('image_api', __name__)
 
@@ -60,8 +61,11 @@ def renameImage(GoogeDriveID):
         response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}',
                                 headers=request.headers,
                                 data=request.data)
+        aggregatedUser = response.json()
+        aggregatedUser['createdBy'] = user_service.getUser(response.json()['createdBy'])
+        aggregatedUser['modifiedBy'] = user_service.getUser(response.json()['modifiedBy'])
         response.raise_for_status()
-        return response.json(), response.status_code
+        return aggregatedUser, response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code

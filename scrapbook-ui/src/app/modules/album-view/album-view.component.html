@@ -32,7 +32,7 @@
             <fa-icon [icon]='faDownload' class="text-dark h6 m-0"></fa-icon>
             <!-- <mat-icon class="text-dark h5 m-0">settings</mat-icon> -->
           </button>
-          <button mat-icon-button class="ml-2" (click)="onMultipleImageDelete()">
+          <button mat-icon-button class="ml-2" (click)="onMultipleImageDelete()" *ngIf="canDelete()">
             <fa-icon [icon]='faTrash' class="text-dark h6 m-0"></fa-icon>
             <!-- <mat-icon class="text-dark h5 m-0">settings</mat-icon> -->
           </button>

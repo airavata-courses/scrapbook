@@ -49,10 +49,11 @@ import { UploadsPendingPanelComponent } from './components/uploads-pending-panel
 import { SettingsComponent } from './components/settings/settings.component';
 import { CollabComponent } from './components/collab/collab.component';
 import { ImageEditComponent } from './components/image-edit/image-edit.component';
+import { SharedComponent } from './modules/shared/shared.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent, CollabComponent, ImageEditComponent],
+  declarations: [AppComponent, LandingComponent, RootComponent, FooterComponent, NavbarComponent, SidenavComponent, AlbumListComponent, SearchComponent, ProfileComponent, HomeComponent, StarredComponent, AlbumListItemComponent, InfoComponent, UploadComponent, FiltersComponent, LoadingComponent, ErrorPageComponent, AlbumViewComponent, ImageListItemComponent, ImageModalComponent, UploadsPendingPanelComponent, SettingsComponent, CollabComponent, ImageEditComponent, SharedComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

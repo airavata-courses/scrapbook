@@ -57,7 +57,7 @@
         <menu mat-menu-item (click)="onEditImage()">Edit</menu>
         <menu mat-menu-item>Star</menu>
         <mat-divider></mat-divider>
-        <menu mat-menu-item (click)="onDeleteImage()">Delete</menu>
+        <menu mat-menu-item (click)="onDeleteImage()" *ngIf="currentUserid === currentImage.createdBy._id">Delete</menu>
       </mat-menu>
       <mat-menu #accessReq>
       </mat-menu>

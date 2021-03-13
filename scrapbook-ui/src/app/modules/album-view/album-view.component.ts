@@ -3,7 +3,7 @@ import { AlbumViewService } from './album-view.service';
 import { Album } from 'src/app/models/album.model';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
-import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage, DeleteImages, DeleteAlbum } from 'src/app/actions/album.actions';
+import { PutAlbumInView, OpenAlbumInfo, GetImage, DownloadImage, DownloadSelectedImages, SelectMultipleImages, RemoveSelectedImage, RemoveAllSelectedImages, EditAlbumSettings, RenameImage, DeleteImages, DeleteAlbum, ClearSearchText } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -30,6 +30,7 @@ export class AlbumViewComponent implements OnInit {
   faTrash = faTrash;
   faTimes = faTimes;
   selectedImages: Array<Image>;
+  currentuUserid: string;
 
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
   @Select(UIState.getImgModal) imgModal$: Observable<boolean>;
@@ -38,8 +39,12 @@ export class AlbumViewComponent implements OnInit {
   @Select(AlbumState.getAlbumLoading) albumLoading$: Observable<boolean>;
 
   constructor(public albumViewService: AlbumViewService, public router: Router, public store: Store, public dialog: MatDialog) {
+    
+    this.store.dispatch(new ClearSearchText());
     const splitRoute = router.url.split('/');
     const albumId = splitRoute[splitRoute.length - 1];
+
+    this.currentuUserid = localStorage.getItem('scrapbook-userid');
 
     this.store.dispatch(new PutAlbumInView(albumId));
 
@@ -117,6 +122,14 @@ export class AlbumViewComponent implements OnInit {
 
   showImageInfo(e) {
     this.store.dispatch(new OpenAlbumInfo(e, 't'));
+  }
+
+  canDelete(): boolean {
+    const userid = localStorage.getItem('scrapbook-userid');
+    for(let i of this.selectedImages) {
+      if(i.createdBy._id !== userid) return false;
+    }
+    return true;
   }
 
   openSettingsModal() {

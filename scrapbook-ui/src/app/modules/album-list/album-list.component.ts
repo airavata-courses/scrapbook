@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { OpenAlbumInfo, RemoveAlbumFromView, FetchAllAlbums, FetchAllAlbumsOfUser } from 'src/app/actions/album.actions';
+import { OpenAlbumInfo, RemoveAlbumFromView, FetchAllAlbums, FetchAllAlbumsOfUser, ClearSearchText } from 'src/app/actions/album.actions';
 import { Album } from 'src/app/models/album.model';
 import { AlbumListService } from './album-list.service';
 import { AlbumState } from 'src/app/stores/album.state';
@@ -20,15 +20,16 @@ export class AlbumListComponent implements OnInit {
   @Select(AlbumState.getAlbumLoading) albumLoading$: Observable<boolean>;
 
   constructor(private store: Store, public albumListService: AlbumListService) {
-    const userID = localStorage.getItem('scrapbook-userid')
+    
     this.store.dispatch(new RemoveAlbumFromView());
-    this.store.dispatch(new FetchAllAlbumsOfUser(userID));
-
+    this.store.dispatch(new ClearSearchText());
+    
     this.allAlbumsOfUser$.subscribe(data => {
       if (data) {
         this.albums = data;
       }
     });
+    console.log('here')
    }
 
   ngOnInit(): void {

@@ -3,9 +3,11 @@ package com.iu.scrapbook.service;
 import com.iu.scrapbook.document.Album;
 import com.iu.scrapbook.document.Image;
 import com.iu.scrapbook.dto.CreateAlbumRequest;
+import com.iu.scrapbook.dto.SearchAlbumRequest;
 import com.iu.scrapbook.exception.GoogleDriveException;
 import com.iu.scrapbook.repository.AlbumRepository;
 import com.iu.scrapbook.template.GoogleDriveServiceRestTemplate;
+import com.iu.scrapbook.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +128,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public List<Album> retrieveSharedAlbum(String userId) {
+       return albumRepository.findByCollaboratorsIn(userId);
+    }
+
+    @Override
     public void deleteAll(String userId) {
         mongoTemplate.updateMulti(query(where("createdBy").is(userId)),
                 update("active", false), Album.class);
@@ -179,6 +187,39 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public List<Album> retrieveDeletedAlbum(String userId) {
+        return albumRepository.findByCreatedByAndActive(userId,false);
+    }
+
+    @Override
+    public List<Album> search(SearchAlbumRequest request, String userId) throws ParseException {
+        String name = request.getName();
+        String startCreatedDate = request.getStartCreatedDate();
+        String startModifiedDate = request.getStartModifiedDate();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("active").is(true));
+        query.addCriteria(Criteria.where("createdBy").is(userId));
+
+        if(name!=null){
+            query.addCriteria(Criteria.where("name").regex(".*"+name+".*"));
+        }
+
+        if(startCreatedDate != null){
+            query.addCriteria(Criteria.where("createdDate").gte(DateUtil.convert(startCreatedDate))
+            .lte(request.getEndCreatedDate() != null ?
+                            DateUtil.convert(request.getEndCreatedDate()) : Instant.now()));
+        }
+
+        if(startModifiedDate != null){
+            query.addCriteria(Criteria.where("modifiedDate").gte(DateUtil.convert(startModifiedDate))
+            .lte(request.getEndModifiedDate() != null ?
+                            DateUtil.convert(request.getEndModifiedDate()) : Instant.now()));
+        }
+        List<Album>  albums = mongoTemplate.find(query,Album.class);
+        return albums;
+    }
+
+    @Override
     public Album removeCollaborator(String googleDriveId, String collaboratorId, String userId) {
         Album album = albumRepository.findByGoogleDriveId(googleDriveId);
         Set<String> collaborators = album.getCollaborators();
@@ -195,6 +236,5 @@ public class AlbumServiceImpl implements AlbumService{
         mongoOperations.updateFirst(query, update, Album.class);
          return albumRepository.findByGoogleDriveId(googleDriveId);
     }
-
 
 }
