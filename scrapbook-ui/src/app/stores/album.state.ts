@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText} from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText, GetAllFilters, SelectFilters} from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -14,7 +14,7 @@ import { User } from '../models/user.model';
 import { RemoveSearchedUserBySubString } from '../actions/user.actions';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { Filters } from '../models/search.model';
+import { Filters, ImageFilters, SelectedImageFilters } from '../models/search.model';
 
 export class AlbumStateModel {
   albumInfoOpen: boolean;
@@ -30,7 +30,8 @@ export class AlbumStateModel {
   loading: boolean;
   filters: any;
   searchText: string;
-  imageFilters: any;
+  imageFilters: ImageFilters;
+  selectedFilters: SelectedImageFilters;
 }
 
 @State<AlbumStateModel>({
@@ -49,7 +50,8 @@ export class AlbumStateModel {
     loading: true,
     filters: null,
     searchText: null,
-    imageFilters: null
+    imageFilters: {Aperture: [], FocalLength: [], ISO: [], GPS: [], Camera: []},
+    selectedFilters: {Aperture: '', FocalLength: '', ISO: '', GPS: '', Camera: ''}
   }
 })
 @Injectable()
@@ -111,16 +113,25 @@ export class AlbumState {
     return state.imageFilters;
   }
 
+  @Selector()
+  static getSelectedImageFilters(state: AlbumStateModel) {
+    return state.selectedFilters;
+  }
+
   @Action(OpenAlbumInfo)
   openAlbumInfo({getState, setState}: StateContext<AlbumStateModel>, {data , type}: OpenAlbumInfo) {
     const state = getState();
 
     if (type) {
-      setState({
-        ...state,
-        albumInfoOpen: true,
-        albumInfoModalData: data
-      });
+      return this.imageService.fetchMDEForImage(data.googleDriveId).pipe(
+        tap((res: ImageFilters) => {
+          setState({
+            ...state,
+            albumInfoOpen: true,
+            albumInfoModalData: {...data, metaData: res}
+          });
+        })
+      )
     } else {
       setState({
         ...state,
@@ -610,6 +621,39 @@ export class AlbumState {
       ...getState(),
       searchText: null,
       filters: null
+    })
+  }
+
+  @Action(GetAllFilters)
+  getAllFilters({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState();
+    const albumid = state.albumInView.googleDriveId;
+
+    return this.imageService.getMDEFilters(albumid).pipe(
+      tap((res: ImageFilters) => {
+        for(let key of Object.keys(res)) {
+          if(res[key].length === 0) {
+            res[key] = ['No values']
+          }
+        }
+        setState({
+          ...state,
+          imageFilters: res
+        })
+      }),
+      catchError((err) =>  {
+        console.log(err)
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(SelectFilters)
+  selectFilters({getState, setState, dispatch}: StateContext<AlbumStateModel>, {filters}:SelectFilters) {
+    const state = getState();
+    setState({
+      ...state,
+      selectedFilters: filters
     })
   }
 

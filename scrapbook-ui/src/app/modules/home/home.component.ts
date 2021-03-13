@@ -23,6 +23,14 @@ export class HomeComponent implements OnInit {
   openSettings;
 
   constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) {
+    
+
+    
+
+  }
+
+  ngOnInit(): void {
+
     const userID = localStorage.getItem('scrapbook-userid')
     this.store.dispatch(new FetchAllAlbumsOfUser(userID));
 
@@ -38,15 +46,9 @@ export class HomeComponent implements OnInit {
         this.albumViewService.album$.next(data);
        }
     });
-
-    
-
   }
 
-  ngOnInit(): void {
 
-    // this.store.dispatch(new FetchUserData(''))
-  }
 
 
 }

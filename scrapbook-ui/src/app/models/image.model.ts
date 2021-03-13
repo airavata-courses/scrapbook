@@ -1,5 +1,6 @@
 import { Album } from './album.model';
 import { User } from './user.model';
+import { ImageFilters } from './search.model';
 
 export enum UPLOAD_STATE {
   progress = 1,
@@ -21,6 +22,7 @@ export interface Image {
   name: string;
   size: number;
   isSelected: boolean;
+  metaData: ImageFilters
 }
 
 export interface PendingUploadsStateInterface {

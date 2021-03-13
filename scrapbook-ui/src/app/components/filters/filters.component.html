@@ -2,7 +2,47 @@
   <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="mode === 2">
       <div class="h6">Photo Meta Data</div>
+      <div class="mt-2">
+        <label class="text-muted mt-2">Aperture</label>
+        <mat-select class="bg-light p-2" [(value)]="onSelectedFilters.Aperture">
+          <mat-option *ngFor="let app of imageFilters.Aperture" [value]="app">
+            {{app}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div>
+        <label class="text-muted mt-2">Focal Length</label>
+        <mat-select class="bg-light p-2" [(value)]="onSelectedFilters.FocalLength">
+          <mat-option *ngFor="let app of imageFilters.FocalLength" [value]="app">
+            {{app}}
+          </mat-option>
+        </mat-select>
+      </div>
+    <div>
+      <label class="text-muted mt-2">ISO</label>
+      <mat-select class="bg-light p-2" [(value)]="onSelectedFilters.ISO">
+        <mat-option *ngFor="let app of imageFilters.ISO" [value]="app">
+          {{app}}
+        </mat-option>
+      </mat-select>
     </div>
+    <div>
+      <label class="text-muted mt-2">Camera</label>
+      <mat-select class="bg-light p-2" [(value)]="onSelectedFilters.Camera">
+        <mat-option *ngFor="let app of imageFilters.Camera" [value]="app">
+          {{app}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div>
+      <label class="text-muted mt-2">GPS</label>
+      <mat-select class="bg-light p-2" [(value)]="onSelectedFilters.GPS">
+        <mat-option *ngFor="let app of imageFilters.GPS" [value]="app" [disabled]="app === 'No values'">
+          {{app}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
       <div class="h6">Time</div>
       <div>

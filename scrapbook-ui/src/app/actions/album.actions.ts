@@ -1,7 +1,7 @@
 import { Image } from '../models/image.model';
 import { Album } from '../models/album.model';
 import { User } from '../models/user.model';
-import { Filters } from "../models/search.model";
+import { Filters, ImageFilters, SelectedImageFilters } from "../models/search.model";
 
 export class FetchAllAlbums {
   static readonly type = '[FETCH] Fetch All Albums';
@@ -171,3 +171,17 @@ export class ClearSearchText {
   static readonly type = 'Clear Search Text';
   constructor() {}
 }
+
+export class GetAllFilters {
+  static readonly type = '[GET] All Filters';
+  constructor() {}
+}
+
+export class SelectFilters {
+  static readonly type = '[SELECT] Filters';
+  constructor(public filters: SelectedImageFilters) {}
+}
+
+// export class FetchMDEForImage {
+//   static readodnly type = 
+// }

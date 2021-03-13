@@ -34,6 +34,7 @@ def listen_kill_server():
 
 @bus.handle('image')
 def extract_metadata(msg):
+    print(msg)
     json_msg = json.loads(msg.value)
     imageStr = base64.b64decode(str(json_msg['image']))
     image = Image.open(io.BytesIO(imageStr))

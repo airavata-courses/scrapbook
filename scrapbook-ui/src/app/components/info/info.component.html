@@ -14,36 +14,69 @@
         <div class="h6 font-weight-normal">{{data.name}}</div>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-        <label class="text-muted">Owner</label>
-        <div class="h6 font-weight-normal">{{data.createdBy.name}}</div>
+        <label class="text-muted">Size</label>
+        <div class="h6 font-weight-normal">{{data.size ? Math.round(data.size/1024) + ' KB': '0 B'}}</div>
       </div>
     </div>
+  
+    <div class="row mt-2">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Created By</label>
+          <div class="h6 font-weight-normal">{{data.createdBy.name}}</div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <label class="text-muted">Created At</label>
+          <div class="h6 font-weight-normal">{{moment(data.createdDate).format("H:mm A MMM DD, YYYY")}}</div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Modified By</label>
+        <div class="h6 font-weight-normal">{{data.modifiedBy.name}}</div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="text-muted">Modified At</label>
+        <div class="h6 font-weight-normal">{{moment(data.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div>
+      </div>
+    </div>
+
     <div class="row mt-3" *ngIf="data.description">
       <div class="col-12">
         <label class="text-muted">Description</label>
         <div class="h6 font-weight-normal">{{data.description}}</div>
       </div>
     </div>
-    <div class="row mt-2">
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-        <label class="text-muted">Created</label>
-        <div class="h6 font-weight-normal">{{moment(data.createdDate).format("H:mm A MMM DD, YYYY")}}</div>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-        <label class="text-muted">Last Edit</label>
-        <div class="h6 font-weight-normal">{{moment(data.modifiedDate).format("H:mm A MMM DD, YYYY")}}</div>
-      </div>
-    </div>
-    <div class="row mt-3">
+
+    
+    <div class="row mt-1" *ngIf="data.metaData">
       <div class="col-12">
-        <label class="text-muted">Size</label>
-        <div class="h6 font-weight-normal">{{data.size ? Math.round(data.size/1024) + ' KB': '0 B'}}</div>
+      <label class="text-muted mt-3">Meta Data</label>
+      </div>
+      
+      <div class="col-12">
+        <label class="text-dark" style="font-weight: 500;">Aperture</label>: <span>{{data.metaData.ApertureValue}}</span>
+      </div>
+      <div class="col-12">
+        <label class="text-dark" style="font-weight: 500;">Focal Length</label>: <span>{{data.metaData.FocalLength}}</span>
+      </div>
+      <div class="col-12">
+        <label class="text-dark" style="font-weight: 500;">ISO</label>: <span>{{data.metaData.ISO}}</span>
+      </div>
+      <div class="col-12">
+        <label class="text-dark" style="font-weight: 500;">Camera</label>: <span>{{data.metaData.Camera}}</span>
+      </div>
+      <div class="col-12">
+        <label class="text-dark" style="font-weight: 500;">GPS</label>: <span>{{data.metaData.GPS}}</span>
       </div>
     </div>
+    
 
     <div class="row mt-3" *ngIf="data.collaborators">
       <div class="col-12">
         <label class="text-muted">Collaborators</label>
+        <div *ngIf="data.collaborators.length === 0">
+          None
+        </div>
         <div *ngFor="let collab of data.collaborators" class="my-3">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
