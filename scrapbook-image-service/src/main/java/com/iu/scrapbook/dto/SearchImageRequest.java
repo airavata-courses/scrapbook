@@ -18,4 +18,5 @@ public class SearchImageRequest {
     private String endCreatedDate;
     private String startModifiedDate;
     private String endModifiedDate;
+    private MetaDataFilter metadata;
 }
