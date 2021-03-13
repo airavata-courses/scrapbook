@@ -107,6 +107,40 @@ def retrieve_autofill():
     except Exception as e:
         return "Not Found", 404
 
+
+@app.route('/metadata/match', methods=["POST"])
+def retrieve_image_list():
+    """
+    Image service fetches the extracted meta data information from the image
+    """
+
+    try:
+        image_list = request.json['imageIDs']
+        iso = request.json['iso']
+        camera = request.json['camera']
+        focal = request.json['focalLength']
+        gps = request.json['gps']
+        aperture = request.json['aperture']
+        match_list = []
+        for image_id in image_list:
+            image_details = mongo.db.metadata.find_one_or_404({"id": image_id})
+            if camera != "" and image_details['Camera'] == camera:
+                match_list.append(image_id)
+            elif iso != "" and image_details['ISOSpeedRatings'] == iso:
+                match_list.append(image_id)
+            elif focal != "" and image_details['FocalLength'] == focal:
+                match_list.append(image_id)
+            elif gps != "" and image_details['GPSInfo'] == gps:
+                match_list.append(image_id)
+            elif aperture != "" and image_details['ApertureValue'] == aperture:
+                match_list.append(image_id)
+            
+        return jsonify(match_list), 200
+    except Exception as e:
+        print(e)
+        return "Not Found", 404
+
+
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
