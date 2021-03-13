@@ -1,17 +1,16 @@
 const mongoose = require("mongoose");
-const uri = "mongodb://localhost:27017/scrapbookUserService"
+const uri = "mongodb://mongo:27017/scrapbookUserService"
 module.exports =  function connectMongoDB() {
-  mongoose.connect("mongodb://localhost:27017/scrapbookUserService", {
-    useNewUrlParser: "true",
-  })
-  try {
-     mongoose.connect(
-      uri,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      () => console.log("MongoDB is connected")
-    );
+  mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.connection.on('connected', () => {
+    console.log('Mongoose connected!');
+  });
 
-  } catch (e) {
-    console.log("could not connect");
-  }
+  mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose disconnected!');
+  });
+  
+  mongoose.connection.on('error', (err) => {
+    console.log(err.message);
+  });
 }
