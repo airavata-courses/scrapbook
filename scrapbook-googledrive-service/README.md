@@ -38,10 +38,9 @@ $ docker run -p 9090:9090 googledrive -e \"SPRING_PROFILES_ACTIVE=local
 
 ## local startup
 $ cd target
-$ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> <jar name with extension>
+$ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> googledrive-service.jar
 
-### Topic 
-
+### Topic
 image
 
 

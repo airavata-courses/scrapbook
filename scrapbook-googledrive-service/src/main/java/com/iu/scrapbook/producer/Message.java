@@ -17,5 +17,5 @@ public class Message {
     private String albumId;
     private String imageName;
     private String imageId;
-    private byte[] image;
+    //private byte[] image;
 }

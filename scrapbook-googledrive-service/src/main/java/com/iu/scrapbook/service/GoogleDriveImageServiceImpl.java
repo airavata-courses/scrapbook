@@ -4,6 +4,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.iu.scrapbook.config.GoogleDriveConfig;
 import com.iu.scrapbook.dto.Image;
+import com.iu.scrapbook.producer.Message;
 import com.iu.scrapbook.producer.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +70,9 @@ public class GoogleDriveImageServiceImpl implements GoogleDriveImageService {
 
         f.delete();
         log.info("Uploaded "+fileName+" size: "+i.getSize());
-        producer.sendMessage(uploadedFile.getId());
-//        producer.sendMessage(Message.builder().imageId(uploadedFile.getId()).imageName(i.getName())
-//                .albumId(albumGoogleId).image(image.getBytes()).build());
+       // producer.sendMessage(uploadedFile.getId());
+        producer.sendMessage(Message.builder().imageId(uploadedFile.getId()).imageName(i.getName())
+                .albumId(albumGoogleId).build());
         return response.getBody();
     }
 
