@@ -79,6 +79,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>image-service</finalName>
 	</build>
 
 </project>

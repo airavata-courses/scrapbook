@@ -23,9 +23,14 @@ $ cd scrapbook-image-service
 
 $ mvn clean install
 
-$ cd target
+## Run in Docker
+$ docker build -f Dockerfile -t image .
+$ docker run -d -p 27017:27017 mongo
+$ docker run -p 8080:8080 image -e \"SPRING_PROFILES_ACTIVE=docker
 
-$ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> <jar name with extension>
+## Run local
+$ cd target
+$ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> image-service.jar
 
 
 ### Swagger
