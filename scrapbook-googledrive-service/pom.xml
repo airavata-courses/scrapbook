@@ -85,6 +85,7 @@
                 </configuration>
             </plugin>
         </plugins>
+		<finalName>googledrive-service</finalName>
 	</build>
 
 </project>

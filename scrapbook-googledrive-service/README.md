@@ -16,6 +16,8 @@ Google drive APIs
 
 Maven
 
+Docker
+
 Apache Kafka
 
 Swagger : for documentation
@@ -24,14 +26,18 @@ Swagger : for documentation
 
 - Port: 9090
 
-$ git clone https://github.com/airavata-courses/scrapbook.git
+$ git clone --branch main-gdrive-service https://github.com/airavata-courses/scrapbook.git
 
 $ cd scrapbook-googledrive-service
 
 $ mvn clean install
 
-$ cd target
+## Docker startup
+$ docker build -f Dockerfile -t googledrive .
+$ docker run -p 9090:9090 googledrive -e \"SPRING_PROFILES_ACTIVE=local
 
+## local startup
+$ cd target
 $ java -jar -Dspring.profiles.active=<profile name like local, dev, prod> <jar name with extension>
 
 ### Topic 
