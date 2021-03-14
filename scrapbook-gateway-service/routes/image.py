@@ -4,6 +4,8 @@ from service_utils import auth_service as auth
 import sys
 from service_utils import user_service
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 G_DRIVE_SERVICE = os.environ.get("G_DRIVE_SERVICE")
 IMAGE_SERVICE = os.environ.get("IMAGE_SERVICE")

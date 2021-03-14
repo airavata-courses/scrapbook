@@ -1,8 +1,13 @@
 import requests
 from flask import jsonify, request
-from config import AUTH_SERIVCE_URL__DEV, SESSION_SERVICE_URL__DEV
 from functools import wraps
 from flask import abort
+import os
+from dotenv import load_dotenv
+load_dotenv()
+AUTH_SERVICE = os.environ.get('AUTH_SERVICE')
+SESSION_SERVICE = os.environ.get('SESSION_SERVICE')
+
 
 
 def authenticateToken(token):
@@ -13,7 +18,8 @@ def authenticateToken(token):
     @return - True or False depending on what response the auth server returns
     """
 
-    response = requests.get(f'{AUTH_SERIVCE_URL__DEV}/auth?token={token}')
+    response = requests.get(f'{AUTH_SERVICE}/auth?token={token}')
+    print(response)
     response.raise_for_status()
     return True
 
@@ -32,7 +38,7 @@ def check_user_session(req):
         try:
             # reset user session
             sessionId = request.headers['X-Session']
-            response = requests.put(f'{SESSION_SERVICE_URL__DEV}/reset/{sessionId}')
+            response = requests.put(f'{SESSION_SERVICE}/reset/{sessionId}')
             response.raise_for_status()
 
         except requests.exceptions.HTTPError as err:

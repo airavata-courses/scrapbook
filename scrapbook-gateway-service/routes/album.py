@@ -5,7 +5,8 @@ from service_utils import user_service
 import sys
 import json
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 IMAGE_SERVICE=os.environ.get('IMAGE_SERVICE')
 
 album_api = Blueprint('album_api', __name__)

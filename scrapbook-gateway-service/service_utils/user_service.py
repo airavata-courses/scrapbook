@@ -1,7 +1,9 @@
 import requests
-from config import USER_SERVICE_URL__DEV
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-
+USER_SERVICE = os.environ.get('USER_SERVICE')
 def getUser(userid):
     """
     Function to get user from database
@@ -9,7 +11,7 @@ def getUser(userid):
     :param userid: id of the user
     :return: user object
     """
-    response = requests.get(f'{USER_SERVICE_URL__DEV}/users/{userid}')
+    response = requests.get(f'{USER_SERVICE}/users/{userid}')
     response.raise_for_status()
     return response.json()
 

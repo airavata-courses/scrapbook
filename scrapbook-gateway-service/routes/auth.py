@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 import sys
 from service_utils import auth_service
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 USER_SERVICE = os.environ.get('USER_SERVICE')
 SESSION_SERVICE = os.environ.get('SESSION_SERVICE')

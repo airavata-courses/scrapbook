@@ -14,8 +14,7 @@ import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+load_dotenv()
 
 # Defines the Flask app
 app = Flask(__name__)
@@ -35,5 +34,11 @@ app.register_blueprint(user_api)
 
 app.register_blueprint(mde_api)
 
+@app.route('/')
+def check():
+    return 'Gateway working!'
+
 if __name__ == '__main__':
-    app.run(host=os.environ.get('HOST'), port=os.environ.get("PORT"), debug=os.environ.get("DEBUG"))
+    print(os.environ.get("DEBUG"))
+    print(os.environ.get("HOST"))
+    app.run(host='0.0.0.0', port=8081, debug=True)

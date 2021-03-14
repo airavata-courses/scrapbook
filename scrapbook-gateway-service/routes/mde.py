@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
 import sys
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 MDE_SERVICE = os.environ.get("MDE_SERVICE")
 
