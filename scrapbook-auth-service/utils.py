@@ -1,5 +1,6 @@
 import jwt
-from config import CLIENT_SECRET
+import os
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 
 
 def deocdeJWT(token):
