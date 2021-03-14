@@ -6,6 +6,10 @@ const redisClient = redis.client;
 
 const TTL = 3600;
 
+router.get('/', (req, res, next) => {
+  res.send('Session Service Started')
+})
+
 /**
  * Route to set the user session. Accepts the UserID and token in the request body
  */

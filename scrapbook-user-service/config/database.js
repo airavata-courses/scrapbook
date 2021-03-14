@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const uri = "mongodb://mongo:27017/scrapbookUserService"
+const uri = process.env.MONGO_URI;
+console.log(uri)
 module.exports =  function connectMongoDB() {
   mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true })
   mongoose.connection.on('connected', () => {

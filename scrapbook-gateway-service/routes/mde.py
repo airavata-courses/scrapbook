@@ -1,8 +1,10 @@
 import requests
 from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
-from config import MDE_SERVICE_URL__DEV
 import sys
+import os
+
+MDE_SERVICE = os.environ.get("MDE_SERVICE")
 
 mde_api = Blueprint('mde_api', __name__)
 
@@ -11,7 +13,7 @@ mde_api = Blueprint('mde_api', __name__)
 def autofill_data():
     try:
         albumID = request.args.get('albumid')
-        response = requests.get(f'{MDE_SERVICE_URL__DEV}/metadata/fetch/all?albumid={albumID}')
+        response = requests.get(f'{MDE_SERVICE}/metadata/fetch/all?albumid={albumID}')
         response.raise_for_status()
         return response.json(), response.status_code
 
@@ -23,7 +25,7 @@ def autofill_data():
 def find_metadata():
     try:
         imageID = request.args.get('id')
-        response = requests.get(f'{MDE_SERVICE_URL__DEV}/metadata/fetch?id={imageID}')
+        response = requests.get(f'{MDE_SERVICE}/metadata/fetch?id={imageID}')
         response.raise_for_status()
         return response.json(), response.status_code
 

@@ -1,9 +1,12 @@
 import requests
 from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
-from config import G_DRIVE_SERVICE_URL__DEV, IMAGE_SERVICE_URL__DEV
 import sys
 from service_utils import user_service
+import os
+
+G_DRIVE_SERVICE = os.environ.get("G_DRIVE_SERVICE")
+IMAGE_SERVICE = os.environ.get("IMAGE_SERVICE")
 
 image_api = Blueprint('image_api', __name__)
 
@@ -20,7 +23,7 @@ def uploadImage(GoogeDriveID):
         file = request.files['file']
         userID = request.form.get('userid')
         files = {'file': (file.filename, file.read())}
-        response = requests.post(f'{G_DRIVE_SERVICE_URL__DEV}/image/upload/{GoogeDriveID}', data={"userid": userID},
+        response = requests.post(f'{G_DRIVE_SERVICE}/image/upload/{GoogeDriveID}', data={"userid": userID},
                                  files=files)
         response.raise_for_status()
         return response.content, response.status_code
@@ -38,7 +41,7 @@ def downloadImage(GoogeDriveID):
     @return - the file sent over the network alone with a http status code
     """
     try:
-        response = requests.get(f'{G_DRIVE_SERVICE_URL__DEV}/image/{GoogeDriveID}', headers=request.headers,
+        response = requests.get(f'{G_DRIVE_SERVICE}/image/{GoogeDriveID}', headers=request.headers,
                                 data=request.data)
         response.raise_for_status()
         return response.content, response.status_code
@@ -58,7 +61,7 @@ def renameImage(GoogeDriveID):
     try:
         userID = request.json.get('userid')
         name = request.json['name']
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}',
+        response = requests.put(f'{IMAGE_SERVICE}/image/{GoogeDriveID}?userid={userID}',
                                 headers=request.headers,
                                 data=request.data)
         aggregatedUser = response.json()
@@ -81,7 +84,7 @@ def deleteImage(GoogeDriveID):
     """
     try:
         userID = request.args.get('userid')
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/image/{GoogeDriveID}?userid={userID}',
+        response = requests.delete(f'{IMAGE_SERVICE}/image/{GoogeDriveID}?userid={userID}',
                                    headers=request.headers,
                                    data=request.data)
         response.raise_for_status()
