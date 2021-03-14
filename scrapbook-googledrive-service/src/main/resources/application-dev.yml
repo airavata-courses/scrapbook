@@ -1,7 +1,0 @@
-scrapbook:
-  image:
-    service:
-      baseurl: http://localhost:8080
-      create:
-      retrieve:
-      delete:
