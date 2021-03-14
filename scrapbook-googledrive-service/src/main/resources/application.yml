@@ -14,8 +14,8 @@ spring:
     #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       bootstrap-servers: localhost:9092
-      key-serializer: com.iu.scrapbook.serializer.MessageSerializer
-      value-serializer: com.iu.scrapbook.serializer.MessageSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 google:
   service:
