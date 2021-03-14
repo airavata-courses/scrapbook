@@ -15,16 +15,16 @@ public class Producer {
     private static final String TOPIC = "image";
 
     @Autowired
-    private KafkaTemplate<String, Message> kafkaTemplate;
-//    private KafkaTemplate<String, String> kafkaTemplate;
+//    private KafkaTemplate<String, Message> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-//    public void sendMessage(String message) {
-//        log.info(String.format("#### -> Producing message -> %s", message));
-//        this.kafkaTemplate.send(TOPIC, message);
-//    }
-
-    public void sendMessage(Message message) {
+    public void sendMessage(String message) {
         log.info(String.format("#### -> Producing message -> %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
+
+//    public void sendMessage(Message message) {
+//        log.info(String.format("#### -> Producing message -> %s", message));
+//        this.kafkaTemplate.send(TOPIC, message);
+//    }
 }
