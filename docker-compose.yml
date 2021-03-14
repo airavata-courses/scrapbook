@@ -5,6 +5,8 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    networks:
+        - scrapbook_network
   mongo:
     container_name: mongo
     image: mongo
@@ -15,9 +17,46 @@ services:
     networks:
       - scrapbook_network
 
-  scrapbook-user-service:
-    container_name: scrapbook-user-service
-    image: scrapbook-user-service
+  gateway:
+    depends_on: 
+      - auth
+    container_name: gateway
+    image: gateway
+    restart: unless-stopped
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: "8081"
+      DEBUG: "True"
+      HOST: "0.0.0.0"
+      AUTH_SERVICE: "http://auth:5000"
+      USER_SERVICE: "http://user:3000"
+      SESSION_SERVICE: "http://session:3500"
+      IMAGE_SERVICE: "http://localhost:8080"
+      G_DRIVE_SERVICE: "http://localhost:9090"
+      MDE_SERVICE: "http://localhost:12000"
+    networks:
+      - scrapbook_network
+  auth:
+    container_name: auth
+    image: auth
+    restart: unless-stopped
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      DEBUG: "True"
+      PORT: "5000"
+      CLIENT_ID: "6383607950-8vfdgb52qqgfrkin3sonc424qamc5mkc.apps.googleusercontent.com"
+      CLIENT_SECRET: "3VBr2hLv2ZJ6-jbNHYcXSM0i"
+      HOST: "0.0.0.0"
+    networks:
+        - scrapbook_network
+
+  user:
+    container_name: user
+    image: user
     restart: unless-stopped
     build: .
     ports:
@@ -26,6 +65,25 @@ services:
       - mongo
     depends_on:
       - mongo
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/scrapbookUserService"
+    networks:
+      - scrapbook_network
+
+  session:
+    container_name: session
+    image: session
+    restart: unless-stopped
+    build: .
+    ports:
+      - "3500:3500"
+    links:
+      - redis
+    environment:
+      REDIS_PORT: "6379"
+      REDIS_HOST: "redis"
+    depends_on:
+      - redis
     networks:
       - scrapbook_network
 
@@ -37,21 +95,6 @@ services:
       - "4200:4200"
     networks:
       - scrapbook_network
-
-  scrapbook-session-service:
-    container_name: scrapbook-session-service
-    image: scrapbook-session-service
-    restart: unless-stopped
-    build: .
-    ports:
-      - "3500:3500"
-    links:
-      - redis
-    depends_on:
-      - redis
-    networks:
-      - scrapbook_network
-    
 networks: 
   scrapbook_network:
     driver: bridge
