@@ -14,11 +14,11 @@ export class InfoComponent implements OnInit {
   Math = Math;
   faTimes = faTimes;
   faSortDown = faSortDown;
+  Object = Object;
 
   @Output() infoClose: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
   }

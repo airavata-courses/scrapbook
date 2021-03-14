@@ -2,7 +2,10 @@ import requests
 from flask import Blueprint, request, jsonify
 import sys
 from service_utils import auth_service
-from config import USER_SERVICE_URL__DEV, SESSION_SERVICE_URL__DEV
+import os
+
+USER_SERVICE = os.environ.get('USER_SERVICE')
+SESSION_SERVICE = os.environ.get('SESSION_SERVICE')
 
 authenticate_user_api = Blueprint('authenticate_user_api', __name__)
 
@@ -19,11 +22,11 @@ def login():
     try:
         user = request.json
         auth_service.authenticateToken(user['token'])
-        response = requests.post(f'{USER_SERVICE_URL__DEV}/users/login', json=user)
+        response = requests.post(f'{USER_SERVICE}/users/login', json=user)
         response.raise_for_status()
         print('user', response.text)
         # Adds user to session after authenticating
-        session_response = requests.post(f'{SESSION_SERVICE_URL__DEV}/set',
+        session_response = requests.post(f'{SESSION_SERVICE}/set',
                                         data={"userID": response.json()["_id"], "token": user['token']})
         print(session_response.json())
         session_response.raise_for_status()
@@ -45,7 +48,7 @@ def logout():
     """
     try:
         userID = request.values['id']
-        response = requests.delete(f'{SESSION_SERVICE_URL__DEV}/remove/{userID}')
+        response = requests.delete(f'{SESSION_SERVICE}/remove/{userID}')
         response.raise_for_status()
         return response.content, response.status_code
 

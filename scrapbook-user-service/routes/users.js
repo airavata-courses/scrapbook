@@ -16,8 +16,9 @@ router.post('/login', (req, res) => {
 
   User.findOne({email: email}, (err, foundUser) => {
     if(err) {
-      console.log(err)
+      console.log('find error', err)
       res.status(500).send(err);
+      return;
     }
 
     if(!foundUser) {
@@ -27,14 +28,19 @@ router.post('/login', (req, res) => {
         photo: photo,
       }).save((err, newUser) => {
         if(err) {
-          console.log(err.message)
+          console.log('save error', err)
           res.status(400).send(err.message);
+          return;
         } else {
+          console.log('new user sent')
           res.status(201).send(newUser);
+          return;
         }
       })
     } else {
+      console.log('old user found')
       res.status(200).send(foundUser);
+      return;
     }
 
   })

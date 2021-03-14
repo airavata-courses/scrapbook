@@ -1,10 +1,12 @@
 import requests
 from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
-from config import IMAGE_SERVICE_URL__DEV
 from service_utils import user_service
 import sys
 import json
+import os
+
+IMAGE_SERVICE=os.environ.get('IMAGE_SERVICE')
 
 album_api = Blueprint('album_api', __name__)
 
@@ -20,7 +22,7 @@ def createAlbum():
     """
     try:
         userID = request.args.get('userid')
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers=request.headers,
+        response = requests.post(f'{IMAGE_SERVICE}/album?userid={userID}', headers=request.headers,
                                  data=request.data)
         response.raise_for_status()
         return response.json(), response.status_code
@@ -39,7 +41,7 @@ def getAlbumByID(googledriveid):
     @return - json formatted list of albums and http status code
     """
     try:
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response = requests.get(f'{IMAGE_SERVICE}/album/{googledriveid}')
         response.raise_for_status()
         album = response.json()
         album['createdBy'] = user_service.getUser(album['createdBy'])
@@ -63,7 +65,7 @@ def getAlbumsOfUser():
     """
     try:
         userID = request.args.get('userid')
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}', headers=request.headers,
+        response = requests.get(f'{IMAGE_SERVICE}/album?userid={userID}', headers=request.headers,
                                 data=request.data)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
@@ -83,7 +85,7 @@ def getImagesByAlbumID(googledriveid):
     @return - json formatted list of images in the album and http status code
     """
     try:
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/image')
+        response = requests.get(f'{IMAGE_SERVICE}/album/{googledriveid}/image')
         response.raise_for_status()
 
         aggregatedResponse = user_service.aggregateUser(response)
@@ -103,7 +105,7 @@ def getAllAlbums():
     @return - json formatted list of albums and http status code
     """
     try:
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/all')
+        response = requests.get(f'{IMAGE_SERVICE}/album/all')
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
         return aggregatedResponse, response.status_code
@@ -120,7 +122,7 @@ def addCollaborator():
         gid = request.json['googleDriveId']
         owner = request.json['owner']
 
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}/collaborator/{collabid}?userid={owner}')
+        response = requests.put(f'{IMAGE_SERVICE}/album/{gid}/collaborator/{collabid}?userid={owner}')
         response.raise_for_status()
         aggregatedData = response.json()
         aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
@@ -139,7 +141,7 @@ def removeCollaborator():
         gid = request.json['googleDriveId']
         owner = request.json['owner']
 
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{gid}/collaborator/{collabid}?userid={owner}')
+        response = requests.delete(f'{IMAGE_SERVICE}/album/{gid}/collaborator/{collabid}?userid={owner}')
         response.raise_for_status()
         aggregatedData = response.json()
         aggregatedData["collaborators"] = user_service.aggregateCollaborator(response.json())
@@ -161,7 +163,7 @@ def updateAlbum(googledriveid):
     """
     try:
         userID = request.json['userid']
-        response = requests.put(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}',
+        response = requests.put(f'{IMAGE_SERVICE}/album/{googledriveid}?userid={userID}',
                                 headers=request.headers, data=request.data)
         response.raise_for_status()
         return response.json(), response.status_code
@@ -181,7 +183,7 @@ def deleteAllAlbumsForUser():
     """
     try:
         userID = request.args.get('userid')
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album?userid={userID}')
+        response = requests.delete(f'{IMAGE_SERVICE}/album?userid={userID}')
         response.raise_for_status()
         return response.content, response.status_code
 
@@ -199,7 +201,7 @@ def retreieveAlbumByID(googledriveid):
     @return - a json response with the album object details
     """
     try:
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}')
+        response = requests.get(f'{IMAGE_SERVICE}/album/{googledriveid}')
         response.raise_for_status()
         return response.json(), response.status_code
 
@@ -213,7 +215,7 @@ def searchAndFilterAlbum():
     try:
         userid = request.args.get('userid')
         headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/search?userid={userid}', data=request.data,
+        response = requests.post(f'{IMAGE_SERVICE}/album/search?userid={userid}', data=request.data,
                                  headers=headers)
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
@@ -233,7 +235,7 @@ def deleteAlbumByID(googledriveid):
     """
     try:
         userID = request.args.get('userid')
-        response = requests.delete(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}?userid={userID}')
+        response = requests.delete(f'{IMAGE_SERVICE}/album/{googledriveid}?userid={userID}')
         print(response.json(), file=sys.stderr)
         response.raise_for_status()
         return response.content, response.status_code
@@ -247,7 +249,7 @@ def deleteAlbumByID(googledriveid):
 def getSharedAlbumsOfUser():
     try:
         userID = request.args.get('userid')
-        response = requests.get(f'{IMAGE_SERVICE_URL__DEV}/album/shared?userid={userID}')
+        response = requests.get(f'{IMAGE_SERVICE}/album/shared?userid={userID}')
         response.raise_for_status()
         aggregatedResponse = user_service.aggregateUser(response)
         print(aggregatedResponse)
@@ -264,7 +266,7 @@ def searchAndFilterImage():
         userid = request.args.get('userid')
         googledriveid = request.args.get('googledriveid')
         headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post(f'{IMAGE_SERVICE_URL__DEV}/album/{googledriveid}/image/search?userid={userid}',
+        response = requests.post(f'{IMAGE_SERVICE}/album/{googledriveid}/image/search?userid={userid}',
                                  data=request.data,
                                  headers=headers)
         response.raise_for_status()

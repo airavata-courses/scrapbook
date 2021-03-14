@@ -24,9 +24,6 @@ export class ImageService {
       googleDriveId: googleDriveId,
       name: name
     }
-
-    console.log(payload)
-
     return this.http.put(`${GATEWAY_URL}/image/${googleDriveId}`, payload);
   }
 
@@ -78,5 +75,13 @@ export class ImageService {
           this.store.dispatch(new CloseLoading());
         });
       })
+  }
+
+  getMDEFilters(albumid: string) {
+    return this.http.get(`${GATEWAY_URL}/metadata/fetch/all?albumid=${albumid}`);
+  }
+
+  fetchMDEForImage(imageid: string) {
+    return this.http.get(`${GATEWAY_URL}/metadata/fetch?id=${imageid}`);
   }
 }

@@ -1,8 +1,10 @@
 import requests
 from flask import Blueprint, request, jsonify
 from service_utils import auth_service as auth
-from config import USER_SERVICE_URL__DEV
 import sys
+import os
+
+USER_SERVICE = os.environ.get("USER_SERVICE")
 
 user_api = Blueprint('user_api', __name__)
 
@@ -12,7 +14,7 @@ user_api = Blueprint('user_api', __name__)
 def getUserBySubstring():
     try:
         search = request.args.get('search')
-        response = requests.get(f'{USER_SERVICE_URL__DEV}/users/search/{search}')
+        response = requests.get(f'{USER_SERVICE}/users/search/{search}')
         response.raise_for_status()
         return response.content, response.status_code
 

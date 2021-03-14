@@ -1,0 +1,57 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - scrapbook_network
+
+  scrapbook-user-service:
+    container_name: scrapbook-user-service
+    image: scrapbook-user-service
+    restart: unless-stopped
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - scrapbook_network
+
+  scrapbook-ui:
+    container_name: scrapbook-ui
+    image: scrapbook-ui
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    networks:
+      - scrapbook_network
+
+  scrapbook-session-service:
+    container_name: scrapbook-session-service
+    image: scrapbook-session-service
+    restart: unless-stopped
+    build: .
+    ports:
+      - "3500:3500"
+    links:
+      - redis
+    depends_on:
+      - redis
+    networks:
+      - scrapbook_network
+    
+networks: 
+  scrapbook_network:
+    driver: bridge

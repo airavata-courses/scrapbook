@@ -5,6 +5,9 @@ if [ "$1" == "ui" ]; then
 elif [ "$1" == "auth" ]; then
   cd scrapbook-auth-service && python3 -m venv env && source env/bin/activate && pip install -r requirements.txt && python app.py
 
+elif [ "$1" == "mde" ]; then
+  cd scrapbook-metadata-service && python3 -m venv env && source env/bin/activate && pip install -r requirements.txt && python app.py
+
 elif [ "$1" == "user" ]; then
   cd scrapbook-user-service && npm install && npm run dev
 
@@ -27,6 +30,7 @@ elif [ "$1" == "help" ]; then
   echo "Arg Values:"
   echo "ui   : scrapbook-ui"
   echo "auth : scrapbook-auth-service"
+  echo "mde  : scrapbook-metadata-service"
   echo "user : scrapbook-user-service"
   echo "sess : scrapbook-session-serice"
   echo "gw   : scrapbook-gateway-service"

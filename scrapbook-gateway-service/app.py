@@ -10,6 +10,13 @@ from routes.image import image_api
 from routes.user import user_api
 from routes.mde import mde_api
 
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 # Defines the Flask app
 app = Flask(__name__)
 # Cross Origin Resource Sharing (CORS) is enabled for the app
@@ -29,4 +36,4 @@ app.register_blueprint(user_api)
 app.register_blueprint(mde_api)
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=8081, debug=True)
+    app.run(host=os.environ.get('HOST'), port=os.environ.get("PORT"), debug=os.environ.get("DEBUG"))

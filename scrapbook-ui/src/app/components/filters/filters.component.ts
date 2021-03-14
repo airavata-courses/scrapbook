@@ -4,9 +4,10 @@ import * as moment from 'moment';
 import { Store, Select } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
-import { Filters } from 'src/app/models/search.model';
-import { SearchAndFilterAlbums, SearchAndFilterImages } from 'src/app/actions/album.actions';
+import { Filters, ImageFilters, SelectedImageFilters } from 'src/app/models/search.model';
+import { SearchAndFilterAlbums, SearchAndFilterImages, GetAllFilters, SelectFilters } from 'src/app/actions/album.actions';
 import { Router } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-filters',
@@ -26,10 +27,14 @@ export class FiltersComponent implements OnInit {
   createdDateFilter = ''
   modifiedDateFilter = ''
   filters: Filters = {startCreatedDate: '', startModifiedDate: '', endCreatedDate: '', endModifiedDate: ''}
+  imageFilters: ImageFilters = {FocalLength: [], Aperture: [], Camera: [], GPS: [], ISO: []}
   mode: number;
+  selectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISO: ''};
+  onSelectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISO: ''}
 
   @Select(AlbumState.getFilters) filters$: Observable<any>;
-
+  @Select(AlbumState.getImageFilters) imageFilters$: Observable<ImageFilters>;
+  @Select(AlbumState.getSelectedImageFilters) sif$: Observable<SelectedImageFilters>;
 
   constructor(public store: Store, public router: Router) { 
 
@@ -37,6 +42,7 @@ export class FiltersComponent implements OnInit {
       this.mode = 1;
     } else if (router.url.split('/').length === 3) {
       this.mode = 2
+      this.store.dispatch(new GetAllFilters());
     }
 
     this.filters$.subscribe(val => {
@@ -51,13 +57,18 @@ export class FiltersComponent implements OnInit {
       }
     })
 
-    // if(this.getMode() === 1) {
-      
-    // } else if(this.getMode() === 2) {
-    //   // if(val) {
+    this.imageFilters$.subscribe(val => {
+      if(val) {
+        this.imageFilters = val;
+      }
+    });
 
-    //   // }
-    // }
+    this.sif$.subscribe(val => {
+      if(val) {
+        this.selectedFilters = val;
+        this.onSelectedFilters = JSON.parse(JSON.stringify(val))
+      }
+    });
   }
 
   ngOnInit(): void { }
@@ -74,7 +85,8 @@ export class FiltersComponent implements OnInit {
     if(this.getMode() === 1) {
       this.store.dispatch(new SearchAndFilterAlbums(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
     } else if (this.getMode() === 2) {
-      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
+      this.store.dispatch(new SelectFilters(this.onSelectedFilters))
+      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter, ...this.onSelectedFilters}));
     }
   }
 
@@ -91,6 +103,23 @@ export class FiltersComponent implements OnInit {
     } else if(routerSplit.length === 3) {
       return 2
     }
+  }
+
+  selectFilter(key: string, val: MatSelectChange) {
+    // switch(key) {
+    //   case 'Aperture': 
+    //     this.onSelectedFilters = val.value; break;
+    //   case 'ISO': 
+    //    this.onSelectedFilters = val.value; break;
+    //   case 'FocalLength': 
+    //    this.onSelectedFilters = val.value; break;
+    //   case 'GPS': 
+    //    this.onSelectedFilters = val.value; break;
+    //   case 'Camera': 
+    //    this.onSelectedFilters = val.value; break;
+    // }
+
+    console.log(this.onSelectedFilters)
   }
 
 
