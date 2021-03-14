@@ -199,7 +199,7 @@ public class ImageServiceImpl implements ImageService{
                 imageids = idList.getBody().getImageIds();
                 System.out.println("Size before: " + images.size());
                 List<String> finalImageids = imageids;
-                images.stream().filter(image -> finalImageids.contains(image.getGoogleDriveId())).collect(Collectors.toList());
+                images = images.stream().filter(image -> finalImageids.contains(image.getGoogleDriveId())).collect(Collectors.toList());
                 System.out.println("Size after: " + images.size());
             }
         }
