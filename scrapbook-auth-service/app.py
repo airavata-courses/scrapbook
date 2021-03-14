@@ -37,4 +37,4 @@ def veifyToken():
 
 
 if __name__ == '__main__':
-    app.run(debug=os.environ.get("DEBUG"), port=os.environ.get("PORT"))
+    app.run(debug=os.environ.get("DEBUG"), port=os.environ.get("PORT"), host=os.environ.get("HOST"))
