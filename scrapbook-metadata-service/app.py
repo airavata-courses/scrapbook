@@ -12,15 +12,19 @@ import signal
 from PIL.ExifTags import TAGS
 from flask_kafka import FlaskKafka
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Flask(__name__)
 CORS(app)
-app.config["MONGO_URI"] = MONGO_URI
+app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 mongo = PyMongo(app)
 
 INTERRUPT_EVENT = Event()
 
 bus = FlaskKafka(INTERRUPT_EVENT,
-                 bootstrap_servers=",".join(["localhost:9092"]),
+                 bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
                  group_id="consumer-grp-id"
                  )
 
@@ -32,7 +36,7 @@ def listen_kill_server():
     signal.signal(signal.SIGHUP, bus.interrupted_process)
 
 
-@bus.handle('image')
+@bus.handle(os.environ.get('KAFKA_TOPIC'))
 def extract_metadata(msg):
     print(msg)
     json_msg = json.loads(msg.value)
@@ -111,4 +115,4 @@ def retrieve_autofill():
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
-    app.run(port = 12000, debug=True)
+    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host=os.environ.get("HOST"))
