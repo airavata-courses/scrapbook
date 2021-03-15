@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      host: mongo
+      host: ${MONGO}
       port: 27017
       database: image-service
       repositories:
@@ -10,6 +10,6 @@ spring:
 scrapbook:
   googledrive:
     service:
-        baseurl: http://gdrive:9090
+        baseurl: ${DRIVE_URI}
   metadata:
-        baseurl: http://mde:12000/metadata/match
+        baseurl: ${MDE_URI}
