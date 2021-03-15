@@ -207,7 +207,7 @@ def retrieve_image_list():
 @app.route('/')
 def started():
     return 'Meta Data Service Started'
-    
+
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
