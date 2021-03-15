@@ -4,6 +4,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 3GB
+      max-request-size: 3GB
 
   kafka:
     #    consumer:
@@ -13,7 +14,7 @@ spring:
     #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-serializer: com.iu.scrapbook.serializer.MessageSerializer
       value-serializer: com.iu.scrapbook.serializer.MessageSerializer
 
@@ -23,4 +24,4 @@ google:
       key: classpath:keys/scrapbook.json
 
 server:
-  port: 9090
+  port: 9091
