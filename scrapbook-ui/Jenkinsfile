@@ -17,6 +17,12 @@ node {
         sh "ls -la"
     }
 
+    stage('Test repository') {
+        app.inside {
+            sh 'ng test --progress false --watch false'
+        }
+    }
+
     stage('Build image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
@@ -24,11 +30,7 @@ node {
         app = docker.build("hrishikeshpaul/scrapbook-ui")
     }
 
-    stage('Test image') {
-        app.inside {
-            sh 'npm run test'
-        }
-    }
+    
 
     stage('Push image') {
         /* Finally, we'll push the image with two tags:
