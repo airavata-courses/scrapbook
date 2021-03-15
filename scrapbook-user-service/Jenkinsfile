@@ -4,42 +4,36 @@ node {
     def registryCredential = 'docker-hub-credentials'
 
     stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
-
+        /* Checking out to the repository */
         checkout scm
     }
 
-    // need to have only 'backend' subdir content on the root level
     stage('Prepare repository') {
-        // The -a option is an improved recursive option, that preserve all file attributes, and also preserve symlinks.
-        // The . at end of the source path is a specific cp syntax that allow to copy all files and folders, included hidden ones.
+        /* Copying the subdir to the parent */
         sh "cp -a ./scrapbook-user-service/. ."
+        /* Removing sub directory */
         sh "rm -rf ./scrapbook-user-service"
-        // List the final content
-        sh "ls -la"
     }
 
     stage('Build repository') {
+        /* Installing application dependencies */
 		sh 'npm install'
 	}
 
 	stage('Test repository') {
+        /* Testing the application */
 		sh 'npm test'
 	}
 
     stage('Building image') {
+        /* Building the docker image */
         app = docker.build(registry)
 	} 
 
-    stage('Registring image') {
+    stage('Pushing image') {
+        /* Pushing image to docker hub */
         docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
-    		app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
 	}
-    stage('Removing image') {
-        sh "docker rmi $registry:$BUILD_NUMBER"
-        sh "docker rmi $registry:latest"
-    }
-    
 }
