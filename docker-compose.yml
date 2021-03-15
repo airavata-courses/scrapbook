@@ -34,13 +34,10 @@ services:
     depends_on: 
       - zookeeper
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: "INTERNAL://kafka:9090,\
-        EXTERNAL://:9092"
-      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:9090,\
-        EXTERNAL://kafka:9092"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,\
-        EXTERNAL:PLAINTEXT"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_LISTENERS: "INTERNAL://kafka:9092, EXTERNAL://localhost:9093"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:9092, EXTERNAL://localhost:9093"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT, EXTERNAL:PLAINTEXT"
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CREATE_TOPICS: "image:1:1"
     networks:
@@ -130,6 +127,8 @@ services:
     image: img
     restart: unless-stopped
     build: .
+    ports:
+      - "8080:8080"
     links:
       - mongo
     depends_on: 
@@ -140,10 +139,13 @@ services:
       DRIVE_URI: "http://gdrive:9090"
       MDE_URI: "http://mde:12000/metadata/match"
       MONGO : mongo
+
   gdrive:
     container_name: gdrive
     image: gdrive
     restart: unless-stopped
+    ports:
+      - "9090:9090"
     build: .
     links:
       - kafka
@@ -168,6 +170,7 @@ services:
       HOST: "0.0.0.0"
     links:
       - kafka
+      - mongo
     depends_on: 
       - mongo
       - kafka
