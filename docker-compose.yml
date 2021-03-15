@@ -127,6 +127,10 @@ services:
     image: img
     restart: unless-stopped
     build: .
+    environment:
+      DRIVE: "http://gdrive:9090"
+      MDE: "http://mde:12000/metadata/match"
+      MONGO : "mongo"
     ports:
       - "8080:8080"
     links:
@@ -135,10 +139,7 @@ services:
       - mongo
     networks: 
       - scrapbook_network
-    environment:
-      DRIVE: "http://gdrive:9090"
-      MDE: "http://mde:12000/metadata/match"
-      MONGO : mongo
+    
 
   gdrive:
     container_name: gdrive
@@ -147,14 +148,16 @@ services:
     ports:
       - "9090:9090"
     build: .
+    environment:
+      IMG: "http://img:8080"
+      PORT: "9090"
     links:
       - kafka
     depends_on:
       - kafka
     networks:
       - scrapbook_network
-    environment:
-      IMG: "http://img:8080"
+    
 
   mde:
     container_name: mde
@@ -168,6 +171,7 @@ services:
       DEBUG: "True"
       KAFKA_TOPIC: "image"
       HOST: "0.0.0.0"
+      G_DRIVE_SERVICE: "http://gdrive:9090"
     links:
       - kafka
       - mongo
