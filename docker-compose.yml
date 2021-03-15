@@ -16,6 +16,35 @@ services:
       - "27018:27017"
     networks:
       - scrapbook_network
+  
+  zookeeper:
+    image: wurstmeister/zookeeper
+    networks:
+      - scrapbook_network
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: wurstmeister/kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+    depends_on: 
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: "INTERNAL://kafka:9090,\
+        EXTERNAL://:9092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:9090,\
+        EXTERNAL://kafka:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,\
+        EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CREATE_TOPICS: "image:1:1"
+    networks:
+      - scrapbook_network
 
   gateway:
     depends_on: 
@@ -33,9 +62,9 @@ services:
       AUTH_SERVICE: "http://auth:5000"
       USER_SERVICE: "http://user:3000"
       SESSION_SERVICE: "http://session:3500"
-      IMAGE_SERVICE: "http://localhost:8080"
-      G_DRIVE_SERVICE: "http://localhost:9090"
-      MDE_SERVICE: "http://localhost:12000"
+      IMAGE_SERVICE: "http://img:8080"
+      G_DRIVE_SERVICE: "http://gdrive:9090"
+      MDE_SERVICE: "http://mde:12000"
     networks:
       - scrapbook_network
   auth:
@@ -95,6 +124,50 @@ services:
       - "4200:4200"
     networks:
       - scrapbook_network
+
+  img:
+    container_name: img
+    image: img
+    restart: unless-stopped
+    build: .
+    links:
+      - mongo
+    depends_on: 
+      - mongo
+    networks: 
+      - scrapbook_network
+  gdrive:
+    container_name: gdrive
+    image: gdrive
+    restart: unless-stopped
+    build: .
+    links:
+      - kafka
+    depends_on:
+      - kafka
+    networks:
+      - scrapbook_network
+
+  mde:
+    container_name: mde
+    image: mde
+    restart: unless-stopped
+    build: .
+    environment: 
+      MONGO_URI: "mongodb://mongo:27017/scrapbookMetadataService"
+      KAFKA_URI: "kafka:9092"
+      PORT: "12000"
+      DEBUG: "True"
+      KAFKA_TOPIC: "image"
+      HOST: "0.0.0.0"
+    links:
+      - kafka
+    depends_on: 
+      - mongo
+      - kafka
+    networks:
+      - scrapbook_network
+    
 networks: 
   scrapbook_network:
     driver: bridge
