@@ -4,3 +4,10 @@ scrapbook:
       baseurl: ${IMG}
 server:
   port: ${PORT}
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: kafka:9092
+      key-serializer: com.iu.scrapbook.serializer.MessageSerializer
+      value-serializer: com.iu.scrapbook.serializer.MessageSerializer
