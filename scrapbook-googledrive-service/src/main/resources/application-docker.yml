@@ -1,0 +1,4 @@
+scrapbook:
+  image:
+    service:
+      baseurl: ${IMG_URI}
