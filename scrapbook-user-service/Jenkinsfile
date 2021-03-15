@@ -8,7 +8,7 @@ node {
     }
 
         // need to have only 'backend' subdir content on the root level
-    stage('prepare project') {
+    stage('Prepare repository') {
         // The -a option is an improved recursive option, that preserve all file attributes, and also preserve symlinks.
         // The . at end of the source path is a specific cp syntax that allow to copy all files and folders, included hidden ones.
         sh "cp -a ./scrapbook-user-service/. ."
@@ -22,6 +22,16 @@ node {
          * docker build on the command line */
 
         app = docker.build("hrishikeshpaul/scrapbook-user-service")
+    }
+
+    stage('Test image') {
+        /* Ideally, we would run a test framework against our image.
+         * For this example, we're using a Volkswagen-type approach ;-) */
+
+        app.inside {
+            sh 'ls'
+            sh 'npm run test'
+        }
     }
 
 
