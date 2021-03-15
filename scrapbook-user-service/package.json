@@ -8,6 +8,7 @@
     "test": "mocha test/*.js"
   },
   "dependencies": {
+    "chai": "^4.3.4",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -17,11 +18,9 @@
     "jade": "~1.11.0",
     "mongoose": "^5.11.15",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.7",
-    "chai": "^4.3.4"
+    "nodemon": "^2.0.7"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
     "mocha": "^8.3.2",
     "request": "^2.88.2"
   }

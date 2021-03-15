@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package*.json ./
 RUN npm install
-RUN npm install -g mocha chai
+RUN npm install -g mocha
 # Copy app source code
 COPY . .
 ENV MONGO_URI=mongodb://localhost:27017/scrapbookUserService
