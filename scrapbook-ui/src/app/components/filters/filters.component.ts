@@ -5,7 +5,7 @@ import { Store, Select } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { Filters, ImageFilters, SelectedImageFilters } from 'src/app/models/search.model';
-import { SearchAndFilterAlbums, SearchAndFilterImages, GetAllFilters, SelectFilters } from 'src/app/actions/album.actions';
+import { SearchAndFilterAlbums, SearchAndFilterImages, GetAllFilters, SelectFilters, RemoveFilters } from 'src/app/actions/album.actions';
 import { Router } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
 
@@ -46,6 +46,7 @@ export class FiltersComponent implements OnInit {
     }
 
     this.filters$.subscribe(val => {
+      console.log(val)
       if(val) {
        this.createdDateFilter = val.createdDateFilter;
        this.creationDateRange.get('start').setValue(new Date(val.createdDateFilter.split(' - ')[0]));
@@ -54,6 +55,9 @@ export class FiltersComponent implements OnInit {
        this.modifiedDateFilter = val.modifiedDateFilter;
        this.lastEditDateRange.get('start').setValue(new Date(val.modifiedDateFilter.split(' - ')[0]));
        this.lastEditDateRange.get('end').setValue(new Date(val.modifiedDateFilter.split(' - ')[1]));
+      } else {
+        this.createdDateFilter = '';
+        this.modifiedDateFilter = '';
       }
     })
 
@@ -73,6 +77,10 @@ export class FiltersComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  onReset() {
+    this.store.dispatch(new RemoveFilters());
+  }
+
   updateCreationDate() {
     this.createdDateFilter = this.creationDateRange.get('start').value + ' - ' + this.creationDateRange.get('end').value;
   }
@@ -86,7 +94,7 @@ export class FiltersComponent implements OnInit {
       this.store.dispatch(new SearchAndFilterAlbums(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
     } else if (this.getMode() === 2) {
       this.store.dispatch(new SelectFilters(this.onSelectedFilters))
-      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter, ...this.onSelectedFilters}));
+      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter, metadata: {...this.onSelectedFilters}}));
     }
   }
 

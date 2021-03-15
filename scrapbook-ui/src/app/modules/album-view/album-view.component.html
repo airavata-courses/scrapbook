@@ -17,6 +17,10 @@
           <fa-icon [icon]='faCog' class="text-dark h6 m-0"></fa-icon>
           <!-- <mat-icon class="text-dark h5 m-0">settings</mat-icon> -->
         </button>
+        <button mat-icon-button class="ml-1" (click)="onSync()">
+          <fa-icon [icon]='faSync' class="text-dark h6 m-0"></fa-icon>
+          <!-- <mat-icon class="text-dark h5 m-0">settings</mat-icon> -->
+        </button>
         
       </div>
       <div *ngIf="(selectedImages$ | async).length > 0" class="d-flex align-items-center text-dark">

@@ -10,7 +10,10 @@ import { OpenProfile, OpenUpload } from 'src/app/actions/ui.actions';
 })
 export class NavbarComponent implements OnInit {
   faUserCircle = faUserCircle;
-  constructor(public store: Store) { }
+  img: string;
+  constructor(public store: Store) { 
+    this.img = localStorage.getItem('scrapbook-photo')
+  }
 
   ngOnInit(): void {
   }

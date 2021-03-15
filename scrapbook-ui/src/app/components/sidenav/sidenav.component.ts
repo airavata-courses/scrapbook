@@ -24,12 +24,6 @@ export class SidenavComponent implements OnInit {
       path: '/shared',
       style: false
     },
-    {
-      name: 'Starred',
-      icon: faStar,
-      path: '/starred',
-      style: true
-    }
   ];
 
   selectedMenu = 'Home';

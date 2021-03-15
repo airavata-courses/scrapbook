@@ -182,6 +182,11 @@ export class SelectFilters {
   constructor(public filters: SelectedImageFilters) {}
 }
 
+export class RemoveFilters {
+  static readonly type = '[REMOVE] Filters';
+  constructor() {}
+}
+
 // export class FetchMDEForImage {
 //   static readodnly type = 
 // }

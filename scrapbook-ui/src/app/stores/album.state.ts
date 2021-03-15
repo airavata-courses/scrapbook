@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, Select, Store } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
 import { OpenProfile, CloseProfile, SetPageError, CloseUpload, CloseLoading, OpenImageModal, OpenUploadingPanel, OpenLoading, CloseSettings } from '../actions/ui.actions';
-import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText, GetAllFilters, SelectFilters} from '../actions/album.actions';
+import { OpenAlbumInfo, CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser, CreateAlbum, Upload, PutAlbumInView, RemoveAlbumFromView, GetImage, RemoveImage, DownloadImage, RemoveUploadPanel, FetchImagesOfAlbum, DownloadAlbum, SelectMultipleImages, RemoveSelectedImage, DownloadSelectedImages, DeleteSelectedImages, RemoveAllSelectedImages, AddAlbumCollaborator, RemoveAlbumCollaborator, EditAlbumSettings, StartAlbumLoading, CloseAlbumLoading, RenameImage, DeleteImages, RemoveImageForAlbum, DeleteAlbum, GetSharedAlbumsOfUser , SearchAndFilterAlbums, SearchAndFilterImages, ClearSearchText, GetAllFilters, SelectFilters, RemoveFilters} from '../actions/album.actions';
 import { AlbumService } from '../services/album.service';
 import { tap, catchError, mergeMap } from 'rxjs/operators';
 import { Album } from '../models/album.model';
@@ -243,7 +243,7 @@ export class AlbumState {
 
 
   @Action(PutAlbumInView)
-  putAlbumInView({getState, setState, dispatch}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
+  putAlbumInView({getState, setState, dispatch, patchState}: StateContext<AlbumStateModel>, {id}: PutAlbumInView) {
     const state = getState();
     dispatch(new StartAlbumLoading());
     return this.albumService.getAlbumByID(id).pipe(
@@ -251,12 +251,10 @@ export class AlbumState {
         if(!res.active) {
           this.location.back()
         }
-        setState({
-          ...state,
-          albumInView: res,
-        })
+
+        console.log(res)
+        patchState({albumInView: res})
         dispatch(new FetchImagesOfAlbum(res.googleDriveId));     
-         
       }),
       catchError((err) => {
         dispatch(new SetPageError('401'));
@@ -654,6 +652,17 @@ export class AlbumState {
     setState({
       ...state,
       selectedFilters: filters
+    })
+  }
+
+  @Action(RemoveFilters)
+  removeFilters({getState, setState, dispatch}: StateContext<AlbumStateModel>) {
+    const state = getState()
+    setState({ 
+      ...state,
+      searchText: null,
+      filters: null,
+      selectedFilters: {Aperture: '', FocalLength: '', ISO: '', GPS: '', Camera: ''}
     })
   }
 

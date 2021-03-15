@@ -182,6 +182,22 @@ export class AlbumService {
       obj['name'] = payload.name;
     }
 
+    if(payload['metadata']) {
+      obj['metadata'] = {};
+      obj["metadata"]['aperture'] = payload["metadata"].Aperture;
+      delete payload["metadata"].Aperture;
+      payload["metadata"]['gps'] = payload["metadata"].GPS;
+      delete payload["metadata"].GPS;
+      payload["metadata"]['focalLength'] = payload["metadata"].FocalLength;
+      delete payload["metadata"].FocalLength;
+      payload["metadata"]['camera'] = payload["metadata"].Camera;
+      delete payload["metadata"].Camera;
+      payload["metadata"]['iso'] = payload["metadata"].ISO;
+      delete payload["metadata"].ISO;
+
+    }
+
+
     return this.http.post(`${GATEWAY_URL}/album/image/search?userid=${userid}&googledriveid=${googledriveid}`, obj);
   }
 }

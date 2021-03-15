@@ -13,7 +13,7 @@ import { CloseImageModal, CloseSettings, OpenProfile, OpenSettings, OpenLoading,
 import { Image } from 'src/app/models/image.model';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 
-import { faShareAlt, faInfoCircle, faCog, faDownload, faTrash, faTimes} from "@fortawesome/free-solid-svg-icons";
+import { faShareAlt, faInfoCircle, faCog, faDownload, faTrash, faTimes, faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import Swal from 'sweetalert2';
 
 @Component({
@@ -29,6 +29,7 @@ export class AlbumViewComponent implements OnInit {
   faDownload = faDownload;
   faTrash = faTrash;
   faTimes = faTimes;
+  faSync = faSyncAlt;
   selectedImages: Array<Image>;
   currentuUserid: string;
 
@@ -67,6 +68,16 @@ export class AlbumViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onSync() {
+    this.store.dispatch(new ClearSearchText());
+    const splitRoute = this.router.url.split('/');
+    const albumId = splitRoute[splitRoute.length - 1];
+
+    this.currentuUserid = localStorage.getItem('scrapbook-userid');
+
+    this.store.dispatch(new PutAlbumInView(albumId));
   }
 
   onCollab() {

@@ -23,6 +23,7 @@ export class AlbumListComponent implements OnInit {
     
     this.store.dispatch(new RemoveAlbumFromView());
     this.store.dispatch(new ClearSearchText());
+    this.store.dispatch(new FetchAllAlbumsOfUser(localStorage.getItem('scrapbook-userid')))
     
     this.allAlbumsOfUser$.subscribe(data => {
       if (data) {
