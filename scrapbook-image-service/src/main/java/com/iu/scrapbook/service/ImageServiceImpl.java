@@ -171,7 +171,7 @@ public class ImageServiceImpl implements ImageService{
         String startModifiedDate = request.getStartModifiedDate();
         Query query = new Query();
         query.addCriteria(Criteria.where("active").is(true));
-        query.addCriteria(Criteria.where("createdBy").is(userId));
+       // query.addCriteria(Criteria.where("createdBy").is(userId));
         query.addCriteria(Criteria.where("albumGoogleId").is(albumId));
 
         if(name!=null){
