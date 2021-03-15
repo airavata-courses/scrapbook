@@ -16,7 +16,7 @@
       "es2018",
       "dom"
     ],
-    "types": ["gapi.auth2"]
+    "types": ["gapi.auth2", "jasmine"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
