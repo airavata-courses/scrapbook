@@ -9,12 +9,13 @@ ENV PORT=12000
 ENV DEBUG=True
 ENV KAFKA_TOPIC=image
 ENV HOST=0.0.0.0
+ENV G_DRIVE_SERVICE=http://localhost:9090
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 12000
 
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
 
-# CMD ["gunicorn", "--workers=2", "--bind=0.0.0.0:12000", "app:app"]
+CMD ["gunicorn", "--workers=2", "--bind=0.0.0.0:12000", "app:app"]

@@ -73,7 +73,7 @@ def get_geotagging(exif):
 
 @bus.handle(os.environ.get('KAFKA_TOPIC'))
 def extract_metadata(msg):
-    #print(msg)
+    print(msg)
     json_msg = json.loads(msg.value)
     def fetch_image(image_id):
         with app.test_request_context():
