@@ -30,7 +30,7 @@ WORKDIR /app
 COPY . .
 # install node modules and build assets
 RUN npm i && npm run build
-RUN npm install -g @angular/cli@11.1.1
+RUN npm install -g @angular/cli@latest
 
 # nginx state for serving content
 FROM nginx:alpine

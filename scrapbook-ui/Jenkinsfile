@@ -25,8 +25,8 @@ node {
     }
 
     stage('Test image') {
-        app.withRun("-p 4200:80") {
-            sh 'ng test --progress false --watch false'
+        docker.image("hrishikeshpaul/scrapbook-ui").withRun("-p 4200:80") {
+            sh 'npm run test -- --progress false --watch false'
         }
     }
 
