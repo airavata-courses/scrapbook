@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: GoogleDriveService
+  servlet:
+    multipart:
+      max-file-size: 3GB
+      max-request-size: 3GB
+
+scrapbook:
+  image:
+    service:
+      baseurl: http://localhost:8080
+
+google:
+  service:
+    account:
+      key: uijhi
