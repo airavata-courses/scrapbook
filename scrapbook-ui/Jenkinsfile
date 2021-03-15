@@ -24,15 +24,9 @@ node {
         app = docker.build("hrishikeshpaul/scrapbook-ui")
     }
 
-    stage('Run Image') {
-        app.image("hrishikeshpaul/scrapbook-ui").withRun('-p 4200:80') {
-            sh 'echo "UI container running"'
-        }
-    }
-
     stage('Test image') {
-        app.inside {
-            sh 'npm run test'
+        app.withRun("-p 4200:80") {
+            sh 'ng test --progress false --watch false'
         }
     }
 
