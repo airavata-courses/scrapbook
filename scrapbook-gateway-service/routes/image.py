@@ -28,7 +28,11 @@ def uploadImage(GoogeDriveID):
         response = requests.post(f'{G_DRIVE_SERVICE}/image/upload/{GoogeDriveID}', data={"userid": userID},
                                  files=files)
         response.raise_for_status()
-        return response.content, response.status_code
+        data = response.json()
+        data['createdBy'] = user_service.getUser(data['createdBy'])
+        data['modifiedBy'] = user_service.getUser(data['modifiedBy'])
+        
+        return data, response.status_code
 
     except requests.exceptions.HTTPError as err:
         return err.response.text, err.response.status_code
