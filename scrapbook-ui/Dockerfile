@@ -23,3 +23,20 @@ COPY . /app
 
 # start app
 CMD ng serve --host 0.0.0.0
+
+
+# FROM node:14.2.0-alpine3.11 as builder
+
+# WORKDIR /usr/src/app
+
+# COPY ./package.json ./
+
+# RUN npm install
+
+# COPY . .
+
+# RUN npm run build --prod
+
+# FROM nginx:1.15.8-alpine
+
+# COPY --from=builder /usr/src/app/dist/scrapbook/ /usr/share/nginx/html
