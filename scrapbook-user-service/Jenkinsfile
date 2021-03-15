@@ -20,16 +20,12 @@ node {
     }
 
     stage('Building image') {
-        docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-		    def buildName = registry + ":$BUILD_NUMBER"
-            app = docker.build buildName
-            app.push()
-        }
+        app = docker.build(registry)
 	  } 
 
     stage('Test image') {
         docker.image(registry).withRun("-p 3000:3000") {
-            sh 'npm run test'
+            sh 'npm run mocha test/*.js'
         }
     }
 
