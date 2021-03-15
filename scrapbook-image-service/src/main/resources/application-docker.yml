@@ -10,6 +10,6 @@ spring:
 scrapbook:
   googledrive:
     service:
-        baseurl: ${DRIVE_URI}
+        baseurl: ${DRIVE}
   metadata:
-        baseurl: ${MDE_URI}
+        baseurl: ${MDE}
