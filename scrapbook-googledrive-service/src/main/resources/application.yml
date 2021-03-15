@@ -4,6 +4,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 3GB
+      max-request-size: 3GB
 
   kafka:
     #    consumer:
@@ -23,4 +24,4 @@ google:
       key: classpath:keys/scrapbook.json
 
 server:
-  port: 9090
+  port: 9091
