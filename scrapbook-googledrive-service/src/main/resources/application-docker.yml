@@ -2,3 +2,5 @@ scrapbook:
   image:
     service:
       baseurl: ${IMG}
+server:
+  port: ${PORT}
