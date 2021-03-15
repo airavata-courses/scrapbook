@@ -3,3 +3,6 @@
 scrapbook-user-service/node_modules
 scrapbook-session-service/node_modules
 scrapbook-ui/node_modules/
+
+
+scrapbook-dev/data
