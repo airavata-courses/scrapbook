@@ -30,6 +30,7 @@ node {
 
         app.inside {
             sh 'ls'
+            sh 'cat package.json'
             sh 'npm run test'
         }
     }
