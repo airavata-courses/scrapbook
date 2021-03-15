@@ -112,6 +112,10 @@ def retrieve_autofill():
     except Exception as e:
         return "Not Found", 404
 
+@app.route('/')
+def check():
+    return 'Meta Data Service Started'
+
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
