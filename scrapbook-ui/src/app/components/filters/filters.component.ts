@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import { Store, Select } from '@ngxs/store';
 import { AlbumState } from 'src/app/stores/album.state';
 import { Observable } from 'rxjs';
 import { Filters, ImageFilters, SelectedImageFilters } from 'src/app/models/search.model';
-import { SearchAndFilterAlbums, SearchAndFilterImages, GetAllFilters, SelectFilters, RemoveFilters } from 'src/app/actions/album.actions';
+import { SearchAndFilterAlbums, SearchAndFilterImages, GetAllFilters, SelectFilters, RemoveFilters, PutAlbumInView } from 'src/app/actions/album.actions';
 import { Router } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
 
@@ -36,6 +36,8 @@ export class FiltersComponent implements OnInit {
   @Select(AlbumState.getImageFilters) imageFilters$: Observable<ImageFilters>;
   @Select(AlbumState.getSelectedImageFilters) sif$: Observable<SelectedImageFilters>;
 
+  @Output() sync: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(public store: Store, public router: Router) { 
 
     if(router.url.split('/').length === 2) {
@@ -46,7 +48,6 @@ export class FiltersComponent implements OnInit {
     }
 
     this.filters$.subscribe(val => {
-      console.log(val)
       if(val) {
        this.createdDateFilter = val.createdDateFilter;
        this.creationDateRange.get('start').setValue(new Date(val.createdDateFilter.split(' - ')[0]));
@@ -90,18 +91,30 @@ export class FiltersComponent implements OnInit {
   }
 
   onApplyFilters() {
-    if(this.getMode() === 1) {
-      this.store.dispatch(new SearchAndFilterAlbums(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
-    } else if (this.getMode() === 2) {
-      this.store.dispatch(new SelectFilters(this.onSelectedFilters))
-      this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter, metadata: {...this.onSelectedFilters}}));
+    if(this.ifNone()) {
+      this.onSync();
+    } else {
+      if(this.getMode() === 1) {
+        this.store.dispatch(new SearchAndFilterAlbums(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter}));
+      } else if (this.getMode() === 2) {
+        this.store.dispatch(new SelectFilters(this.onSelectedFilters))
+        this.store.dispatch(new SearchAndFilterImages(null, {createdDateFilter: this.createdDateFilter, modifiedDateFilter: this.modifiedDateFilter, metadata: {...this.onSelectedFilters}}));
+      }
     }
+    
   }
 
   convertDateFromDatepicker(date: string) {
     const dateObj = new Date(date);
     const momentObj = moment(dateObj);
     return momentObj.format('YYYY-MM-DD');
+  }
+
+  ifNone() {
+    if(this.createdDateFilter === '' && this.modifiedDateFilter === '' && Object.values(this.onSelectedFilters).length === 0) {
+      return true;
+    }
+    return false;
   }
 
   getMode() {
@@ -111,6 +124,14 @@ export class FiltersComponent implements OnInit {
     } else if(routerSplit.length === 3) {
       return 2
     }
+  }
+
+  onSync() {
+    const splitRoute = this.router.url.split('/');
+    const albumId = splitRoute[splitRoute.length - 1];
+
+
+    this.store.dispatch(new PutAlbumInView(albumId));
   }
 
   selectFilter(key: string, val: MatSelectChange) {

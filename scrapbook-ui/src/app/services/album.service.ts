@@ -184,16 +184,16 @@ export class AlbumService {
 
     if(payload['metadata']) {
       obj['metadata'] = {};
+      if(payload["metadata"].Aperture)
       obj["metadata"]['aperture'] = payload["metadata"].Aperture;
-      delete payload["metadata"].Aperture;
+      if( payload["metadata"].GPS)
       payload["metadata"]['gps'] = payload["metadata"].GPS;
-      delete payload["metadata"].GPS;
+      if(payload["metadata"].FocalLength)
       payload["metadata"]['focalLength'] = payload["metadata"].FocalLength;
-      delete payload["metadata"].FocalLength;
+      if(payload["metadata"].Camera)
       payload["metadata"]['camera'] = payload["metadata"].Camera;
-      delete payload["metadata"].Camera;
+      if(payload["metadata"].ISO)
       payload["metadata"]['iso'] = payload["metadata"].ISO;
-      delete payload["metadata"].ISO;
 
     }
 
