@@ -18,9 +18,7 @@ node {
     }
 
     stage('Test repository') {
-        app.inside {
-            sh 'npm run test'
-        }
+        sh 'ng test --progress false --watch false'
     }
 
     stage('Build image') {
