@@ -8,7 +8,7 @@ node {
     }
 
         // need to have only 'backend' subdir content on the root level
-    stage('prepare project') {
+    stage('Prepare repository') {
         // The -a option is an improved recursive option, that preserve all file attributes, and also preserve symlinks.
         // The . at end of the source path is a specific cp syntax that allow to copy all files and folders, included hidden ones.
         sh "cp -a ./scrapbook-ui/. ."
@@ -24,20 +24,18 @@ node {
         app = docker.build("hrishikeshpaul/scrapbook-ui")
     }
 
-    // stage('Test image') {
-    //     /* Ideally, we would run a test framework against our image.
-    //      * For this example, we're using a Volkswagen-type approach ;-) */
-
-    //     app.inside {
-    //         sh 'npm run test'
-    //     }
-    // }
+    stage('Test image') {
+        app.inside {
+            sh 'npm run test'
+        }
+    }
 
     stage('Push image') {
         /* Finally, we'll push the image with two tags:
          * First, the incremental build number from Jenkins
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
+         
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
