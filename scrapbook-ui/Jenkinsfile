@@ -18,7 +18,7 @@ node {
     }
 
     stage('Test repository') {
-        sh 'ng test --progress false --watch false'
+        sh 'npm run test -- --progress false --watch false'
     }
 
     stage('Build image') {
