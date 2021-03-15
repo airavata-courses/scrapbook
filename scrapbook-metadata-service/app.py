@@ -23,6 +23,8 @@ mongo = PyMongo(app)
 
 INTERRUPT_EVENT = Event()
 
+print(os.environ.get('KAFKA_URI'))
+
 bus = FlaskKafka(INTERRUPT_EVENT,
                  bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
                  group_id="consumer-grp-id"
