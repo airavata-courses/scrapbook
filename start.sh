@@ -18,10 +18,10 @@ elif [ "$1" == "gw" ]; then
   cd scrapbook-gateway-service && python3 -m venv env && source env/bin/activate && pip install -r requirements.txt && python app.py
 
 elif [ "$1" == "gs" ]; then
-  cd scrapbook-googledrive-service && rm -rf target && mvn clean && mvn clean install && cd target && java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
+  cd scrapbook-googledrive-service && rm -rf target && mvn clean && mvn clean install && cd target && java -jar -Dspring.profiles.active=local googledrive-service.jar
 
 elif [ "$1" == "img" ]; then
-  cd scrapbook-image-service && rm -rf target && mvn clean && mvn clean install -DskipTests && cd target && java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+  cd scrapbook-image-service && rm -rf target && mvn clean && mvn clean install -DskipTests && cd target && java -jar -Dspring.profiles.active=local image-service.jar
 
 elif [ "$1" == "help" ]; then
   echo ""
