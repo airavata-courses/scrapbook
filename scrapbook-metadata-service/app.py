@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
-from config import MONGO_URI
+import requests
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from PIL import Image
+from PIL.ExifTags import GPSTAGS
 import io
 import base64
 import sys
@@ -38,25 +39,71 @@ def listen_kill_server():
     signal.signal(signal.SIGHUP, bus.interrupted_process)
 
 
+def get_decimal_from_dms(dms, ref):
+
+    degrees = dms[0][0] / dms[0][1]
+    minutes = dms[1][0] / dms[1][1] / 60.0
+    seconds = dms[2][0] / dms[2][1] / 3600.0
+
+    if ref in ['S', 'W']:
+        degrees = -degrees
+        minutes = -minutes
+        seconds = -seconds
+
+    return round(degrees + minutes + seconds, 5)
+
+def get_coordinates(geotags):
+    lat = get_decimal_from_dms(geotags['GPSLatitude'], geotags['GPSLatitudeRef'])
+
+    lon = get_decimal_from_dms(geotags['GPSLongitude'], geotags['GPSLongitudeRef'])
+
+    return (lat,lon)
+
+
+def get_geotagging(exif):
+    geotagging = {}
+    for (idx, tag) in TAGS.items():
+        if tag == 'GPSInfo':
+            for (key, val) in GPSTAGS.items():
+                if key in exif[idx]:
+                    geotagging[val] = exif[idx][key]
+
+    return geotagging
+
+
 @bus.handle(os.environ.get('KAFKA_TOPIC'))
 def extract_metadata(msg):
-    print(msg)
+    #print(msg)
     json_msg = json.loads(msg.value)
-    imageStr = base64.b64decode(str(json_msg['image']))
-    image = Image.open(io.BytesIO(imageStr))
-    filename = json_msg['imageName']
+    def fetch_image(image_id):
+        with app.test_request_context():
+            response = requests.get(f"{os.environ.get('G_DRIVE_SERVICE')}/image/{image_id}")
+            response.raise_for_status()
+            return response.content
     image_id = json_msg['imageId']
+    
+    image = Image.open(io.BytesIO(fetch_image(image_id)))
+    filename = json_msg['imageName']
     albumID = json_msg['albumId']
-    exif = {}
+    exif = {"FocalLength": "", "ApertureValue":"", "ISOSpeedRatings":"", "GPSInfo":"{}", "Camera":""}
     try:
         if filename[-4:] != ".png":
             data_chunk = image._getexif()
             if data_chunk != None:
                 for tag, value in data_chunk.items():
                     if tag in TAGS and TAGS[tag] in ("Make", "FocalLength", "ApertureValue", "ISOSpeedRatings", "GPSInfo"):
+                        
                         if TAGS[tag] == "Make":
                             try:
                                 exif["Camera"] = str(value) + " " + str(data_chunk[272])
+                            except:
+                                pass
+                        elif TAGS[tag] == "GPSInfo" and value != "{}":
+                            try:
+                                geotags = get_geotagging(data_chunk)
+                                geo = get_coordinates(geotags)
+                                print(geo)
+                                exif["GPSInfo"] = str(geo)
                             except:
                                 pass
                         else:
@@ -95,6 +142,17 @@ def retrieve_metadata():
         return "Not Found", 404
 
 
+def clean_autofill(metadata):
+    '''
+    Remove placeholder values
+    '''
+    metadata['ISO'].remove("")
+    metadata['Aperture'].remove("")
+    metadata['FocalLength'].remove("")
+    metadata['Camera'].remove("")
+    metadata['GPS'].remove("{}")
+
+
 @app.route('/metadata/fetch/all', methods=["GET"])
 def retrieve_autofill():
     """
@@ -110,9 +168,42 @@ def retrieve_autofill():
         camera = album_details.distinct("Camera")
         gps = album_details.distinct("GPSInfo")
         metadata = {"ISO":iso, "Aperture":aperture, "FocalLength":focal, "Camera": camera, "GPS": gps}
+        clean_autofill(metadata)
         return jsonify(metadata), 200
     except Exception as e:
         return "Not Found", 404
+
+@app.route('/metadata/match', methods=["POST"])
+def retrieve_image_list():
+    """
+    Image service fetches the extracted meta data information from the image
+    """
+
+    try:
+        image_list = request.json['imageIds']
+        tags = {'iso': 'ISOSpeedRatings', 'camera': 'Camera', 'focalLength': 'FocalLength', 'gps':'GPSInfo', 'aperture':'ApertureValue'}
+        search = {}
+        for tag in tags.keys():
+            if request.json[tag] != None:
+                search[tag] = tags[tag]
+        match_list = []
+        for image_id in image_list:
+            image_details = mongo.db.metadata.find_one_or_404({"id": image_id})
+            counter = 0
+            for tag in search.keys():
+                if image_details[search[tag]] == request.json[tag]:
+                    counter += 1
+            if counter == len(search):
+                match_list.append(image_id)
+
+        print(match_list)
+        return {"imageIds":match_list}, 200
+    
+    except Exception as e:
+
+        print(e)
+        return "Not Found", 404
+
 
 if __name__ == '__main__':
     bus.run()
