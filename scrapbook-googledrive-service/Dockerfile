@@ -1,7 +1,12 @@
 FROM openjdk:15
-FROM maven:3.6.0-jdk-11-slim AS build
+FROM maven AS build
 MAINTAINER scrapbook.com
-RUN mvn clean install
 EXPOSE 9090
-COPY target/googledrive-service.jar googledrive.jar
-ENTRYPOINT ["java","-Dspring.profiles.active=docker","-jar","/googledrive.jar"]
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean install
+
+VOLUME /tmp
+ARG JAR_FILE=target/googledrive-service.jar
+ADD ${JAR_FILE} googledrive-service.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=docker","-jar","googledrive-service.jar"]
