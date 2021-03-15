@@ -136,8 +136,8 @@ services:
     networks: 
       - scrapbook_network
     environment:
-      DRIVE_URI: "http://gdrive:9090"
-      MDE_URI: "http://mde:12000/metadata/match"
+      DRIVE: "http://gdrive:9090"
+      MDE: "http://mde:12000/metadata/match"
       MONGO : mongo
 
   gdrive:
@@ -154,7 +154,7 @@ services:
     networks:
       - scrapbook_network
     environment:
-      IMG_URI: "http://img:8080"
+      IMG: "http://img:8080"
 
   mde:
     container_name: mde
