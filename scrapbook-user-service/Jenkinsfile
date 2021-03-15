@@ -19,16 +19,17 @@ node {
         sh "ls -la"
     }
 
+    stage('Build repository') {
+		sh 'npm install'
+	}
+
+	stage('Test repository') {
+		sh 'npm test'
+	}
+
     stage('Building image') {
         app = docker.build(registry)
-	  } 
-
-    stage('Test image') {
-        docker.image(registry).withRun("-p 3000:3000") {
-            sh 'npm run mocha test/*.js'
-        }
-    }
-
+	} 
 
     stage('Registring image') {
         docker.withRegistry('https://' + registry, registryCredential ) {
