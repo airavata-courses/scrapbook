@@ -65,6 +65,7 @@ services:
       MDE_SERVICE: "http://sb-mde:12000"
     networks:
       - scrapbook_network
+
   sb-auth:
     container_name: sb-auth
     image: hrishikeshpaul/scrapbook-auth-service
@@ -130,7 +131,7 @@ services:
     build: .
     environment:
       DRIVE: "http://sb-gdrive:9090"
-      MDE: "http://mde:12000/metadata/match"
+      MDE: "http://sb-mde:12000/metadata/match"
       MONGO : "mongo"
     ports:
       - "8080:8080"
@@ -158,8 +159,7 @@ services:
       - kafka
     networks:
       - scrapbook_network
-    
-
+  
   sb-mde:
     container_name: sb-mde
     image: hrishikeshpaul/scrapbook-metadata-service
