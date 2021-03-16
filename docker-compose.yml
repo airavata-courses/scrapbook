@@ -164,6 +164,8 @@ services:
     container_name: sb-mde
     image: hrishikeshpaul/scrapbook-metadata-service
     restart: unless-stopped
+    ports:
+      - "12000:12000"
     build: .
     environment: 
       MONGO_URI: "mongodb://mongo:27017/scrapbookMetadataService"
@@ -175,9 +177,11 @@ services:
       G_DRIVE_SERVICE: "http://sb-gdrive:9090"
     links:
       - kafka
+      - zookeeper
       - mongo
     depends_on: 
       - mongo
+      - zookeeper
       - kafka
     networks:
       - scrapbook_network
