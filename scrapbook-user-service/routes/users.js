@@ -59,7 +59,6 @@ router.get('/:id', (req, res) => {
     if (err) {
       res.status(400).send(err)
     } else {
-      console.log(user)
       res.status(200).send(user)
     }
   })
@@ -91,7 +90,6 @@ router.get('/', (req, res) => {
  */
 router.get('/search/:sub', (req, res) => {
   const substring = req.params.sub
-  console.log(substring)
   User.find(
     { "name": { "$regex": substring, "$options": "i" } },
     function(err, docs) { 
