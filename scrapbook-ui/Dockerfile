@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # # install node modules and build assets
-RUN npm i && npm run build
+RUN npm i && npm run build --prod
 
 # # install angular cli
 RUN npm install -g @angular/cli@latest
