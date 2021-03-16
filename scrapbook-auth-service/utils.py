@@ -13,3 +13,6 @@ def deocdeJWT(token):
     except Exception as e:
         print(e)
         return e
+
+def starter():
+    return 'Auth Service Started'

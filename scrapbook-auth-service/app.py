@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from utils import deocdeJWT
+from utils import deocdeJWT, starter
 from flask_cors import CORS
 import os
 from os.path import join, dirname
@@ -38,7 +38,7 @@ def veifyToken():
 
 @app.route('/')
 def start():
-    return 'Auth service started'
+    return starter()
 
 if __name__ == '__main__':
     app.run(debug=os.environ.get("DEBUG"), port=os.environ.get("PORT"), host=os.environ.get("HOST"))
