@@ -10,7 +10,7 @@ def app():
 def client(app):
     return app.test_client()
 
-def test_index(app, client):
+def test_start(app, client):
     res = client.get('/')
     assert res.status_code == 200
     expected = 'Meta Data Extractor Service Started'
