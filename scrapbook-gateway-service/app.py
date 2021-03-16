@@ -14,6 +14,7 @@ import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+from service_utils import gateway_utils as util
 load_dotenv()
 
 # Defines the Flask app
@@ -36,7 +37,7 @@ app.register_blueprint(mde_api)
 
 @app.route('/')
 def check():
-    return 'Gateway working!'
+    return util.starter()
 
 if __name__ == '__main__':
     print(os.environ.get("DEBUG"))
