@@ -17,7 +17,7 @@ def app():
 
     flask_app.config["TESTING"] = True
     flask_app.testing = True
-    flask_app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
+    # flask_app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
     yield flask_app
     ctx.pop()
 
