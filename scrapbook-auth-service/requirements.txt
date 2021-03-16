@@ -2,8 +2,10 @@ attrs==20.3.0
 beautifulsoup4==4.9.3
 cachetools==4.2.1
 certifi==2020.12.5
+cffi==1.14.5
 chardet==4.0.0
 click==7.1.2
+cryptography==3.4.6
 ExifRead==2.3.2
 Flask==1.1.2
 Flask-Cors==3.0.10
@@ -16,6 +18,7 @@ idna==2.10
 iniconfig==1.1.1
 itsdangerous==1.1.0
 Jinja2==2.11.3
+jwt==1.2.0
 kafka-python==2.0.2
 MarkupSafe==1.1.1
 packaging==20.9
@@ -24,6 +27,7 @@ pluggy==0.13.1
 py==1.10.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
+pycparser==2.20
 pymongo==3.11.3
 pyparsing==2.4.7
 pytest==6.2.2
