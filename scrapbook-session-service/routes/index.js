@@ -1,13 +1,14 @@
 var express = require("express");
 var router = express.Router();
 var redis = require('../config/redis');
+var start = require('./start');
 
 const redisClient = redis.client;
 
 const TTL = 3600;
 
 router.get('/', (req, res, next) => {
-  res.send('Session Service Started')
+  res.send(start())
 })
 
 /**
