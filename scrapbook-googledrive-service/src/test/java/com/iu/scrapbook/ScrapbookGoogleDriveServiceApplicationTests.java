@@ -1,6 +1,6 @@
 package com.iu.scrapbook;
 
-import org.springframework.boot.SpringApplication;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class ScrapbookGoogleDriveServiceApplicationTests {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ScrapbookGoogleDriveServiceApplicationTests.class, args);
+    @Test
+    void contextLoads() {
     }
 }
