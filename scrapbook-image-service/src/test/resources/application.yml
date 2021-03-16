@@ -5,6 +5,13 @@ spring:
     multipart:
       max-file-size: 3GB
       max-request-size: 3GB
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: image-service
+      repositories:
+        enabled: true
 
 scrapbook:
   googledrive:
@@ -12,3 +19,4 @@ scrapbook:
       baseurl: http://localhost:9090
   metadata:
     baseurl: http://localhost:12000/metadata/match
+
