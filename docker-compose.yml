@@ -7,6 +7,7 @@ services:
       - "6379:6379"
     networks:
         - scrapbook_network
+
   mongo:
     container_name: mongo
     image: mongo
@@ -16,9 +17,10 @@ services:
       - "27018:27017"
     networks:
       - scrapbook_network
-  
+
   zookeeper:
     image: wurstmeister/zookeeper
+    container_name: sb-zookeeper
     networks:
       - scrapbook_network
     ports:
@@ -28,6 +30,7 @@ services:
 
   kafka:
     image: wurstmeister/kafka
+    container_name: sb-kafka
     hostname: kafka
     ports:
       - "9092:9092"
@@ -43,11 +46,9 @@ services:
     networks:
       - scrapbook_network
 
-  gateway:
-    depends_on: 
-      - auth
-    container_name: gateway
-    image: gateway
+  sb-gateway:
+    container_name: sb-gateway
+    image: hrishikeshpaul/scrapbook-gateway-service
     restart: unless-stopped
     build: .
     ports:
@@ -56,16 +57,16 @@ services:
       PORT: "8081"
       DEBUG: "True"
       HOST: "0.0.0.0"
-      AUTH_SERVICE: "http://auth:5000"
-      USER_SERVICE: "http://user:3000"
-      SESSION_SERVICE: "http://session:3500"
-      IMAGE_SERVICE: "http://img:8080"
-      G_DRIVE_SERVICE: "http://gdrive:9090"
-      MDE_SERVICE: "http://mde:12000"
+      AUTH_SERVICE: "http://sb-auth:5000"
+      USER_SERVICE: "http://sb-user:3000"
+      SESSION_SERVICE: "http://sb-session:3500"
+      IMAGE_SERVICE: "http://sb-image:8080"
+      G_DRIVE_SERVICE: "http://sb-gdrive:9090"
+      MDE_SERVICE: "http://sb-mde:12000"
     networks:
       - scrapbook_network
-  auth:
-    container_name: auth
+  sb-auth:
+    container_name: sb-auth
     image: auth
     restart: unless-stopped
     build: .
@@ -80,9 +81,9 @@ services:
     networks:
         - scrapbook_network
 
-  user:
-    container_name: user
-    image: user
+  sb-user:
+    container_name: sb-user
+    image: hrishikeshpaul/scrapbook-user-service
     restart: unless-stopped
     build: .
     ports:
@@ -96,9 +97,9 @@ services:
     networks:
       - scrapbook_network
 
-  session:
-    container_name: session
-    image: session
+  sb-session:
+    container_name: sb-session
+    image: hrishikeshpaul/scrapbook-session-service
     restart: unless-stopped
     build: .
     ports:
@@ -113,22 +114,22 @@ services:
     networks:
       - scrapbook_network
 
-  scrapbook-ui:
-    container_name: scrapbook-ui
-    image: scrapbook-ui
+  sb-ui:
+    container_name: sb-ui
+    image: hrishikeshpaul/scrapbook-ui
     restart: unless-stopped
     ports:
-      - "4200:4200"
+      - "4200:80"
     networks:
       - scrapbook_network
 
-  img:
-    container_name: img
-    image: img
+  sb-image:
+    container_name: sb-image
+    image: hrishikeshpaul/scrapbook-image-service
     restart: unless-stopped
     build: .
     environment:
-      DRIVE: "http://gdrive:9090"
+      DRIVE: "http://sb-gdrive:9090"
       MDE: "http://mde:12000/metadata/match"
       MONGO : "mongo"
     ports:
@@ -141,15 +142,15 @@ services:
       - scrapbook_network
     
 
-  gdrive:
-    container_name: gdrive
-    image: gdrive
+  sb-gdrive:
+    container_name: sb-gdrive
+    image: hrishikeshpaul/scrapbook-googledrive-service
     restart: unless-stopped
     ports:
       - "9090:9090"
     build: .
     environment:
-      IMG: "http://img:8080"
+      IMG: "http://sb-image:8080"
       PORT: "9090"
     links:
       - kafka
@@ -159,9 +160,9 @@ services:
       - scrapbook_network
     
 
-  mde:
-    container_name: mde
-    image: mde
+  sb-mde:
+    container_name: sb-mde
+    image: hrishikeshpaul/scrapbook-metadata-service
     restart: unless-stopped
     build: .
     environment: 
@@ -171,7 +172,7 @@ services:
       DEBUG: "True"
       KAFKA_TOPIC: "image"
       HOST: "0.0.0.0"
-      G_DRIVE_SERVICE: "http://gdrive:9090"
+      G_DRIVE_SERVICE: "http://sb-gdrive:9090"
     links:
       - kafka
       - mongo
