@@ -16,9 +16,11 @@ export class SettingsComponent implements OnInit {
 
   data: any;
   faTimes = faTimes;
+  userid: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) data: any) {
     this.data = Object.assign({}, data);
+    this.userid = localStorage.getItem('scrapbook-userid')
   }
 
   ngOnInit(): void {
