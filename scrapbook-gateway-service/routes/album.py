@@ -222,6 +222,7 @@ def searchAndFilterAlbum():
         aggregatedResponse = user_service.aggregateUser(response)
         return jsonify(aggregatedResponse), response.status_code
     except requests.exceptions.HTTPError as err:
+        print(err.response.text)
         return err.response.text, err.response.status_code
 
 
@@ -242,6 +243,7 @@ def deleteAlbumByID(googledriveid):
         return response.content, response.status_code
 
     except requests.exceptions.HTTPError as err:
+        print(err.response.text)
         return err.response.text, err.response.status_code
 
 
@@ -257,6 +259,7 @@ def getSharedAlbumsOfUser():
         return jsonify(aggregatedResponse), response.status_code
 
     except requests.exceptions.HTTPError as err:
+        print(err.response.text)
         return err.response.text, err.response.status_code
 
 
@@ -274,4 +277,5 @@ def searchAndFilterImage():
         aggregatedResponse = user_service.aggregateUser(response)
         return jsonify(aggregatedResponse), response.status_code
     except requests.exceptions.HTTPError as err:
+        print(err.response.text)
         return err.response.text, err.response.status_code
