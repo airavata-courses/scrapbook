@@ -36,5 +36,9 @@ def veifyToken():
         return jsonify(e), 401
 
 
+@app.route('/')
+def start():
+    return 'Auth service started'
+
 if __name__ == '__main__':
     app.run(debug=os.environ.get("DEBUG"), port=os.environ.get("PORT"), host=os.environ.get("HOST"))
