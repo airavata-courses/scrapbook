@@ -56,33 +56,33 @@ Start a service either by going to their respective folders or using the start s
 Each of these commands should be executed in different terminals.
 
 
-## Step 1 to download Kafka
+#### Step 1 to download Kafka
 ```shell
 $ tar -xzf kafka_2.13-2.7.0.tgz
 $ cd kafka_2.13-2.7.0
 ```
 
-## Step 2 to start zookeeper (Terminal 1)
+#### Step 2 to start zookeeper (Terminal 1)
 ```shell
 $ cd kafka_2.13-2.7.0
 # start zookeeper
 $ bin/zookeeper-server-start.sh config/zookeeper.properties
 ```
 
-## Step 3 to start Kafka broker service (Terminal 2)
+#### Step 3 to start Kafka broker service (Terminal 2)
 ```shell
 $ cd kafka_2.13-2.7.0
 # start Kafka broker service
 $ bin/kafka-server-start.sh config/server.properties
 ```
 
-## Step 3 to create a Topic (Terminal 3)
+#### Step 3 to create a Topic (Terminal 3)
 ```shell
 $ cd kafka_2.13-2.7.0
 $ bin/kafka-topics.sh --create --topic image --bootstrap-server localhost:9092
 ```
 
-## Step 4 to start all microservices (each of them in separate teminal)
+#### Step 4 to start all microservices (each of them in separate teminal)
 ```shell
 $ ./start.sh <arg> 
 $
