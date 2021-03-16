@@ -14,7 +14,6 @@ export class AuthGuardService implements CanActivate {
     if (localStorage.getItem('scrapbook-userid')) {
       return true;
     }
-    console.log('here')
     this.ngZone.run(() => this.router.navigate(['/']));
     return false;
   }

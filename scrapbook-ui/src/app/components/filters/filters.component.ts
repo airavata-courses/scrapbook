@@ -148,7 +148,6 @@ export class FiltersComponent implements OnInit {
     //    this.onSelectedFilters = val.value; break;
     // }
 
-    console.log(this.onSelectedFilters)
   }
 
 

@@ -55,7 +55,6 @@ export class AppComponent {
     });
 
     this.pe$.subscribe(val => {
-      console.log(val);
       if (val === '401' || val === '404' || val === '500') {
         this.router.navigate(['/error']);
       }

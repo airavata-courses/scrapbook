@@ -22,7 +22,6 @@ export class SharedComponent implements OnInit {
     this.store.dispatch(new GetSharedAlbumsOfUser());
     this.userAlbums$.subscribe(data => {
       if (data.length) {
-        console.log(data)
         this.albumListService.data$.next(data);
       }
     });

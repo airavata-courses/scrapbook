@@ -21,7 +21,6 @@ export class AuthService {
   initGoogleLogin() {
     this.googleAuthService.authState.subscribe(
       (user) => {
-        console.log('here?')
         const {name, photoUrl, idToken, email } = user;
         this.store.dispatch(new OpenLoading());
         this.logUserIn({name, photo: photoUrl, token: idToken, email}).toPromise().then( (user: any) => {
