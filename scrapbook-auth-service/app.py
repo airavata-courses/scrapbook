@@ -26,13 +26,12 @@ def veifyToken():
 
     try:
         token = request.args.get('token')
-        iss = deocdeJWT(token)
-        if iss == 'accounts.google.com':
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.environ.get("CLIENT_ID"))
-            return jsonify(idinfo), 200
-        else:
-            return 'Invalid token ISS', 401
+        # iss = deocdeJWT(token)
+        # print(iss)
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.environ.get("CLIENT_ID"))
+        return jsonify(idinfo), 200
     except ValueError as e:
+        print(e)
         return jsonify(e), 401
 
 
