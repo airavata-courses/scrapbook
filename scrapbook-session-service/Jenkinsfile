@@ -1,0 +1,39 @@
+node {
+    def app
+    def registry = 'hrishikeshpaul/scrapbook-session-service'
+    def registryCredential = 'docker-hub-credentials'
+
+    stage('Clone repository') {
+        /* Checking out to the repository */
+        checkout scm
+    }
+
+    stage('Prepare repository') {
+        /* Copying the subdir to the parent */
+        sh "cp -a ./scrapbook-session-service/. ."
+        /* Removing sub directory */
+        sh "rm -rf ./scrapbook-session-service"
+    }
+
+    stage('Build repository') {
+        /* Installing application dependencies */
+		sh 'npm install'
+	}
+
+	stage('Test repository') {
+        /* Testing the application */
+		sh 'npm test'
+	}
+
+    stage('Building image') {
+        /* Building the docker image */
+        app = docker.build(registry)
+	} 
+
+    stage('Pushing image') {
+        /* Pushing image to docker hub */
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+            app.push("latest")
+        }
+	}
+}
