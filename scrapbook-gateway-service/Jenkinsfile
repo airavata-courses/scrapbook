@@ -1,6 +1,6 @@
 node {
   def app
-  def registry = 'hrishikeshpaul/scrapbook-gateway'
+  def registry = 'hrishikeshpaul/scrapbook-gateway-service'
   def registryCredential = 'docker-hub-credentials'
 
   stage('Clone repository') {
@@ -10,9 +10,9 @@ node {
 
   stage('Prepare repository') {
     /* Copying the subdir to the parent */
-    sh "cp -a ./scrapbook-gateway/. ."
+    sh "cp -a ./scrapbook-gateway-service/. ."
     /* Removing sub directory */
-    sh "rm -rf ./scrapbook-gateway"
+    sh "rm -rf ./scrapbook-gateway-service"
   }
 
   stage('Build repository') {
