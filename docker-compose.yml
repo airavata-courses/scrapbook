@@ -67,7 +67,7 @@ services:
       - scrapbook_network
   sb-auth:
     container_name: sb-auth
-    image: auth
+    image: hrishikeshpaul/scrapbook-auth-service
     restart: unless-stopped
     build: .
     ports:
