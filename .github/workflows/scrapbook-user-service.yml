@@ -2,7 +2,8 @@ name: Scrapbook User Service CI
 
 on:
   push:
-    branches: [ main-user-service ]
+    branches:
+      - "main-user-service"
     
 jobs:
   build:
