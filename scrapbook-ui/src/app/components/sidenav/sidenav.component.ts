@@ -29,11 +29,15 @@ export class SidenavComponent implements OnInit {
   selectedMenu = 'Home';
 
   constructor(private router: Router, public store: Store) { 
-    // 
+    if(this.router.url === '/shared')  {
+      this.selectedMenu = 'Shared'
+    } else {
+      this.selectedMenu = 'Home'
+    }
   }
 
   ngOnInit(): void {
-    if(this.router.url === '/shared') this.selectedMenu = 'Shared'
+    
   }
 
   onMenuChange(name: string) {

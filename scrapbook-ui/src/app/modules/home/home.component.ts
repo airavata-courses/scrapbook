@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {  OpenAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from 'src/app/actions/album.actions';
 import { AlbumState } from 'src/app/stores/album.state';
@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 
   @Select(AlbumState.getAllAlbumsOfUser) userAlbums$: Observable<Album[]>;
   @Select(AlbumState.getAlbumInView) albumInView$: Observable<Album>;
@@ -29,10 +29,13 @@ export class HomeComponent implements OnInit {
 
   }
 
+  ngOnChanges(): void { }
+
+
   ngOnInit(): void {
 
     const userID = localStorage.getItem('scrapbook-userid')
-    this.store.dispatch(new FetchAllAlbumsOfUser(userID));
+    // this.store.dispatch(new FetchAllAlbumsOfUser(userID));
 
     this.userAlbums$.subscribe(data => {
       if (data) {
