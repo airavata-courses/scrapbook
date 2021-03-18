@@ -129,7 +129,7 @@ public class AlbumServiceImpl implements AlbumService{
 
     @Override
     public List<Album> retrieveSharedAlbum(String userId) {
-       return albumRepository.findByCollaboratorsIn(userId);
+        return albumRepository.findByActiveAndCollaboratorsIn(true,userId);
     }
 
     @Override
