@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,8 +63,10 @@ public class AlbumTest {
     @Test
     public void retrieve(){
         Album album = Album.builder().googleDriveId("g1").build();
+        List<Album> l = new ArrayList<Album>();
+        l.add(album);
         Mockito.when(albumRepository.findByActive(true))
-                .thenReturn(List.of(album));
+                .thenReturn(l);
 
         List<Album> list = albumServiceImpl.retrieveALl();
         Assert.assertNotNull(list);

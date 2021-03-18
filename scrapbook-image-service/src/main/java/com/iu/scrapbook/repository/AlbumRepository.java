@@ -23,6 +23,6 @@ public interface AlbumRepository extends MongoRepository<Album, String> {
 
     List<Album> findByNameAndCreatedBy(String name, String userId);
 
-    List<Album> findByCollaboratorsIn(String userId);
+    List<Album> findByActiveAndCollaboratorsIn(Boolean active,String userId);
 
 }
