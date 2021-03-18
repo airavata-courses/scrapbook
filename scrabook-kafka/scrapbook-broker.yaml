@@ -14,7 +14,6 @@ spec:
         app: sb-kafka
         id: "0"
     spec:
-
       containers:
       - name: kafka
         image: wurstmeister/kafka
@@ -27,8 +26,6 @@ spec:
           value: "kafka-service"
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: zookeeper:2181
-        - name: KAFKA_INTER_BROKER_LISTENER_NAME
-          value: INTERNAL
         - name: KAFKA_BROKER_ID
           value: "0"
         - name: KAFKA_CREATE_TOPICS
