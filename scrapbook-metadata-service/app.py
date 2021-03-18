@@ -12,7 +12,7 @@ from threading import Event
 import signal
 from PIL.ExifTags import TAGS
 from flask_kafka import FlaskKafka
-
+from kafka import KafkaConsumer
 from mde_utils import starter
 
 import os
@@ -28,10 +28,19 @@ INTERRUPT_EVENT = Event()
 
 print(os.environ.get('KAFKA_URI'))
 
-bus = FlaskKafka(INTERRUPT_EVENT,
+response = None
+global bus
+
+while response is None:
+    try:
+        print('waiting for brokers')
+        bus = FlaskKafka(INTERRUPT_EVENT,
                  bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
                  group_id="consumer-grp-id"
                  )
+        response = bus
+    except:
+        pass
 
 
 def listen_kill_server():
