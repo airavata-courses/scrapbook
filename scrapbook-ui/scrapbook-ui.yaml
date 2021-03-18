@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ui-deployment
+  name: ui-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrapbook-ui
+  template:
+    metadata:
+      labels:
+        app: scrapbook-ui
+    spec:
+      containers:
+      - image: hrishikeshpaul/scrapbook-ui
+        name: scrapbook-ui
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ui-service
+  name: ui-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30000
+  selector:
+    app: scrapbook-ui
