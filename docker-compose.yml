@@ -132,7 +132,7 @@ services:
     environment:
       DRIVE: "http://sb-gdrive:9090"
       MDE: "http://sb-mde:12000/metadata/match"
-      MONGO : "mongo"
+      MONGO : "mongodb://mongo:27017/image-service"
     ports:
       - "8080:8080"
     links:
