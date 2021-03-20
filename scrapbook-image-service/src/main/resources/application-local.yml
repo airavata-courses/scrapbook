@@ -1,9 +1,10 @@
 spring:
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: image-service
+      uri: mongodb://localhost:27017/image-service
+#      host: localhost
+#      port: 27017
+#      database: image-service
       repositories:
         enabled: true
 
