@@ -17,11 +17,14 @@ import java.util.Collections;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
-    @Value("${spring.data.mongodb.host}")
-    private String host;
+//    @Value("${spring.data.mongodb.host}")
+//    private String host;
+//
+//    @Value("${spring.data.mongodb.port}")
+//    private String port;
 
-    @Value("${spring.data.mongodb.port}")
-    private String port;
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
 
     @Override
     protected String getDatabaseName() {
@@ -30,7 +33,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        ConnectionString connectionString = new ConnectionString("mongodb://"+host+":"+port+"/image-service");
+       // ConnectionString connectionString = new ConnectionString("mongodb://"+host+":"+port+"/image-service");
+        ConnectionString connectionString = new ConnectionString(uri);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
