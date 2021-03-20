@@ -3,6 +3,7 @@ beautifulsoup4==4.9.3
 certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
+dnspython==2.1.0
 ExifRead==2.3.2
 Flask==1.1.2
 Flask-Cors==3.0.10
