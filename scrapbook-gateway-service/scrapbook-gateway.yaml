@@ -24,6 +24,8 @@ spec:
             value: "False"
           - name: PORT
             value: "8081"
+          - name: AUTH_SERVICE
+            value: "http://sb-auth-service:5000"
       restartPolicy: Always
 ---
 apiVersion: v1
