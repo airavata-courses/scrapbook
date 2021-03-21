@@ -1,6 +1,6 @@
 ## Dependency
 
-- Python3 +
+- Python3 + 
 
 ### How to run
 
