@@ -3,7 +3,7 @@ name: Scrapbook User Interface CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main-IU ]
+    branches: [ main-UI ]
     
 jobs:
   build:
