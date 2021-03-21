@@ -3,8 +3,7 @@ name: Scrapbook User Service CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - "main-user-service"
+    branches: [main-user-service]
     
 jobs:
   build:
@@ -40,9 +39,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          working-directory: ./scrapbook-user-service
-          context: ./
-          file: ./Dockerfile
+          file: ./scrapbook-user-service/Dockerfile
           push: true
           tags: hrishikeshpaul/scrapbook-user-service:latest
 
