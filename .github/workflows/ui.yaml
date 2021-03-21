@@ -1,4 +1,4 @@
-name: Scrapbook UI CI
+name: Scrapbook User Interface CI
 
 on:
   workflow_dispatch:
