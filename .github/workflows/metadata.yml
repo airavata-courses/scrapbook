@@ -1,0 +1,41 @@
+name: Scrapbook meta Data Service CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main-mde-service ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+        with:
+          ref: 'main-mde-service'
+        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          
+      - name: Install dependencies
+        working-directory: ./scrapbook-metadata-service
+        run: pip install -r requirements.txt
+        
+      - name: Test Service
+        working-directory: ./scrapbook-metadata-service
+        run: python3 -m pytest -v
+
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Build Docker Image
+        working-directory: ./scrapbook-metadata-service
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/scrapbook-metadata-service:latest
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/scrapbook-metadata-service:latest
