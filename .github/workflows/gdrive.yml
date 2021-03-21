@@ -33,9 +33,10 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Build Docker googledrive
+          
+      - name: Build Docker Image
         working-directory: ./scrapbook-googledrive-service
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/scrapbook-googledrive-service:latest
 
-      - name: Push Docker googledrive
+      - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/scrapbook-googledrive-service:latest
