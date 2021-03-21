@@ -94,7 +94,7 @@ services:
     depends_on:
       - mongo
     environment:
-      MONGO_URI: "mongodb://mongo:27017/scrapbookUserService"
+      MONGO_URI: "mongodb+srv://admin:scrapbook_admin@cluster0.0usgc.mongodb.net/scrapbook?retryWrites=true&w=majority"
     networks:
       - scrapbook_network
 
@@ -108,8 +108,9 @@ services:
     links:
       - redis
     environment:
-      REDIS_PORT: "6379"
-      REDIS_HOST: "redis"
+      REDIS_PORT: "12822"
+      REDIS_HOST: "redis-12822.c245.us-east-1-3.ec2.cloud.redislabs.com"
+      REDIS_PASSWORD: "Wt8ZhuV0yA9DdG9XniPlzh94nzluTfxi"
     depends_on:
       - redis
     networks:
@@ -132,7 +133,7 @@ services:
     environment:
       DRIVE: "http://sb-gdrive:9090"
       MDE: "http://sb-mde:12000/metadata/match"
-      MONGO : "mongo"
+      MONGO : "mongodb+srv://admin:scrapbook_admin@cluster0.0usgc.mongodb.net/scrapbook?retryWrites=true&w=majority"
     ports:
       - "8080:8080"
     links:
@@ -168,7 +169,7 @@ services:
       - "12000:12000"
     build: .
     environment: 
-      MONGO_URI: "mongodb://mongo:27017/scrapbookMetadataService"
+      MONGO_URI: "mongodb+srv://admin:scrapbook_admin@cluster0.0usgc.mongodb.net/scrapbook?retryWrites=true&w=majority"
       KAFKA_URI: "kafka:9092"
       PORT: "12000"
       DEBUG: "True"

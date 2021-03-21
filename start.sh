@@ -9,6 +9,8 @@ docker pull hrishikeshpaul/scrapbook-gateway-service
 docker pull hrishikeshpaul/scrapbook-user-service
 docker pull hrishikeshpaul/scrapbook-ui
 
+docker-compose up
+
 if [ "$1" == "help" ]; then
   echo ""
   echo "Usage: ./start.sh"
