@@ -1,4 +1,4 @@
-name: Scrapbook Google Drive Service CI
+name: Scrapbook Gateway Service CI
 
 on:
   workflow_dispatch:
