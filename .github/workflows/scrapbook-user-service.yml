@@ -39,9 +39,11 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          file: ./scrapbook-user-service/Dockerfile
+          image: hrishikeshpaul/scrapbook-user-service
+          dockerfile: ./scrapbook-user-service/Dockerfile
+          registry: docker.io
           push: true
-          tags: hrishikeshpaul/scrapbook-user-service:latest
+          tags: latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
