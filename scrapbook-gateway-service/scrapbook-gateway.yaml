@@ -26,6 +26,8 @@ spec:
             value: "8081"
           - name: AUTH_SERVICE
             value: "http://sb-auth-service:5000"
+          - name: USER_SERVICE
+            value: "http://sb-user-service:3000"
       restartPolicy: Always
 ---
 apiVersion: v1
