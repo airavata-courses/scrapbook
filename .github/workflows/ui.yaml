@@ -1,4 +1,4 @@
-name: Scrapbook UI CI
+name: Scrapbook User Interface CI
 
 on:
   workflow_dispatch:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
+        with:
+          ref: 'main-UI'
         
       - uses: actions/setup-node@v2
         with:
@@ -31,7 +33,6 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-
       - name: Build Docker Image
         working-directory: ./scrapbook-ui
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/scrapbook-ui:latest
