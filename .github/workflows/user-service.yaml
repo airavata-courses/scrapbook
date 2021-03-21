@@ -40,7 +40,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           image: hrishikeshpaul/scrapbook-user-service
-          dockerfile: ./scrapbook-user-service/Dockerfile
+          context: ./scrapbook-user-service
+          dockerfile: ./Dockerfile
           registry: docker.io
           push: true
           tags: latest
