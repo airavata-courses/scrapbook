@@ -1,4 +1,4 @@
-name: Scrapbook meta Data Service CI
+name: Scrapbook Metadata Service CI
 
 on:
   workflow_dispatch:
