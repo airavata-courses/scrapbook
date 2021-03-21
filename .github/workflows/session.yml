@@ -21,11 +21,11 @@ jobs:
           
       - name: Install dependencies
         working-directory: ./scrapbook-session-service
-        run: mvn clean install
+        run: npm install
         
       - name: Test Service
         working-directory: ./scrapbook-session-service
-        run: mvn test
+        run: npm test
 
       - name: Docker Login
         env:
