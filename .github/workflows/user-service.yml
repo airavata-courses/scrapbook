@@ -12,14 +12,12 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
+        with:
+          ref: 'main-user-service'
         
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-          
-      - name: Checkout Branch
-        run: |
-          git checkout main-user-service
           
       - name: Install dependencies
         working-directory: ./scrapbook-user-service
