@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: {MONGO}
+      uri: ${MONGO}
 #      host: ${MONGO}
 #      port: 27017
 #      database: image-service
