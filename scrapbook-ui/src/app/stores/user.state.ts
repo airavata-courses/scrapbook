@@ -117,15 +117,15 @@ export class UserState {
   @Action(Logout)
   logoutUser({ setState, getState, dispatch }: StateContext<UserStateModel>) {
     // dispatch(new StateReset(UIState));
-    
+    dispatch(new StateReset(AlbumState));
+    dispatch(new StateReset(UIState));
     return this.gas.lougoutFromGoogle().pipe(
       tap((res) => {
         localStorage.removeItem('scrapbook-userid')
         localStorage.removeItem('scrapbook-name')
         localStorage.removeItem('scrapbook-email')
         localStorage.removeItem('scrapbook-photo')
-        dispatch(new StateReset(AlbumState));
-        dispatch(new StateReset(UIState));
+        
         this.ngZone.run(() => this.router.navigate(['/']));
 
       })
