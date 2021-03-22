@@ -154,6 +154,7 @@ services:
     environment:
       IMG: "http://sb-image:8080"
       PORT: "9090"
+      KAFKA: "kafka:9092"
     links:
       - kafka
     depends_on:
