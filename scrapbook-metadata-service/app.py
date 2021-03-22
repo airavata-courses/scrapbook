@@ -35,9 +35,9 @@ while response is None:
     try:
         print('waiting for brokers')
         bus = FlaskKafka(INTERRUPT_EVENT,
-                 bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
-                 group_id="consumer-grp-id"
-                 )
+                bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
+                group_id="consumer-grp-id"
+                )
         response = bus
     except:
         pass
@@ -82,7 +82,7 @@ def get_geotagging(exif):
     return geotagging
 
 
-@bus.handle(os.environ.get('KAFKA_TOPIC'))
+@bus.handle('image')
 def extract_metadata(msg):
     print(msg)
     json_msg = json.loads(msg.value)
