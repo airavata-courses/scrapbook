@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: ui-deployment
-  name: ui-deployment
+    app: sb-ui
+  name: sb-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: scrapbook-ui
+      app: sb-ui
   template:
     metadata:
       labels:
-        app: scrapbook-ui
+        app: sb-ui
     spec:
       containers:
       - image: hrishikeshpaul/scrapbook-ui
-        name: scrapbook-ui
+        name: sb-ui
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -26,8 +26,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: ui-service
-  name: ui-service
+    app: sb-ui
+  name: sb-ui
 spec:
   type: LoadBalancer
   ports:
@@ -35,4 +35,4 @@ spec:
     targetPort: 80
     nodePort: 30000
   selector:
-    app: scrapbook-ui
+    app: sb-ui
