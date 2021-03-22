@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sb-zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sb-zookeeper
+  template:
+    metadata:
+      labels:
+        app: sb-zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: wurstmeister/zookeeper 
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_ID
+          value: "1"
+        - name: ZOOKEEPER_SERVER_1
+          value: zookeeper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sb-zookeeper
+spec:
+  selector: 
+    app: sb-zookeeper
+  ports:
+  - name: client
+    port: 2181
+    protocol: TCP
+  - name: follower
+    port: 2888
+    protocol: TCP
+  - name: leader
+    port: 3888
+    protocol: TCP
