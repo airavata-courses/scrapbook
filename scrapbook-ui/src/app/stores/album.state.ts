@@ -130,6 +130,14 @@ export class AlbumState {
             albumInfoOpen: true,
             albumInfoModalData: {...data, metaData: res}
           });
+        }),
+        catchError((err) => {
+          setState({
+            ...state,
+            albumInfoOpen: true,
+            albumInfoModalData: {...data, metaData: {Aperture: [], FocalLength: [], ISO: [], GPS: [], Camera: []}}
+          });
+          return of(JSON.stringify(err))
         })
       )
     } else {
