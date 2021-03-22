@@ -17,6 +17,7 @@ spec:
       containers:
       - image: hrishikeshpaul/scrapbook-ui
         name: scrapbook-ui
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
       restartPolicy: Always
