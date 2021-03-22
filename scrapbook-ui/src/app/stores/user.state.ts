@@ -106,7 +106,8 @@ export class UserState {
       ...getState(),
       userData: loggedInUser,
       loggedIn: true,
-      signInError: ''
+      signInError: '',
+      signUpSuccess: false
     });
 
     this.ngZone.run(() => this.router.navigate(['/home']));
