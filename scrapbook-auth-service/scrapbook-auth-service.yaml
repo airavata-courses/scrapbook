@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: sb-gateway
-  name: sb-gateway
+    app: sb-auth
+  name: sb-auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sb-gateway
+      app: sb-auth
   template:
     metadata:
       labels:
-        app: sb-gateway
+        app: sb-auth
     spec:
       containers:
-      - image: hrishikeshpaul/scrapbook-gateway-service
-        name: sb-gateway
+      - image: hrishikeshpaul/scrapbook-auth-service
+        name: sb-auth
         imagePullPolicy: Always
         ports:
         - containerPort: 8081
@@ -26,11 +26,9 @@ spec:
           - name: PORT
             value: "8081"
           - name: AUTH_SERVICE
-            value: "http://sb-auth:5000"
+            value: "http://sb-auth-service:5000"
           - name: USER_SERVICE
             value: "http://sb-user:3000"
-          - name: SESSION_SERVICE
-            value: "http://sb-session:3500"
       restartPolicy: Always
 ---
 apiVersion: v1
