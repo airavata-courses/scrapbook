@@ -32,10 +32,8 @@ metadata:
     app: sb-user
   name: sb-user
 spec:
-  type: LoadBalancer
   selector: 
     app: sb-user
   ports:
   - port: 3000
     targetPort: 3000
-    nodePort: 30003

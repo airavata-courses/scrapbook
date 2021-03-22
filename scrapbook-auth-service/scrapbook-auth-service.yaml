@@ -17,31 +17,28 @@ spec:
       containers:
       - image: hrishikeshpaul/scrapbook-auth-service
         name: sb-auth
-        imagePullPolicy: Always
         ports:
-        - containerPort: 8081
+        - containerPort: 5000
         env:
           - name: DEBUG
             value: "False"
           - name: PORT
-            value: "8081"
-          - name: AUTH_SERVICE
-            value: "http://sb-auth-service:5000"
-          - name: USER_SERVICE
-            value: "http://sb-user:3000"
+            value: "5000"
+          - name: CLIENT_ID
+            value: "6383607950-8vfdgb52qqgfrkin3sonc424qamc5mkc.apps.googleusercontent.com"
+          - name: CLIENT_SECRET
+            value: 3VBr2hLv2ZJ6-jbNHYcXSM0i
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-gateway
-  name: sb-gateway
-spec: 
-  type: LoadBalancer
+    app: sb-auth
+  name: sb-auth
+spec:
   selector: 
-    app: sb-gateway
+    app: sb-auth
   ports:
-  - port: 8081
-    targetPort: 8081
-    nodePort: 30001
+  - port: 5000
+    targetPort: 5000

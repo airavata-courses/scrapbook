@@ -36,7 +36,6 @@ metadata:
     app: sb-session
   name: sb-session
 spec:
-  type: LoadBalancer
   selector: 
     app: sb-session
   ports:
