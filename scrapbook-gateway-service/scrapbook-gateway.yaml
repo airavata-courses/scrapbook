@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: gateway-deployment
-  name: gateway-deployment
+    app: sb-gateway
+  name: sb-gateway
 spec:
   replicas: 1
   selector:
@@ -17,6 +17,7 @@ spec:
       containers:
       - image: hrishikeshpaul/scrapbook-gateway-service
         name: sb-gateway
+        imagePullPolicy: Always
         ports:
         - containerPort: 8081
         env:
@@ -27,15 +28,15 @@ spec:
           - name: AUTH_SERVICE
             value: "http://sb-auth-service:5000"
           - name: USER_SERVICE
-            value: "http://sb-user-service:3000"
+            value: "http://sb-user:3000"
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-gateway-service
-  name: sb-gateway-service
+    app: sb-gateway
+  name: sb-gateway
 spec: 
   type: LoadBalancer
   selector: 
