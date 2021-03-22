@@ -11,6 +11,30 @@ SESSION_SERVICE = os.environ.get('SESSION_SERVICE')
 
 authenticate_user_api = Blueprint('authenticate_user_api', __name__)
 
+@authenticate_user_api.route('/customlogin', methods=["POST"])
+def customlogin():
+    try:
+        response = requests.get(f'{USER_SERVICE}/users/customlogin', data=request.json)
+        response.raise_for_status()
+        session_response = requests.post(f'{SESSION_SERVICE}/set',
+                                        data={"userID": response.json()["_id"], "token": response.json()["_id"]})
+        print(session_response.json())
+        session_response.raise_for_status()
+        return response.json(), response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
+@authenticate_user_api.route('/signup', methods=["POST"])
+def signup():
+    try:
+        response = requests.post(f'{USER_SERVICE}/users/signup', data=request.json)
+        response.raise_for_status()
+        return response.content, response.status_code
+
+    except requests.exceptions.HTTPError as err:
+        return err.response.text, err.response.status_code
+
 
 @authenticate_user_api.route('/login', methods=["POST"])
 def login():
