@@ -5,9 +5,11 @@ scrapbook:
 server:
   port: ${PORT}
 
+topic : ${TOPIC}
+
 spring:
   kafka:
     producer:
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: ${KAFKA}
       key-serializer: com.iu.scrapbook.serializer.MessageSerializer
       value-serializer: com.iu.scrapbook.serializer.MessageSerializer

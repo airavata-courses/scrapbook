@@ -25,3 +25,5 @@ google:
 
 server:
   port: 9090
+
+topic : image

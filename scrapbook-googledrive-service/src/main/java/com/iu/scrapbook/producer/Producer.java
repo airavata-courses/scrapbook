@@ -2,6 +2,7 @@ package com.iu.scrapbook.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class Producer {
 
-    private static final String TOPIC = "image";
+    @Value("${topic}")
+    private String topic;
 
     @Autowired
     private KafkaTemplate<String, Message> kafkaTemplate;
@@ -25,6 +27,6 @@ public class Producer {
 
     public void sendMessage(Message message) {
         log.info(String.format("#### -> Producing message -> %s", message));
-        this.kafkaTemplate.send(TOPIC, message);
+        this.kafkaTemplate.send(topic, message);
     }
 }
