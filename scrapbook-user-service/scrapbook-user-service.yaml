@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: user-service-deployment
-  name: user-service-deployment
+    app: sb-user
+  name: sb-user
 spec:
   replicas: 1
   selector:
@@ -17,6 +17,7 @@ spec:
       containers:
       - image: hrishikeshpaul/scrapbook-user-service
         name: sb-user
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         env:
@@ -28,8 +29,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-user-service
-  name: sb-user-service
+    app: sb-user
+  name: sb-user
 spec:
   type: LoadBalancer
   selector: 
