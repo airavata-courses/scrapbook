@@ -29,18 +29,20 @@ INTERRUPT_EVENT = Event()
 print(os.environ.get('KAFKA_URI'))
 
 response = None
-global bus
+# global bus
 
-while response is None:
-    try:
-        print('waiting for brokers')
-        bus = FlaskKafka(INTERRUPT_EVENT,
+bus = FlaskKafka(INTERRUPT_EVENT,
                 bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
                 group_id="consumer-grp-id"
                 )
-        response = bus
-    except:
-        pass
+
+# while response is None:
+#     try:
+#         print('waiting for brokers')
+        
+#         response = bus
+#     except:
+#         pass
 
 
 def listen_kill_server():
@@ -222,4 +224,4 @@ def started():
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
-    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host=os.environ.get("HOST"))
+    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'))
