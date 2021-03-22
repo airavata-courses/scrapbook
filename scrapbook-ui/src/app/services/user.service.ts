@@ -22,7 +22,6 @@ export class UserService {
   }
 
   onCustomLogin(email: string, password: string) {
-    console.log(GATEWAY_URL)
     return this.http.post(`${GATEWAY_URL}/customlogin`, {email: email, password: password})
   }
 }
