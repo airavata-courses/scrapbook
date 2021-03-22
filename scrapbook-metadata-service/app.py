@@ -224,4 +224,4 @@ def started():
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
-    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'))
+    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host="0.0.0.0")
