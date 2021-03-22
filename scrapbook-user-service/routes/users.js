@@ -2,6 +2,39 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user.js')
 
+router.get('/customlogin', (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({email: email, password: password}, (err, foundUser) => {
+    if(err) res.status(500).send(err)
+    else if(!foundUser) res.status(400).send('Email and password don\'t match')
+    else if(foundUser) {
+      const u = {_id: foundUser._id, email: foundUser.email, photo: foundUser.photo, name: foundUser.name}
+      res.status(200).send(u);
+    }
+  })
+})
+
+router.post('/signup', (req, res) => {
+  const { email, password, name } = req.body;
+  User.findOne({email: email}, (err, foundUser) => {
+    if(err) res.status(500).send(err)
+    else if(foundUser) res.status(400).send('User already registered');
+    else if(!foundUser) {
+      new User({
+        email: email,
+        password: password,
+        name: name,
+        photo: `https://ui-avatars.com/api/?background=484955&color=fff&name=${email[0]}&bold=true`
+      }).save((err, newUser) => {
+        if(err) res.status(500).send(err)
+        else {
+          delete newUser.password;
+          res.status(201).send(newUser)
+        }
+      })
+    }
+  })
+})
 
 /** 
  * POST requests
