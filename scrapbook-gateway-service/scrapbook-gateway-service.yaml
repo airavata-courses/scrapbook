@@ -31,6 +31,13 @@ spec:
             value: "http://sb-user:3000"
           - name: SESSION_SERVICE
             value: "http://sb-session:3500"
+          - name: MDE_SERVICE
+            value: "http://sb-metadata:12000"
+          - name: G_DRIVE_SERVICE
+            value:  "http://sb-gdrive:9090"
+          - name: IMAGE_SERVICE
+            value: "http://sb-image:8080"
+
       restartPolicy: Always
 ---
 apiVersion: v1

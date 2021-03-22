@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sb-gdrive
+  name: sb-gdrive
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sb-gdrive
+  template:
+    metadata:
+      labels:
+        app: sb-gdrive
+    spec:
+      containers:
+      - image: hrishikeshpaul/scrapbook-googledrive-service
+        name: sb-gdrive
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9090
+        env:
+          - name: PORT
+            value: "9090"
+          - name: KAFKA
+            value: "sb-kafka:9092"
+          - name: TOPIC
+            value: "image"
+          - name: IMG
+            value: "http://sb-image:8080"
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sb-gdrive
+  name: sb-gdrive
+spec: 
+  selector: 
+    app: sb-gdrive
+  ports:
+  - port: 9090
+    targetPort: 9090
