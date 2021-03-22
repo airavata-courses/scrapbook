@@ -16,4 +16,13 @@ export class UserService {
   fetchUsersBySubstring(sub: string) {
     return this.http.get(`${GATEWAY_URL}/users?search=${sub}`);
   }
+
+  onSignup(email: string, password: string, name: string) {
+    return this.http.post(`${GATEWAY_URL}/signup`, {email: email, password: password, name: name});
+  }
+
+  onCustomLogin(email: string, password: string) {
+    console.log(GATEWAY_URL)
+    return this.http.post(`${GATEWAY_URL}/customlogin`, {email: email, password: password})
+  }
 }

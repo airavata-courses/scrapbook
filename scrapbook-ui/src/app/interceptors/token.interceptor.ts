@@ -24,7 +24,6 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     request = request.clone({
       setHeaders: {
         'X-Session': `${localStorage.getItem('scrapbook-userid')}`

@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseLoading, OpenLoading } from '../actions/ui.actions';
 import {
   FetchUserData,
   GoogleLogin,
@@ -8,6 +8,8 @@ import {
   Logout,
   SearchUserBySubstring,
   RemoveSearchedUserBySubString,
+  SignUp,
+  CustomLogin,
 } from '../actions/user.actions';
 import { User } from '../models/user.model';
 
@@ -24,6 +26,9 @@ export class UserStateModel {
   userData: any;
   loggedIn: boolean;
   searchedUsers: Array<User>;
+  signUpSuccess: boolean;
+  signUpError: string;
+  signInError: string;
 }
 
 @State<UserStateModel>({
@@ -31,7 +36,10 @@ export class UserStateModel {
   defaults: {
     userData: {},
     loggedIn: false,
-    searchedUsers: []
+    searchedUsers: [],
+    signUpSuccess: false,
+    signUpError: '',
+    signInError: ''
   },
 })
 @Injectable()
@@ -60,6 +68,21 @@ export class UserState {
     return state.searchedUsers;
   }
 
+  @Selector()
+  static getSignUpSuccess(state: UserStateModel) {
+    return state.signUpSuccess;
+  }
+
+  @Selector()
+  static getSignUpError(state: UserStateModel) {
+    return state.signUpError;
+  }
+
+  @Selector()
+  static getSignInError(state: UserStateModel) {
+    return state.signInError;
+  }
+
   @Action(GoogleLogin)
   googleLogin({ dispatch, setState, getState, patchState }: StateContext<UserStateModel>) {
     this.gas.loginWithGoogle();
@@ -82,8 +105,12 @@ export class UserState {
     setState({
       ...getState(),
       userData: loggedInUser,
-      loggedIn: true
+      loggedIn: true,
+      signInError: ''
     });
+
+    this.ngZone.run(() => this.router.navigate(['/home']));
+
   }
 
   @Action(Logout)
@@ -152,5 +179,61 @@ export class UserState {
       ...state,
       searchedUsers: []
     })
+  }
+
+  @Action(SignUp)
+  onSignup({ setState, getState, dispatch }: StateContext<UserStateModel>, {email, password, name}:SignUp) {
+    dispatch(new OpenLoading());
+    const state = getState();
+    return this.userService.onSignup(email, password, name).pipe(
+      tap((res) => {
+        dispatch(new CloseLoading());
+        setState({
+          ...state,
+          signUpSuccess: true,
+          signUpError: ''
+        })
+      }),
+      catchError((err) => {
+        dispatch(new CloseLoading());
+        setState({
+          ...state,
+          signUpSuccess: false,
+          signUpError: JSON.stringify(err.error)
+        })
+        // this.error = JSON.stringify(err);
+        return of(JSON.stringify(err))
+      })
+    )
+  }
+
+  @Action(CustomLogin)
+  onCustomLogin({ setState, getState, dispatch }: StateContext<UserStateModel>, {email, password}: CustomLogin) {
+    dispatch(new OpenLoading());
+    const state = getState();
+    return this.userService.onCustomLogin(email, password).pipe(
+      tap((user: any) => {
+        dispatch(new CloseLoading());
+        const u = {
+          name: user.name,
+          email: user.email,
+          photo: user.photo,
+          token: user._id,
+          _id: user._id,
+        };
+
+        dispatch(new PutUserInSession(u));
+        
+      }),
+      catchError((err) => {
+        dispatch(new CloseLoading());
+        setState({
+          ...state,
+          signInError: JSON.stringify(err.error)
+        })
+        // this.error = JSON.stringify(err);
+        return of(JSON.stringify(err))
+      })
+    )
   }
 }

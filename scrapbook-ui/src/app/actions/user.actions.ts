@@ -29,3 +29,12 @@ export class RemoveSearchedUserBySubString {
   constructor() {}
 }
 
+export class SignUp {
+  static readonly type = '[SIGNUP]';
+  constructor(public email: string, public password: string, public name: string) {}
+}
+
+export class CustomLogin {
+  static readonly type = '[Custom] Login';
+  constructor(public email: string, public password: string) {}
+}

@@ -25,7 +25,7 @@ export class AuthService {
         this.store.dispatch(new OpenLoading());
         this.logUserIn({name, photo: photoUrl, token: idToken, email}).toPromise().then( (user: any) => {
           this.store.dispatch(new PutUserInSession(user));
-          this.ngZone.run(() => this.router.navigate(['/home']));
+          
         });
       }
     );
