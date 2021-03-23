@@ -13,7 +13,7 @@ album_api = Blueprint('album_api', __name__)
 
 
 @album_api.route('/album', methods=["POST"])
-@auth.check_user_session
+@auth.check_user_session('Create Album')
 def createAlbum():
     """
     Used to create an album
@@ -33,7 +33,7 @@ def createAlbum():
 
 
 @album_api.route('/album/<googledriveid>', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get Album By Id')
 def getAlbumByID(googledriveid):
     """
     retrieving all active albums from the database.
@@ -56,7 +56,7 @@ def getAlbumByID(googledriveid):
 
 
 @album_api.route('/album', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get All Albums of User')
 def getAlbumsOfUser():
     """
     Get all the albums of the user
@@ -77,7 +77,7 @@ def getAlbumsOfUser():
 
 
 @album_api.route('/album/<googledriveid>/image', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get All Images in Album')
 def getImagesByAlbumID(googledriveid):
     """
     This API is responsible for retrieving all images for given user and album from the database.
@@ -97,7 +97,7 @@ def getImagesByAlbumID(googledriveid):
 
 
 @album_api.route('/album/all', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get All Albums')
 def getAllAlbums():
     """
     retrieving all active albums from the database.    
@@ -116,7 +116,7 @@ def getAllAlbums():
 
 
 @album_api.route('/album/collab/add', methods=["PUT"])
-@auth.check_user_session
+@auth.check_user_session('Add Collaborator')
 def addCollaborator():
     try:
         collabid = request.json['collabid']
@@ -135,7 +135,7 @@ def addCollaborator():
 
 
 @album_api.route('/album/collab/remove', methods=["PUT"])
-@auth.check_user_session
+@auth.check_user_session('Remove Collaborator')
 def removeCollaborator():
     try:
         collabid = request.json['collabid']
@@ -154,7 +154,7 @@ def removeCollaborator():
 
 
 @album_api.route('/album/<googledriveid>', methods=["PUT"])
-@auth.check_user_session
+@auth.check_user_session('Update Album')
 def updateAlbum(googledriveid):
     """
     responsible for updating album details into database
@@ -174,7 +174,7 @@ def updateAlbum(googledriveid):
 
 
 @album_api.route('/album', methods=["DELETE"])
-@auth.check_user_session
+@auth.check_user_session('Deleet All Albums')
 def deleteAllAlbumsForUser():
     """
     deleting all albums for given user from the database. It is soft. It sets all albums as inactive
@@ -193,7 +193,7 @@ def deleteAllAlbumsForUser():
 
 
 @album_api.route('/album/<googledriveid>', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Retrieve Album')
 def retreieveAlbumByID(googledriveid):
     """
     retrieve albums from databse with the id = googledriveid
@@ -211,7 +211,7 @@ def retreieveAlbumByID(googledriveid):
 
 
 @album_api.route('/album/search', methods=["POST"])
-@auth.check_user_session
+@auth.check_user_session('Search Album')
 def searchAndFilterAlbum():
     try:
         userid = request.args.get('userid')
@@ -227,7 +227,7 @@ def searchAndFilterAlbum():
 
 
 @album_api.route('/album/<googledriveid>', methods=["DELETE"])
-@auth.check_user_session
+@auth.check_user_session('Delete Album')
 def deleteAlbumByID(googledriveid):
     """
     deleting all albums for given user from the database. It is soft. It sets all albums as inactive
@@ -248,7 +248,7 @@ def deleteAlbumByID(googledriveid):
 
 
 @album_api.route('/album/shared', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get Shared Albums of User')
 def getSharedAlbumsOfUser():
     try:
         userID = request.args.get('userid')
@@ -264,7 +264,7 @@ def getSharedAlbumsOfUser():
 
 
 @album_api.route('/album/image/search', methods=["POST"])
-@auth.check_user_session
+@auth.check_user_session('Search And Filter')
 def searchAndFilterImage():
     try:
         userid = request.args.get('userid')

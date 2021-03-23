@@ -28,6 +28,7 @@ def customlogin():
 @authenticate_user_api.route('/signup', methods=["POST"])
 def signup():
     try:
+        print({USER_SERVICE})
         response = requests.post(f'{USER_SERVICE}/users/signup', data=request.json)
         response.raise_for_status()
         return response.content, response.status_code

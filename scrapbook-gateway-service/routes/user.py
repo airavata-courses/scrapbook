@@ -12,7 +12,7 @@ user_api = Blueprint('user_api', __name__)
 
 
 @user_api.route('/users', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Search Users')
 def getUserBySubstring():
     try:
         search = request.args.get('search')

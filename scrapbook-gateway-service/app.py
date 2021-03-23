@@ -25,10 +25,10 @@ CORS(app)
 # contains the auth api services
 app.register_blueprint(authenticate_user_api)
 
-# manupilating album information using the image service
+# # manupilating album information using the image service
 app.register_blueprint(album_api)
 
-# download/uploads an image using Gdrive service
+# # download/uploads an image using Gdrive service
 app.register_blueprint(image_api)
 
 app.register_blueprint(user_api)
@@ -40,6 +40,4 @@ def check():
     return util.starter()
 
 if __name__ == '__main__':
-    print(os.environ.get("DEBUG"))
-    print(os.environ.get("HOST"))
     app.run(host='0.0.0.0', port=8081, debug=True)

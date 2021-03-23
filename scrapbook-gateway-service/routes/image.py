@@ -14,7 +14,7 @@ image_api = Blueprint('image_api', __name__)
 
 
 @image_api.route('/image/upload/<GoogeDriveID>', methods=["POST"])
-@auth.check_user_session
+@auth.check_user_session('Upload Image')
 def uploadImage(GoogeDriveID):
     """
     This function uploads an image
@@ -39,7 +39,7 @@ def uploadImage(GoogeDriveID):
 
 
 @image_api.route('/image/<GoogeDriveID>', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Download Image')
 def downloadImage(GoogeDriveID):
     """
     This function downloads an image
@@ -57,7 +57,7 @@ def downloadImage(GoogeDriveID):
 
 
 @image_api.route('/image/<GoogeDriveID>', methods=["PUT"])
-@auth.check_user_session
+@auth.check_user_session('Rename Image')
 def renameImage(GoogeDriveID):
     """
     This function renames an image
@@ -81,7 +81,7 @@ def renameImage(GoogeDriveID):
 
 
 @image_api.route('/image/<GoogeDriveID>', methods=["DELETE"])
-@auth.check_user_session
+@auth.check_user_session('Delete Image')
 def deleteImage(GoogeDriveID):
     """
     This function deletes an image

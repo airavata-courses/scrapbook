@@ -11,7 +11,7 @@ MDE_SERVICE = os.environ.get("MDE_SERVICE")
 mde_api = Blueprint('mde_api', __name__)
 
 @mde_api.route('/metadata/fetch/all', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get All Metadata')
 def autofill_data():
     try:
         albumID = request.args.get('albumid')
@@ -23,7 +23,7 @@ def autofill_data():
         return err.response.text, err.response.status_code
 
 @mde_api.route('/metadata/fetch', methods=["GET"])
-@auth.check_user_session
+@auth.check_user_session('Get Metadata for Image')
 def find_metadata():
     try:
         imageID = request.args.get('id')

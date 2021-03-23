@@ -24,7 +24,7 @@ def authenticateToken(token):
     return True
 
 
-def check_user_session(req):
+def check_user_session(param):
     """
     Writing a python decorator to resuse to check if the user is in session
 
@@ -32,19 +32,21 @@ def check_user_session(req):
     @return - 200 or 401
     """
 
-    @wraps(req)
-    def __check_user_session(*args, **kwargs):
+    def actual_decor(req):
+        @wraps(req)
+        def __check_user_session(*args, **kwargs):
 
-        try:
-            # reset user session
-            sessionId = request.headers['X-Session']
-            response = requests.put(f'{SESSION_SERVICE}/reset/{sessionId}')
-            response.raise_for_status()
+            try:
+                # reset user session
+                sessionId = request.headers['X-Session']
+                response = requests.post(f'{SESSION_SERVICE}/reset/{sessionId}', data={'event': param})
+                response.raise_for_status()
 
-        except requests.exceptions.HTTPError as err:
-            # replace this with return err.response.text, err.response.status_code when you are not debugging
-            abort(401)
+            except requests.exceptions.HTTPError as err:
+                # replace this with return err.response.text, err.response.status_code when you are not debugging
+                abort(401)
 
-        return req(*args, **kwargs)
+            return req(*args, **kwargs)
 
-    return __check_user_session
+        return __check_user_session
+    return actual_decor
