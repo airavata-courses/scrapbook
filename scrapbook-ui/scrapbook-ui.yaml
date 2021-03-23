@@ -36,7 +36,3 @@ spec:
     nodePort: 30000
   selector:
     app: sb-ui
-status:
-  loadBalancer:
-    ingress:
-    - ip: 149.165.169.255
