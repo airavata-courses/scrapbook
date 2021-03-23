@@ -83,6 +83,7 @@ router.delete('/remove/:id', (req, res, next) => {
  * Get all the session events for a user
  */
 router.get('/all/:id', (req, res, next) => {
+  console.log('Find all for', req.params.id);
   Session.find({user: req.params.id}, (err, data) => {
     if(err) res.status(500).send(err)
     else if(data) res.status(200).send(data);
