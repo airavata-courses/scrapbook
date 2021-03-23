@@ -28,14 +28,15 @@ metadata:
   labels:
     app: sb-ui
   name: sb-ui
-  annotations:
-        service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
 spec:
   type: LoadBalancer
-  loadBalancerIP: 149.165.168.154
   ports:
   - port: 80
     targetPort: 80
     nodePort: 30000
   selector:
     app: sb-ui
+status:
+  loadBalancer:
+    ingress:
+    - ip: 149.165.169.255
