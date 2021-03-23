@@ -1,18 +1,28 @@
 <div class="h-100 w-100">
-  <app-navbar></app-navbar>
-  <div class="root w-100 h-100">
-    <mat-drawer-container class="h-100 w-100" autosize>
-      <mat-drawer #drawer  mode="side" opened="true">
-       <app-sidenav></app-sidenav>
+
+  <mat-drawer-container class="h-100 w-100" autosize>
+    
+     <mat-drawer-content>
+      <app-navbar></app-navbar>
+      <div class="root w-100 h-100">
+        <mat-drawer-container class="h-100 w-100" autosize>
+          <mat-drawer #drawer mode="side" opened="true">
+           <app-sidenav></app-sidenav>
+          </mat-drawer>
+
+           <mat-drawer #rightdrawer [opened]="history$ | async" position="end" mode="side" class="h-100">
+            <app-history (closeDrawer)="rightDrawer.close()"></app-history> 
+           </mat-drawer>
         
-      </mat-drawer>
-    
-      <div class="example-sidenav-content">
-        <router-outlet></router-outlet>
-        <!-- <app-home *ngIf="router.url.startsWith('/home')"></app-home>
-        <app-starred *ngIf="router.url=== '/starred'"></app-starred> -->
+          <div class="example-sidenav-content">
+            <router-outlet></router-outlet>
+          </div>
+        </mat-drawer-container>
       </div>
-    
-    </mat-drawer-container>
-  </div>
+     </mat-drawer-content>
+  </mat-drawer-container>
+  
+  <!-- <div class="root w-100 h-100">
+   
+  </div> -->
 </div>

@@ -1,0 +1,37 @@
+<div class="history pl-4 pr-4 h-100 text-dark mb-4">
+  <div class="card p-0">
+    <div class="card-header p-0 pb-2" style="position: fixed; z-index: 2; background-color: white; width: 350px; ">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div>
+          <span class="h5 m-0 font-weight-bold text-dark">User History</span>
+        </div>
+        <div class="pr-4">
+          <button mat-icon-button (click)="closeDrawer.emit()">
+            <fa-icon [icon]="faTimes" class="h5 m-0 text-dark"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0 mt-5" style="overflow: auto">
+      <div class="h-100 w-100 d-flex align-content-center justify-content-center mt-5" *ngIf="loading$ | async">
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+    
+      <div *ngIf="!(loading$ | async)" class="mt-4">
+        <div *ngFor="let d of data" class="py-1">
+          <div class="w-100 d-flex align-items-start justify-content-between">
+            <div class="text-left">
+              <span class="h6 m-0">{{d.event}}</span>
+            </div>
+            <div class="text-muted pr-2" style="font-size: 12px;">
+              <div>{{moment(d.createdAt).format("MMM DD, YY")}}</div>
+              <div>{{moment(d.createdAt).format("H:mm A")}}</div>
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

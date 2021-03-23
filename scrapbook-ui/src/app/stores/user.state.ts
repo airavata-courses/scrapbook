@@ -10,6 +10,7 @@ import {
   RemoveSearchedUserBySubString,
   SignUp,
   CustomLogin,
+  GetHistory,
 } from '../actions/user.actions';
 import { User } from '../models/user.model';
 
@@ -29,6 +30,8 @@ export class UserStateModel {
   signUpSuccess: boolean;
   signUpError: string;
   signInError: string;
+  history: Array<any>;
+  historyLoading: boolean;
 }
 
 @State<UserStateModel>({
@@ -39,7 +42,9 @@ export class UserStateModel {
     searchedUsers: [],
     signUpSuccess: false,
     signUpError: '',
-    signInError: ''
+    signInError: '',
+    history: [],
+    historyLoading: true
   },
 })
 @Injectable()
@@ -81,6 +86,16 @@ export class UserState {
   @Selector()
   static getSignInError(state: UserStateModel) {
     return state.signInError;
+  }
+
+  @Selector()
+  static getHistory(state: UserStateModel) {
+    return state.history;
+  }
+  
+  @Selector()
+  static getHistoryLoading(state: UserStateModel) {
+    return state.historyLoading;
   }
 
   @Action(GoogleLogin)
@@ -235,5 +250,25 @@ export class UserState {
         return of(JSON.stringify(err))
       })
     )
+  }
+
+  @Action(GetHistory)
+  getHistory({setState, getState, patchState}: StateContext<UserStateModel>) {
+    const state = getState();
+    patchState({historyLoading: true});
+    const userid = localStorage.getItem('scrapbook-userid')
+    return this.userService.fetchHistory(userid).pipe(
+      tap((res: any) => {
+        setState({
+          ...state,
+          historyLoading: false,
+          history: res
+        })
+      }),
+      catchError((err) => {
+        return of(JSON.stringify(err))
+      })
+    )
+
   }
 }

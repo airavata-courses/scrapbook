@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Select, Store } from '@ngxs/store';
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProfileComponent } from './../../components/profile/profile.component';
-import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel, CloseCollaborators } from '../../actions/ui.actions';
+import { CloseProfile, CloseUpload, CloseFilters, CloseUploadingPanel, CloseCollaborators, CloseHistory } from '../../actions/ui.actions';
 import { InfoComponent } from '../../components/info/info.component';
 import { CloseAlbumInfo, FetchAllAlbums, FetchAllAlbumsOfUser } from './../../actions/album.actions';
 import { AlbumState } from './../../stores/album.state';
@@ -19,15 +19,19 @@ import { UserState } from 'src/app/stores/user.state';
 import { UploadsPendingPanelComponent } from 'src/app/components/uploads-pending-panel/uploads-pending-panel.component';
 import { CollabComponent } from 'src/app/components/collab/collab.component';
 import { Filters } from 'src/app/models/search.model';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.scss'],
 })
-export class RootComponent {
+export class RootComponent implements AfterViewInit {
   title = 'scrapbook';
   user: any;
+
+  @ViewChild('rightdrawer', { static: false }) rightDrawer: MatDrawer;
+
 
   @Select(UserState.getUserData) userData$: Observable<any>;
 
@@ -37,6 +41,7 @@ export class RootComponent {
   @Select(UIState.getUploadingPanelState) uploadPanel$: Observable<boolean>;
   @Select(UIState.getSettingsState) settings$: Observable<boolean>;
   @Select(UIState.getCollabModalState) collab$: Observable<boolean>;
+  @Select(UIState.getHistory) history$: Observable<boolean>;
 
   @Select(AlbumState.getInfoModalState) info$: Observable<boolean>;
   @Select(AlbumState.getAlbumnInfoModalData) albumnInfoModalData$: Observable<Album>;
@@ -93,10 +98,21 @@ export class RootComponent {
       } else {
         this.closeCollabModal();
       }
-    })
+    });
+    
+    
+    
   }
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.rightDrawer.openedChange.subscribe(val => {
+      if (!val) {
+        this.store.dispatch(new CloseHistory());
+      }
+    })
+  }
   
   openCollabModal() {
     const config = new MatDialogConfig();

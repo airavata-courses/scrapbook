@@ -127,3 +127,13 @@ export class CloseLogin {
   static readonly type = '[CLOSE] Login';
   constructor() {}
 }
+
+export class OpenHistory {
+  static readonly type = '[OPEN] History';
+  constructor() {}
+}
+
+export class CloseHistory {
+  static readonly type = '[CLOSE] History';
+  constructor() {}
+}

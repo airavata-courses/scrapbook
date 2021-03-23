@@ -1,8 +1,9 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators, ChangeTab, OpenLogin, CloseLogin } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators, ChangeTab, OpenLogin, CloseLogin, OpenHistory, CloseHistory } from '../actions/ui.actions';
 import { RemoveImage } from '../actions/album.actions';
 import { PendingUploadsState } from '../models/image.model';
+import { GetHistory } from '../actions/user.actions';
 
 export class UIStateModel {
   profileOpen: boolean;
@@ -20,6 +21,7 @@ export class UIStateModel {
   collabOpen: boolean;
   tab: string;
   loginOpen: boolean;
+  historyOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -39,7 +41,8 @@ export class UIStateModel {
     albumSettingsOpen: false,
     collabOpen: false,
     tab: 'Home',
-    loginOpen: false
+    loginOpen: false,
+    historyOpen: false
   }
 })
 @Injectable()
@@ -99,6 +102,11 @@ export class UIState {
   @Selector()
   static getLoginState(state: UIStateModel) {
     return state.loginOpen;
+  }
+
+  @Selector()
+  static getHistory(state: UIStateModel) {
+    return state.historyOpen;
   }
 
   @Action(OpenProfile)
@@ -273,6 +281,25 @@ export class UIState {
     setState({
       ...state,
       loginOpen: false
+    })
+  }
+
+  @Action(OpenHistory)
+  openHistory({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    const state = getState();
+    dispatch(new GetHistory());
+    setState({
+      ...state,
+      historyOpen: true
+    })
+  }
+
+  @Action(CloseHistory)
+  closeHistory({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      historyOpen: false
     })
   }
 }

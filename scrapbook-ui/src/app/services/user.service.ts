@@ -24,4 +24,8 @@ export class UserService {
   onCustomLogin(email: string, password: string) {
     return this.http.post(`${GATEWAY_URL}/customlogin`, {email: email, password: password})
   }
+
+  fetchHistory(userid: string) {
+    return this.http.get(`${GATEWAY_URL}/history?userid=${userid}`);
+  }
 }

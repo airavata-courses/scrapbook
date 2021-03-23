@@ -38,3 +38,8 @@ export class CustomLogin {
   static readonly type = '[Custom] Login';
   constructor(public email: string, public password: string) {}
 }
+
+export class GetHistory {
+  static readonly type = '[GET] History';
+  constructor() {}
+}
