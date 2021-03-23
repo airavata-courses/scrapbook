@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-service
+spec:
+  selector:
+    matchLabels:
+      app: image-service
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: image-service
+    spec:
+      containers:
+        - name: image-service
+          image: hrishikeshpaul/scrapbook-image-service
+          ports:
+            - containerPort: 8080
