@@ -21,9 +21,9 @@
         <div *ngFor="let d of data" class="py-1">
           <div class="w-100 d-flex align-items-start justify-content-between">
             <div class="text-left">
-              <span class="h6 m-0">{{d.event}}</span>
+              <span class="h6 m-0" style="font-size: 14px;">{{d.event}}</span>
             </div>
-            <div class="text-muted pr-2" style="font-size: 10px;">
+            <div class="text-muted pr-1" style="font-size: 10px;">
               <div>{{moment(d.createdAt).format("MMM DD, YY")}}</div>
               <div>{{moment(d.createdAt).format("H:mm A")}}</div>
             </div>
