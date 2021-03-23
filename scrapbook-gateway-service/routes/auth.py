@@ -65,7 +65,7 @@ def login():
 
 
 @authenticate_user_api.route('/logout', methods=["DELETE"])
-@auth_service.check_user_session
+@auth_service.check_user_session('Logout')
 def logout():
     """
     Removes user data from the session
