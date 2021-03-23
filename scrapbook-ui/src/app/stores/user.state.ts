@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject, NgZone } from '@angular/core';
-import { OpenProfile, CloseProfile, SetPageError, CloseLoading, OpenLoading } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, SetPageError, CloseLoading, OpenLoading, CloseLogin } from '../actions/ui.actions';
 import {
   FetchUserData,
   GoogleLogin,
@@ -89,7 +89,7 @@ export class UserState {
   }
 
   @Action(PutUserInSession)
-  putUserIntoSession({ setState, getState }: StateContext<UserStateModel>, { user }: PutUserInSession) {
+  putUserIntoSession({ setState, getState, dispatch }: StateContext<UserStateModel>, { user }: PutUserInSession) {
     const loggedInUser: User = {
       name: user.name,
       email: user.email,
@@ -101,7 +101,7 @@ export class UserState {
     localStorage.setItem('scrapbook-name', loggedInUser.name);
     localStorage.setItem('scrapbook-email', loggedInUser.email);
     localStorage.setItem('scrapbook-photo', loggedInUser.photo);
-
+    dispatch(new CloseLogin())
     setState({
       ...getState(),
       userData: loggedInUser,
@@ -142,7 +142,6 @@ export class UserState {
     // make call
     return this.userService.fetchUserData(email).pipe(
       tap((res: any) => {
-        console.log(res);
       }),
       catchError((e) => {
         if (e.status === 401) {

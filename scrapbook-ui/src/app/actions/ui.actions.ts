@@ -117,3 +117,13 @@ export class ChangeTab {
   static readonly type = '[CHANGE] Tab';
   constructor(public tab: string) {}
 }
+
+export class OpenLogin {
+  static readonly type = '[OPEN] Login';
+  constructor() {}
+}
+
+export class CloseLogin {
+  static readonly type = '[CLOSE] Login';
+  constructor() {}
+}

@@ -36,7 +36,6 @@ export class SharedComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log('THIS IS SHARED')
   }
 
   ngOnInit(): void {

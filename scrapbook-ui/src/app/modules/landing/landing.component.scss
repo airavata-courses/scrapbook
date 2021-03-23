@@ -10,3 +10,13 @@
 .content {
   padding-top: 100px;
 }
+
+.start {
+  transition: all 0.2s;
+
+  &:hover {
+    color: #737ceb;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+}

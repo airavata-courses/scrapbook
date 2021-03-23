@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, Select } from '@ngxs/store';
 import { Injectable, Inject } from '@angular/core';
-import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators, ChangeTab } from '../actions/ui.actions';
+import { OpenProfile, CloseProfile, OpenUpload, CloseUpload, OpenFilters, CloseFilters, OpenLoading, CloseLoading, SetPageError, ClearPageError, OpenImageModal, CloseImageModal, OpenUploadingPanel, CloseUploadingPanel, OpenSettings, CloseSettings, OpenCollaborators, CloseCollaborators, ChangeTab, OpenLogin, CloseLogin } from '../actions/ui.actions';
 import { RemoveImage } from '../actions/album.actions';
 import { PendingUploadsState } from '../models/image.model';
 
@@ -19,6 +19,7 @@ export class UIStateModel {
   albumSettingsOpen: boolean;
   collabOpen: boolean;
   tab: string;
+  loginOpen: boolean;
 }
 
 @State<UIStateModel>({
@@ -37,7 +38,8 @@ export class UIStateModel {
     uploading: false,
     albumSettingsOpen: false,
     collabOpen: false,
-    tab: 'Home'
+    tab: 'Home',
+    loginOpen: false
   }
 })
 @Injectable()
@@ -92,6 +94,11 @@ export class UIState {
   @Selector() 
   static getTab(state: UIStateModel) {
     return state.tab;
+  }
+
+  @Selector()
+  static getLoginState(state: UIStateModel) {
+    return state.loginOpen;
   }
 
   @Action(OpenProfile)
@@ -248,6 +255,24 @@ export class UIState {
     setState({
       ...state,
       tab: tab
+    })
+  }
+
+  @Action(OpenLogin)
+  openLogin({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loginOpen: true
+    })
+  }
+
+  @Action(CloseLogin)
+  closeLogin({getState, setState, dispatch}: StateContext<UIStateModel>) {
+    const state = getState();
+    setState({
+      ...state,
+      loginOpen: false
     })
   }
 }
