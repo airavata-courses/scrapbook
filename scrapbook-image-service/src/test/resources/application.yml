@@ -7,6 +7,7 @@ spring:
       max-request-size: 3GB
   data:
     mongodb:
+      uri: mongodb://localhost:27017/image-service
       host: localhost
       port: 27017
       database: image-service
