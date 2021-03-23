@@ -29,7 +29,7 @@ def getUserBySubstring():
 def getUserHistory():
     try:
         user = request.args.get('userid')
-        print('history', userid)
+        print('history', user)
         response = requests.get(f'{SESSION_SERVICE}/all/{user}')
         return response.content, response.status_code
     except requests.exceptions.HTTPError as err:
