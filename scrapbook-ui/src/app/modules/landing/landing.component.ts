@@ -68,7 +68,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
     config.disableClose = false;
     config.autoFocus = false;
     config.id = 'LoginModal';
-    config.width = '425px';
+    config.width = '400px';
     config.autoFocus = false;
 
     const loginDialog = this.dialog.open(LoginComponent, config);
