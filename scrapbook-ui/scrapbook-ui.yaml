@@ -32,6 +32,7 @@ metadata:
         service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
 spec:
   type: LoadBalancer
+  loadBalancerIP: 149.165.168.154
   ports:
   - port: 80
     targetPort: 80
