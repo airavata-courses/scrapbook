@@ -1,5 +1,4 @@
 #!/bin/bash
-kubectl apply -f scrapbook-ui/scrapbook-ui.yaml
 kubectl apply -f scrapbook-kafka/scrapbook-zookeeper.yaml
 kubectl apply -f scrapbook-kafka/scrapbook-broker.yaml
 kubectl apply -f scrapbook-auth-service/scrapbook-auth-service.yaml

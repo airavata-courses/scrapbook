@@ -42,8 +42,10 @@ metadata:
     app: sb-metadata
   name: sb-metadata
 spec: 
+  type: LoadBalancer
   selector: 
     app: sb-metadata
   ports:
   - port: 12000
     targetPort: 12000
+    nodePort: 30005

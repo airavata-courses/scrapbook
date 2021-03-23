@@ -28,6 +28,8 @@ metadata:
   labels:
     app: sb-ui
   name: sb-ui
+  annotations:
+        service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
 spec:
   type: LoadBalancer
   ports:
