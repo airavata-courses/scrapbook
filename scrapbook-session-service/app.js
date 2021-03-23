@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var redis = require('./config/redis')
+var mongo = require('./config/mongo');
 
 // const connectMongoDB = require('./config/database.js')
 // connectMongoDB();
 
 redis.init();
+mongo();
 
 
 var indexRouter = require('./routes/index');
