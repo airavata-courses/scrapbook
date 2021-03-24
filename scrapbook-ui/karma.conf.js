@@ -1,8 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 const os = require('os');
-const process = require('process');
-process.env.CHROME_BIN = require('puppeteer').executablePath();
+const chromeHeadlessSupported = os.platform() !== 'win32' || Number((os.release().match(/^(\d+)/) || ['0', '0'])[1]) >= 10;
 
 module.exports = function (config) {
   config.set({
@@ -40,19 +39,16 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
-    restartOnFileChange: true,
+    browsers: [
+      chromeHeadlessSupported ? 'ChromeHeadless' : 'Chrome'
+    ],
     customLaunchers: {
       ChromeHeadless: {
-        base: 'Chrome',
-        flags: [
-          '--headless',
-          '--disable-gpu',
-          '--no-sandbox',
-          '--remote-debugging-port=9222',
-        ]
+          base: 'Chrome',
+          flags: ['--no-sandbox', '--headless', '--disable-gpu', '--remote-debugging-port=9222']
       }
     },
+    singleRun: false,
+    restartOnFileChange: true,
   });
 };
