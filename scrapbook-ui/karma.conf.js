@@ -39,13 +39,11 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: [
-      chromeHeadlessSupported ? 'ChromeHeadless' : 'Chrome'
-    ],
+    browsers: ["ChromeHeadlessNoSandbox"],
     customLaunchers: {
-      ChromeHeadless: {
-          base: 'Chrome',
-          flags: ['--no-sandbox', '--headless', '--disable-gpu', '--remote-debugging-port=9222']
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"]
       }
     },
     singleRun: false,
