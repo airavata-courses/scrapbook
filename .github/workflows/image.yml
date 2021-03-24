@@ -16,9 +16,9 @@ jobs:
           ref: 'main-image-service'
         
       - name: Set up java jdk 
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v1.4.3
         with:
-          java-version: '15.0.2'
+          java-version: '9'
           java-package: jdk
       
       - name: Build with Maven
