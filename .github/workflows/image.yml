@@ -19,6 +19,7 @@ jobs:
         with:
           java-version: '9.0.4'
           java-package: jdk
+          architecture: x64
           
       - name: Install dependencies
         working-directory: ./scrapbook-image-service
