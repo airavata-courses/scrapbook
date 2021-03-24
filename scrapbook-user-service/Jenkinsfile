@@ -48,7 +48,7 @@ node {
     stage('Deploy') {
         sh """#!/bin/bash
         eval "\$(ssh-agent -s)"
-        ssh-add ~/.ssh/id_rsa
+        ssh-add ~/id_rsa
         ssh ubuntu@149.165.169.58
         kubectl get nodes'
         """
