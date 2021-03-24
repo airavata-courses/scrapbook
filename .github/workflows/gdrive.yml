@@ -21,7 +21,7 @@ jobs:
           
       - name: Install dependencies
         working-directory: ./scrapbook-googledrive-service
-        run: mvn clean install
+        run: mvn --batch-mode --update-snapshots verify
         
       - name: Test Service
         working-directory: ./scrapbook-googledrive-service
