@@ -15,11 +15,15 @@ jobs:
         with:
           ref: 'main-image-service'
         
-      - uses: actions/setup-java@v1.4.3
+      - name: Set up java jdk 
+        uses: actions/setup-java@v1
         with:
-          java-version: '15.0.1'
+          java-version: '15.0.2'
           java-package: jdk
-          architecture: x64
+      
+      - name: Build with Maven
+        working-directory: ./scrapbook-image-service
+        run: mvn -B package --file pom.xml
           
       - name: Install dependencies
         working-directory: ./scrapbook-image-service
