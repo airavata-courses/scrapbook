@@ -16,6 +16,9 @@ node {
     }
 
     stage('Build repository') {
+        tools {
+            jdk "jdk-15.0.2"
+        }
         /* Installing application dependencies */
 		sh 'mvn clean install'
 	}
