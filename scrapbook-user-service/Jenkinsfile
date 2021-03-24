@@ -45,9 +45,12 @@ node {
         sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
     }
 
-     withKubeConfig([credentialsId: 'k8_config']) {  
-      sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'  
-      sh 'chmod u+x ./kubectl'  
-      sh './kubectl apply -f scrapbook-user-service.yaml'  
-     }  
+    stage('Deploy') {
+        sh """#!/bin/bash
+        eval "\$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_rsa
+        ssh ubuntu@149.165.169.58
+        kubectl get nodes'
+        """
+    } 
 }
