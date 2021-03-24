@@ -42,15 +42,9 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ["ChromeHeadlessNoSandbox"],
     customLaunchers: {
-      'ChromeHeadlessCustom': {
-          base: 'ChromiumHeadless',
-          flags: [
-              '--no-sandbox',
-              '--headless',
-              '--disable-gpu',
-              '--disable-translate',
-              '--disable-extensions'
-          ]
+      'ChromeHeadlessNoSandbox': {
+          base: 'ChromeHeadless',
+          flags: ['--no-sandbox']
       }
     },
     singleRun: false,
