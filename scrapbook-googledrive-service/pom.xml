@@ -13,9 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>scrapbook-googledrive-service</name>
 	<description>Microservice to interact with google drive</description>
-	<properties>
-		<java.version>15</java.version>
-	</properties>
+<!--	<properties>-->
+<!--		<java.version>15</java.version>-->
+<!--	</properties>-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
