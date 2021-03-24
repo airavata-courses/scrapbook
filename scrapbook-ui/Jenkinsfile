@@ -41,6 +41,6 @@ node {
         /* Removing locally built images to clear up space */
         sh "docker rmi ${registry}:latest"
         sh "docker rmi registry.hub.docker.com/${registry}:latest"
-        sh "docker rmi $(docker images -f "dangling=true" -q)"
+        sh "docker rmi $(docker images -f \"dangling=true\" -q)"
     }
 }
