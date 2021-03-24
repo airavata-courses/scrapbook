@@ -15,7 +15,7 @@ jobs:
         with:
           ref: 'main-image-service'
         
-      - name: Check Out Repo 
+      - name: Set up java jdk 
         uses: actions/setup-java@v1.4.3
         with:
           java-version: '15.0.1'
