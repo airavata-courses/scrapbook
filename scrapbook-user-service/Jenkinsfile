@@ -36,4 +36,10 @@ node {
             app.push("latest")
         }
 	}
+
+    stage('Deleting local image') {
+        /* Removing locally built images to clear up space */
+        sh "docker rmi ${registry}:latest"
+        sh "docker rmi registry.hub.docker.com${registry}:latest"
+    }
 }
