@@ -20,6 +20,11 @@ node {
 		sh 'npm install'
 	}
 
+	stage('Test repository') {
+        /* Testing the application */
+		sh 'npm test'
+	}
+
     stage('Building image') {
         /* Building the docker image */
         app = docker.build(registry)
