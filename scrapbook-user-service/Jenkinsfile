@@ -5,6 +5,7 @@ node {
     def file = 'scrapbook-user-service'
     def masterIP = '149.165.169.58'
     def deploymentName = 'sb-user'
+    def user = 'ubuntu'
 
     stage('Clone repository') {
         /* Checking out to the repository */
@@ -51,9 +52,9 @@ node {
     stage('Deploy on Kubernetes'){
         /* SSH-ing to Kubernetes master and applying config */
         sshagent(["kube-ssh"]) {
-            sh "scp ${file}.yaml ubuntu@${masterIP}:/home/ubuntu"
-            sh "ssh ubuntu@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
-            sh "ssh ubuntu@${masterIP} kubectl apply -f ${file}.yaml"
+            sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
+            sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
+            sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
         }
 
     }
