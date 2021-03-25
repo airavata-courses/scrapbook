@@ -52,7 +52,7 @@ node {
         /* SSH-ing to Kubernetes master and applying config */
         sshagent(["kube-ssh"]) {
             sh "scp -f ${file}.yaml ubuntu@${masterIP}:/home/ubuntu"
-            sh "ssh ubuntu@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
+            sh "ssh ubuntu@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}.yaml"
             sh "ssh ubuntu@${masterIP} kubectl apply -f ${file}.yaml"
         }
 
