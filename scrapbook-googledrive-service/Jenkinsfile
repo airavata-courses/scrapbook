@@ -17,7 +17,7 @@ node {
 
     stage('Build repository') {
         /* Installing application dependencies */
-		sh 'mvn clean install'
+		sh 'mvn -X clean install'
 	}
 
 	stage('Test repository') {
