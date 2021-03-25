@@ -51,9 +51,8 @@ node {
         // sh "./deploy.sh"
         
         sshagent(['kube-ssh']) {
-            sh 'scp deploy.sh ubuntu@149.165.169.58:/home/ubuntu'
-            sh 'ssh ubuntu@149.165.169.58 chmod +x deploy.sh'
-            sh 'ssh ubuntu@149.165.169.58 ./deploy.sh'
+            sh 'scp scrapbookuser-service.yaml ubuntu@149.165.169.58:/home/ubuntu'
+            sh 'ssh ubuntu@149.165.169.58 kubectl -f apply scrapbookuser-service.yaml'
         }
 
     }
