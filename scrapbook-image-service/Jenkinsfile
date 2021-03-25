@@ -16,7 +16,7 @@ node {
         /* Copying the subdir to the parent */
         sh "cp -a ./${file}/. ."
         /* Removing sub directory */
-        sh "rm -rf ./${file}""
+        sh "rm -rf ./${file}"
     }
 
     stage('Build repository') {
