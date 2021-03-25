@@ -14,9 +14,9 @@ node {
 
     stage('Prepare repository') {
         /* Copying the subdir to the parent */
-        sh "cp -a ./scrapbook-image-service/. ."
+        sh "cp -a ./${file}/. ."
         /* Removing sub directory */
-        sh "rm -rf ./scrapbook-image-service"
+        sh "rm -rf ./${file}""
     }
 
     stage('Build repository') {
