@@ -5,4 +5,11 @@ spring:
     multipart:
       max-file-size: 3GB
       max-request-size: 3GB
+  logging:
+    level:
+      org.springframework: DEBUG
+
+logging:
+  level:
+    root: DEBUG
 
