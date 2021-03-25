@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.iu.scrapbook</groupId>
 	<artifactId>image-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>scrapbook-image-service</name>
 	<description>Image service for Scrapbook</description>
 	<properties>
@@ -107,7 +107,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>image-service</finalName>
+<!--		<finalName>image-service</finalName>-->
 	</build>
 
 
