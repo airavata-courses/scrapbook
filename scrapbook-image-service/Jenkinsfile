@@ -19,7 +19,7 @@ node {
         /* Installing application dependencies */
 
          steps {
-            withMaven(maven : 'maven_3_5_0') {
+            withMaven(maven : 'Maven3_6_3') {
                 sh 'mvn clean compile'
             }
         }
