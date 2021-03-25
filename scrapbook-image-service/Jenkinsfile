@@ -1,49 +1,47 @@
 pipeline {
 
-       def app
-       def registry = 'hrishikeshpaul/scrapbook-image-service'
-       def registryCredential = 'docker-hub-credentials'
+   def app
+   def registry = 'hrishikeshpaul/scrapbook-image-service'
+   def registryCredential = 'docker-hub-credentials'
 
-        agent {
-            docker {
-                image 'maven:3-alpine'
-                args '-v /root/.m2:/root/.m2'
-            }
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
         }
+    }
 
-        stages {
-                stage('Clone repository') {
-                        /* Checking out to the repository */
-                        checkout scm
-                }
+    stage('Clone repository') {
+            /* Checking out to the repository */
+            checkout scm
+    }
 
-                 stage('Prepare repository') {
-                        /* Copying the subdir to the parent */
-                        sh "cp -a ./scrapbook-image-service/. ."
-                        /* Removing sub directory */
-                        sh "rm -rf ./scrapbook-image-service"
-                }
+     stage('Prepare repository') {
+            /* Copying the subdir to the parent */
+            sh "cp -a ./scrapbook-image-service/. ."
+            /* Removing sub directory */
+            sh "rm -rf ./scrapbook-image-service"
+    }
 
-                stage('Build repository') {
-                    /* Installing application dependencies */
-                    sh 'mvn clean install'
-                }
+    stage('Build repository') {
+        /* Installing application dependencies */
+        sh 'mvn clean install'
+    }
 
 
-                stage('Test repository') {
-                    /* Testing the application */
-                    sh 'mvn test'
-                }
+    stage('Test repository') {
+        /* Testing the application */
+        sh 'mvn test'
+    }
 
-                stage('Building image') {
-                    /* Building the docker image */
-                    app = docker.build(registry)
-                }
+    stage('Building image') {
+        /* Building the docker image */
+        app = docker.build(registry)
+    }
 
-                stage('Pushing image') {
-                    /* Pushing image to docker hub */
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
-                        app.push("latest")
-                }
-        }
+    stage('Pushing image') {
+        /* Pushing image to docker hub */
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+            app.push("latest")
+    }
 }
