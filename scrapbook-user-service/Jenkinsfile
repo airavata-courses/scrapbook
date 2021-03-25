@@ -47,6 +47,7 @@ node {
     }
 
     stage('Deploy on Kubernetes'){
+        sh "chmod +x deploy.sh"
         sh "./deploy.sh"
     }
 }
