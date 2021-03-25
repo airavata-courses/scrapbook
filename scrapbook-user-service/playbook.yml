@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks:
+  - name: Deploy the application
+    k8s:
+      state: present
+      validate_certs: no
+      namespace: default
+      definition: "{{ lookup('template', 'scrapbook-user-service.yml') | from_yaml }}"
