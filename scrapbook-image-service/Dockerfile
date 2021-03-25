@@ -1,4 +1,4 @@
-FROM openjdk:15
+FROM openjdk:15-oracle
 FROM maven AS build
 MAINTAINER scrapbook.com
 EXPOSE 8080
