@@ -94,17 +94,17 @@
 					<source>1.8</source>
                     <target>1.8</target>
 					<annotationProcessorPaths>
-					<path>
-						<groupId>org.projectlombok</groupId>
-						<artifactId>lombok</artifactId>
-						<version>${lombok.version}</version>
-					</path>
-				</annotationProcessorPaths> 
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-sourcepath</arg>
+						<arg>${project.basedir}/src/main/java${path.separator}${project.basedir}/target/generated-sources/annotations${path.separator}/</arg>
+					</compilerArgs>
                 </configuration>
-				<compilerArgs>
-					<arg>-sourcepath</arg>
-					<arg>${project.basedir}/src/main/java${path.separator}${project.basedir}/target/generated-sources/annotations${path.separator}/</arg>
-				</compilerArgs>
             </plugin>
         </plugins>
 		<finalName>googledrive-service</finalName>
