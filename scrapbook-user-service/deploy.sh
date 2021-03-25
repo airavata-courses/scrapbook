@@ -1,2 +1,1 @@
-ssh ubuntu@149.165.169.58
-kubectl get nodes
+echo try1 > try.txt
