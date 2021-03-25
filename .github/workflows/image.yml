@@ -21,9 +21,9 @@ jobs:
           java-version: '15'
           java-package: jdk
       
-      - name: Build with Maven
-        working-directory: ./scrapbook-image-service
-        run: mvn -B package --file pom.xml
+#       - name: Build with Maven
+#         working-directory: ./scrapbook-image-service
+#         run: mvn -B package --file pom.xml
           
       - name: Install dependencies
         working-directory: ./scrapbook-image-service
