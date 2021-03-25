@@ -2,6 +2,19 @@ pipeline {
     agent any
 
     stages {
+
+       stage('Clone repository') {
+            /* Checking out to the repository */
+            checkout scm
+        }
+
+        stage('Prepare repository') {
+            /* Copying the subdir to the parent */
+            sh "cp -a ./scrapbook-image-service/. ."
+            /* Removing sub directory */
+            sh "rm -rf ./scrapbook-image-service"
+        }
+
         stage ('Compile Stage') {
 
             steps {
@@ -19,8 +32,6 @@ pipeline {
                 }
             }
         }
-
-
         stage ('Deployment Stage') {
             steps {
                 withMaven(maven : 'Maven 3.6.3') {
