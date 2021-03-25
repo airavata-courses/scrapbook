@@ -49,7 +49,7 @@ node {
     stage('Deploy on Kubernetes'){
         // sh "chmod +x deploy.sh"
         // sh "./deploy.sh"
-        sh "ech hello > try.txt"
+        sh "echo hello > try.txt"
         sshagent(['kube-ssh']) {
             sh 'scp try.txt ubuntu@149.165.169.58:/home/ubuntu'
         }
