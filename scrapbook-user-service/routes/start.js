@@ -1,3 +1,3 @@
 module.exports = function serviceStart() {
-  return 'User service connected!'
+  return 'User service started!'
 }

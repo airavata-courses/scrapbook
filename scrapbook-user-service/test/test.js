@@ -4,6 +4,6 @@ var start = require('../routes/start')
 
 it('should connect to user service', function(done) {
   var didStart = start()
-  expect(didStart).to.equal('User service connected!');
+  expect(didStart).to.equal('User service started!');
   done();
 });
