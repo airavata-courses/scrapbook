@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: auth-service-deployment
-  name: auth-service-deployment
+    app: sb-auth
+  name: sb-auth
 spec:
   replicas: 1
   selector:
@@ -34,13 +34,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-auth-service
-  name: sb-auth-service
+    app: sb-auth
+  name: sb-auth
 spec:
-  type: LoadBalancer
   selector: 
     app: sb-auth
   ports:
   - port: 5000
     targetPort: 5000
-    nodePort: 30002
