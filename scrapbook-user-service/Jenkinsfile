@@ -4,7 +4,7 @@ node {
     def registryCredential = 'docker-hub-credentials'
     def file = 'scrapbook-user-service'
     def masterIP = '149.165.169.58'
-    def deploymentName = "sb-user"
+    def deploymentName = 'sb-user'
 
     stage('Clone repository') {
         /* Checking out to the repository */
@@ -51,9 +51,9 @@ node {
     stage('Deploy on Kubernetes'){
         /* SSH-ing to Kubernetes master and applying config */
         sshagent(["kube-ssh"]) {
-            sh "scp -f ${file}.yaml ubuntu@${masterIP}:/home/ubuntu"
+            sh "scp -f 149.165.169.58.yaml ubuntu@149.165.169.58:/home/ubuntu"
             // sh "ssh ubuntu@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
-            sh "ssh ubuntu@${masterIP} kubectl apply -f ${file}.yaml"
+            sh "ssh ubuntu@149.165.169.58 kubectl apply -f scrapbook-user-service.yaml"
         }
 
     }
