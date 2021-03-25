@@ -2,6 +2,10 @@ node {
     def app
     def registry = 'hrishikeshpaul/scrapbook-googledrive-service'
     def registryCredential = 'docker-hub-credentials'
+    def file = 'scrapbook-googledrive-service'
+    def masterIP = '149.165.169.58'
+    def deploymentName = 'sb-gdrive'
+    def user = 'ubuntu'
 
     stage('Clone repository') {
         /* Checking out to the repository */
@@ -10,9 +14,9 @@ node {
 
     stage('Prepare repository') {
         /* Copying the subdir to the parent */
-        sh "cp -a ./scrapbook-googledrive-service/. ."
+        sh "cp -a ./${file}/. ."
         /* Removing sub directory */
-        sh "rm -rf ./scrapbook-googledrive-service"
+        sh "rm -rf ./${file}"
     }
 
     stage('Build repository') {
@@ -36,4 +40,20 @@ node {
             app.push("latest")
         }
 	}
+    stage('Deleting local image') {
+        /* Removing locally built images to clear up space */
+        sh "docker rmi ${registry}:latest"
+        sh "docker rmi registry.hub.docker.com/${registry}:latest"
+        sh 'docker ps -q -f status=exited | xargs --no-run-if-empty docker rm'
+        sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
+    }
+
+    stage('Deploy on Kubernetes'){
+      /* SSH-ing to Kubernetes master and applying config */
+      sshagent(["kube-ssh"]) {
+      sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
+      sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
+      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
+    }
+  }
 }
