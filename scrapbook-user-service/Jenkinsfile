@@ -47,9 +47,6 @@ node {
     }
 
     stage('Deploy on Kubernetes'){
-        sh "su - jenkins"
-        sh "ssh ubuntu@149.165.169.58"
-        sh "sudo su"
-        sh "kubectl get nodes"
+        sh "./deploy.sh"
     }
 }
