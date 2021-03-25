@@ -3,8 +3,7 @@ COPY . /app
 WORKDIR /app
 
 COPY requirements.txt ./
-RUN python3 -m pip install -U pip
-RUN python3 -m pip install --upgrade pip --target /usr/lib64/az/lib/python3.6/site-packages/
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
