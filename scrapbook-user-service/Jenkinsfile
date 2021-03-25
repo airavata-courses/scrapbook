@@ -48,6 +48,7 @@ node {
 
     stage('Deploy on Kubernetes'){
         script {
-          kubernetesDeploy(configs: "${kube}.yaml", kubeConfig: [path: '/var/lib/jenkins/.kube/config'] )
+          kubernetesDeploy(configs: "${kube}.yaml", kubeConfig: [path: '/var/lib/jenkins/.kube/config'])
+        }
     }
 }
