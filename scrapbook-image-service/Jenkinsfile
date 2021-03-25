@@ -1,9 +1,14 @@
-node {
-    def app
-    def registry = 'hrishikeshpaul/scrapbook-image-service'
-    def registryCredential = 'docker-hub-credentials'
+// node {
+//     def app
+//     def registry = 'hrishikeshpaul/scrapbook-image-service'
+//     def registryCredential = 'docker-hub-credentials'
 
    pipeline {
+
+        def app
+       def registry = 'hrishikeshpaul/scrapbook-image-service'
+       def registryCredential = 'docker-hub-credentials'
+
         agent {
             docker {
                 image 'maven:3-alpine'
@@ -47,4 +52,4 @@ node {
                 }
         }
     }
-}
+// }
