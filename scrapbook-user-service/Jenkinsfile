@@ -47,7 +47,11 @@ node {
     }
 
     stage('Deploy on Kubernetes'){
-        sh "chmod +x deploy.sh"
-        sh "./deploy.sh"
+        // sh "chmod +x deploy.sh"
+        // sh "./deploy.sh"
+        sshagent(['kube-ssh']) {
+            sh 'kubectl get nodes'
+        }
+
     }
 }
