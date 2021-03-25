@@ -1,5 +1,5 @@
-FROM openjdk:15-oracle
-FROM maven AS build
+FROM openjdk:15
+FROM maven:3.6.3-openjdk-15 AS build
 MAINTAINER scrapbook.com
 EXPOSE 8080
 COPY src /home/app/src
