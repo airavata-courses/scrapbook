@@ -18,7 +18,7 @@ jobs:
       - name: Set up java jdk 
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: '9'
+          java-version: '15'
           java-package: jdk
       
       - name: Build with Maven
