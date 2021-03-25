@@ -15,9 +15,13 @@ node {
         sh "rm -rf ./scrapbook-image-service"
     }
 
-     tools {
+
+     stage('Add  jdk') {
+        tools {
             jdk "openjdk15"
+         }
      }
+
 
     stage('Build repository') {
         /* Installing application dependencies */
