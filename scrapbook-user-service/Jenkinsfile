@@ -2,6 +2,7 @@ node {
     def app
     def registry = 'hrishikeshpaul/scrapbook-user-service'
     def registryCredential = 'docker-hub-credentials'
+    def kube = 'scrapbook-user-service'
 
     stage('Clone repository') {
         /* Checking out to the repository */
@@ -45,8 +46,8 @@ node {
         sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
     }
 
-    stage('Deploy') {
-        sh "ls"
-        sh "ansible-playbook playbook.yml"
-    } 
+    stage('Deploy on Kubernetes'){
+        script {
+          kubernetesDeploy(configs: "${kube}.yaml", kubeConfig: [path: '/var/lib/jenkins/.kube/config'] )
+    }
 }
