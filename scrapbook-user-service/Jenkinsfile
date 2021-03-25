@@ -50,7 +50,7 @@ node {
         // sh "chmod +x deploy.sh"
         // sh "./deploy.sh"
         sshagent(['kube-ssh']) {
-            sh 'kubectl get nodes'
+            sh 'kubectl'
         }
 
     }
