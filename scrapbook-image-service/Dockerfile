@@ -4,6 +4,8 @@ MAINTAINER scrapbook.com
 EXPOSE 8080
 COPY src /home/app/src
 COPY pom.xml /home/app
+RUN java --version
+RUN mvn --version
 RUN mvn -f /home/app/pom.xml -X clean install
 
 VOLUME /tmp
