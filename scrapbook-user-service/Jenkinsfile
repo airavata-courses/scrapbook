@@ -52,8 +52,8 @@ node {
         
         sshagent(['kube-ssh']) {
             sh 'scp deploy.sh ubuntu@149.165.169.58:/home/ubuntu'
-            sh 'chmod +x deploy.sh'
-            sh './deploy.sh'
+            sh 'ssh ubuntu@149.165.169.58 chmod +x deploy.sh'
+            sh 'ssh ubuntu@149.165.169.58 ./deploy.sh'
         }
 
     }
