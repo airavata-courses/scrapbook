@@ -2,6 +2,10 @@ node {
     def app
     def registry = 'hrishikeshpaul/scrapbook-image-service'
     def registryCredential = 'docker-hub-credentials'
+    def file = 'scrapbook-image-service'
+    def masterIP = '149.165.169.58'
+    def deploymentName = 'sb-image'
+    def user = 'ubuntu'
 
     stage('Clone repository') {
         /* Checking out to the repository */
