@@ -2,7 +2,9 @@ node {
     def app
     def registry = 'hrishikeshpaul/scrapbook-user-service'
     def registryCredential = 'docker-hub-credentials'
-    def kube = 'scrapbook-user-service'
+    def file = 'scrapbook-user-service'
+    def masterIP = '149.165.169.58'
+    def deploymentName = "sb-user"
 
     stage('Clone repository') {
         /* Checking out to the repository */
@@ -11,9 +13,9 @@ node {
 
     stage('Prepare repository') {
         /* Copying the subdir to the parent */
-        sh "cp -a ./scrapbook-user-service/. ."
+        sh "cp -a ./${file}/. ."
         /* Removing sub directory */
-        sh "rm -rf ./scrapbook-user-service"
+        sh "rm -rf ./${file}"
     }
 
     stage('Build repository') {
@@ -47,12 +49,11 @@ node {
     }
 
     stage('Deploy on Kubernetes'){
-        // sh "chmod +x deploy.sh"
-        // sh "./deploy.sh"
-        
-        sshagent(['kube-ssh']) {
-            sh 'scp scrapbook-user-service.yaml ubuntu@149.165.169.58:/home/ubuntu'
-            sh 'ssh ubuntu@149.165.169.58 kubectl apply -f scrapbook-user-service.yaml'
+        /* SSH-ing to Kubernetes master and applying config */
+        sshagent(["kube-ssh"]) {
+            sh "scp -f ${file}.yaml ubuntu@${masterIP}:/home/ubuntu"
+            sh "ssh ubuntu@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
+            sh "ssh ubuntu@${masterIP} kubectl apply -f ${file}.yaml"
         }
 
     }
