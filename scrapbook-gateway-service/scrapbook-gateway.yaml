@@ -26,9 +26,18 @@ spec:
           - name: PORT
             value: "8081"
           - name: AUTH_SERVICE
-            value: "http://sb-auth-service:5000"
+            value: "http://sb-auth:5000"
           - name: USER_SERVICE
             value: "http://sb-user:3000"
+          - name: SESSION_SERVICE
+            value: "http://sb-session:3500"
+          - name: MDE_SERVICE
+            value: "http://sb-metadata:12000"
+          - name: G_DRIVE_SERVICE
+            value:  "http://sb-gdrive:9090"
+          - name: IMAGE_SERVICE
+            value: "http://sb-image:8080"
+
       restartPolicy: Always
 ---
 apiVersion: v1
