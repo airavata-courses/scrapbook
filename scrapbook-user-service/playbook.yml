@@ -5,4 +5,4 @@
       state: present
       validate_certs: no
       namespace: default
-      definition: "{{ lookup('template', 'scrapbook-user-service.yml') | from_yaml }}"
+      definition: "{{ lookup('template', 'playbook.yml') | from_yaml }}"
