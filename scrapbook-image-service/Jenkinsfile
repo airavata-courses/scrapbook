@@ -17,13 +17,7 @@ node {
 
     stage('Build repository') {
         /* Installing application dependencies */
-
-         steps {
-            withMaven(maven : 'Maven3_6_3') {
-                sh 'mvn clean compile'
-            }
-        }
-		//sh 'mvn clean install'
+		sh 'mvn clean install'
 	}
 
 	stage('Test repository') {
