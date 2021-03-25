@@ -1,17 +1,17 @@
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: sb-kafka
+  name: kafka-broker0
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sb-kafka
+      app: kafka
   template:
     metadata:
       labels:
-        app: sb-kafka
+        app: kafka
         id: "0"
     spec:
       containers:
@@ -23,9 +23,9 @@ spec:
         - name: KAFKA_ADVERTISED_PORT
           value: "9092"
         - name: KAFKA_ADVERTISED_HOST_NAME
-          value: "kafka-service"
+          value: "sb-kafka"
         - name: KAFKA_ZOOKEEPER_CONNECT
-          value: "http://sb-zookeeper:2181"
+          value: zoo1:2181
         - name: KAFKA_BROKER_ID
           value: "0"
         - name: KAFKA_CREATE_TOPICS
@@ -36,13 +36,13 @@ kind: Service
 metadata:
   name: sb-kafka
   labels:
-    name: sb-kafka
+    name: kafka
 spec:
-  selector:
-    app: sb-kafka
-  type: LoadBalancer
   ports:
-  - protocol: TCP
-    port: 9092
-    targetPort: 9092
-   
+    - port: 9092
+      name: kafka-port
+      protocol: TCP
+  selector:
+    app: kafka
+    id: "0"
+  type: LoadBalancer
