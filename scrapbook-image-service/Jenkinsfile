@@ -1,11 +1,6 @@
-// node {
-//     def app
-//     def registry = 'hrishikeshpaul/scrapbook-image-service'
-//     def registryCredential = 'docker-hub-credentials'
+pipeline {
 
-   pipeline {
-
-        def app
+       def app
        def registry = 'hrishikeshpaul/scrapbook-image-service'
        def registryCredential = 'docker-hub-credentials'
 
@@ -51,5 +46,4 @@
                         app.push("latest")
                 }
         }
-    }
-// }
+}
