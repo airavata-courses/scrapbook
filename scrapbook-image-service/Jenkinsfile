@@ -1,43 +1,45 @@
-pipeline {
-    agent any
+node {
+    def app
+    def registry = 'hrishikeshpaul/scrapbook-image-service'
+    def registryCredential = 'docker-hub-credentials'
 
-    stages {
-
-       stage('Clone repository') {
-            /* Checking out to the repository */
-            checkout scm
-        }
-
-        stage('Prepare repository') {
-            /* Copying the subdir to the parent */
-            sh "cp -a ./scrapbook-image-service/. ."
-            /* Removing sub directory */
-            sh "rm -rf ./scrapbook-image-service"
-        }
-
-        stage ('Compile Stage') {
-
-            steps {
-                withMaven(maven : 'Maven 3.6.3') {
-                    sh 'mvn clean install'
-                }
-            }
-        }
-
-        stage ('Testing Stage') {
-
-            steps {
-                withMaven(maven : 'Maven 3.6.3') {
-                    sh 'mvn test'
-                }
-            }
-        }
-        stage ('Deployment Stage') {
-            steps {
-                withMaven(maven : 'Maven 3.6.3') {
-                    sh 'mvn deploy'
-                }
-            }
-        }
+    stage('Clone repository') {
+        /* Checking out to the repository */
+        checkout scm
     }
+
+    stage('Prepare repository') {
+        /* Copying the subdir to the parent */
+        sh "cp -a ./scrapbook-image-service/. ."
+        /* Removing sub directory */
+        sh "rm -rf ./scrapbook-image-service"
+    }
+
+    stage('Build repository') {
+        /* Installing application dependencies */
+
+         steps {
+            withMaven(maven : 'maven_3_5_0') {
+                sh 'mvn clean compile'
+            }
+        }
+		//sh 'mvn clean install'
+	}
+
+	stage('Test repository') {
+        /* Testing the application */
+		sh 'mvn test'
+	}
+
+    stage('Building image') {
+        /* Building the docker image */
+        app = docker.build(registry)
+	}
+
+    stage('Pushing image') {
+        /* Pushing image to docker hub */
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+            app.push("latest")
+        }
+	}
 }
