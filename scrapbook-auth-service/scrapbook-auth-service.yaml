@@ -37,8 +37,10 @@ metadata:
     app: sb-auth
   name: sb-auth
 spec:
+  type: LoadBalancer
   selector: 
     app: sb-auth
   ports:
   - port: 5000
     targetPort: 5000
+    nodePort: 30011
