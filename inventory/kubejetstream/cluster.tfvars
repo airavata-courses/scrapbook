@@ -1,11 +1,11 @@
 # your Kubernetes cluster name here
-cluster_name = "kubejetstream"
+cluster_name = "scrapbook"
 
 # list of availability zones available in your OpenStack cluster
 #az_list = ["nova"]
 
 # SSH key to use for access to nodes
-public_key_path = "~/.ssh/zonca-api-key.pub"
+public_key_path = "~/.ssh/id_rsa.pub"
 
 # image to use for bastion, masters, standalone etcd instances, and nodes
 image = "JS-API-Featured-Ubuntu20-Latest"
@@ -25,7 +25,7 @@ number_of_etcd = 0
 number_of_k8s_masters = 1
 
 # Uncomment and set a previously created IP (or list) for the master nodes
-# k8s_master_fips = ["149.0.0.0"]
+k8s_master_fips = ["149.165.169.58"]
 
 number_of_k8s_masters_no_etcd = 0
 
@@ -41,11 +41,11 @@ master_allowed_ports = [{"protocol" = "tcp", "port_range_min" = 80, "port_range_
 # for debugging purposes we can create nodes with floating ip
 # in production better use nodes with no floating ip
 
-number_of_k8s_nodes = 1
+number_of_k8s_nodes = 2
 
 number_of_k8s_nodes_no_floating_ip = 0
 
-#flavor_k8s_node = "<UUID>"
+flavor_k8s_node = "3"
 
 # GlusterFS
 # either 0 or more than one
@@ -58,7 +58,7 @@ number_of_k8s_nodes_no_floating_ip = 0
 #flavor_gfs_node = "<UUID>"
 
 # networking
-network_name = "kubespray-network"
+network_name = "scrapbook-network"
 
 # IU
 external_net = "4367cd20-722f-4dc2-97e8-90d98c25f12e"
