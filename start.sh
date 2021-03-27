@@ -1,8 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/airavata-courses/scrapbook.git
-cd scrapbook
-
 echo '\nDeploy Kafka\n'
 git checkout main-kafka
 kubectl apply -f scrapbook-kafka/scrapbook-zookeeper.yaml
