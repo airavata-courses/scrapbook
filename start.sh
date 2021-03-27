@@ -1,37 +1,41 @@
 #!/bin/bash
-if [ "$1" == "ui" ]; then 
-  cd scrapbook-ui && npm install && npm start
 
-elif [ "$1" == "auth" ]; then
-  cd scrapbook-auth-service && python3 -m venv env && source env/bin/activate && pip install -r requirements.txt && python app.py
+git clone https://github.com/airavata-courses/scrapbook.git
+cd scrapbook
 
-elif [ "$1" == "user" ]; then
-  cd scrapbook-user-service && npm install && npm run dev
+echo '\nDeploy Kafka\n'
+git checkout main-kafka
+kubectl apply -f scrapbook-kafka/scrapbook-zookeeper.yaml
+kubectl apply -f scrapbook-kafka/scrapbook-broker.yaml
 
-elif [ "$1" == "sess" ]; then
-  cd scrapbook-session-service && npm install && npm run dev
+echo '\nDeploy Gateway\n'
+git checkout main-gateway
+kubectl apply -f scrapbook-gateway-service/scrapbook-gateway-service.yaml
 
-elif [ "$1" == "gw" ]; then
-  cd scrapbook-gateway-service && python3 -m venv env && source env/bin/activate && pip install -r requirements.txt && python app.py
+echo '\nDeploy Auth Service\n'
+git checkout main-auth-service
+kubectl apply -f scrapbook-auth-service/scrapbook-auth-service.yaml
 
-elif [ "$1" == "gs" ]; then
-  cd scrapbook-googledrive-service && rm -rf target && mvn clean && mvn clean install && cd target && java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
+echo '\nDeploy Session Service\n'
+git checkout main-session-service
+kubectl appply -f scrapbook-session-service/scrapbook-session-service.yaml
 
-elif [ "$1" == "img" ]; then
-  cd scrapbook-image-service && rm -rf target && mvn clean && mvn clean install -DskipTests && cd target && java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
+echo '\nDeploy User Service\n'
+git checkout main-user-service
+kubectl apply -f scrapbook-user-service/scrapbook-user-service.yaml
 
-elif [ "$1" == "help" ]; then
-  echo ""
-  echo "Usage: ./start.sh <arg>"
-  echo ""
-  echo "Arg Values:"
-  echo "ui   : scrapbook-ui"
-  echo "auth : scrapbook-auth-service"
-  echo "user : scrapbook-user-service"
-  echo "sess : scrapbook-session-serice"
-  echo "gw   : scrapbook-gateway-service"
-  echo "img  : scrapbook-image-service"
-  echo "gs   : scrapboook-google-drive-service"
-  echo ""
-  echo ":)"
-fi
+echo '\nDeploy Image Service\n' 
+git checkout main-image-service
+kubectl apply -f scrapbook-image-service/scrapbook-image-service.yaml
+
+echo '\nDeploy Google Drive Service\n'
+git checkout main-gdrive-service
+kubectl apply -f scrapbook-googledrive-service/scrapbook-googledrive-service.yaml
+
+echo '\nDeploy MDE Service\n'
+git checkout main-mde-service
+kubectl apply -f scrapbook-metadata-service/scrapbook-metadata-service.yaml
+
+echo '\nDeploy UI\n'
+git checkout main-UI
+kubectl apply -f scrapbook-ui/scrapbook-ui.yaml
