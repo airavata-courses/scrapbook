@@ -6,6 +6,7 @@ node {
   def masterIP = '149.165.171.246'
   def deploymentName = 'sb-gateway'
   def user = 'ubuntu'
+  def stageFile = 'scrapbook-gateway-service.dev'
 
   stage('Clone repository') {
     /* Checking out to the repository */
@@ -53,9 +54,9 @@ node {
       /* SSH-ing to Kubernetes master and applying config */
       sshagent(["kube-ssh-staging"]) {
       sh "ssh ${user}@${masterIP} ls"
-      sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
+      sh "scp ${stageFile}.yaml ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
-      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
+      sh "ssh ${user}@${masterIP} kubectl apply -f ${stageFile}.yaml"
     }
   }
 }
