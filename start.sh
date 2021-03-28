@@ -15,7 +15,7 @@ kubectl apply -f scrapbook-auth-service/scrapbook-auth-service.yaml
 
 echo '\nDeploy Session Service\n'
 git checkout main-session-service
-kubectl appply -f scrapbook-session-service/scrapbook-session-service.yaml
+kubectl apply -f scrapbook-session-service/scrapbook-session-service.yaml
 
 echo '\nDeploy User Service\n'
 git checkout main-user-service
