@@ -52,6 +52,7 @@ node {
   stage('Deploy on Kubernetes'){
       /* SSH-ing to Kubernetes master and applying config */
       sshagent(["kube-ssh-staging"]) {
+      sh "ssh ${user}@${masterIP} ls"
       sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
       sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
