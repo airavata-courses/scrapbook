@@ -35,7 +35,7 @@ number_of_k8s_masters_no_floating_ip_no_etcd = 0
 
 flavor_k8s_master = "3"
 
-master_allowed_ports = [{"protocol" = "tcp", "port_range_min" = 80, "port_range_max" = 80, "remote_ip_prefix" = "0.0.0.0/0"}, {"protocol" = "tcp", "port_range_min" = 443, "port_range_max" = 443, "remote_ip_prefix" = "0.0.0.0/0"}]
+master_allowed_ports = [{"protocol" = "tcp", "port_range_min" = 80, "port_range_max" = 80, "remote_ip_prefix" = "0.0.0.0/0"}, {"protocol" = "tcp", "port_range_min" = 443, "port_range_max" = 443, "remote_ip_prefix" = "0.0.0.0/0"}, {"protocol" = "tcp", "port_range_min" = 30000, "port_range_max" = 30000, "remote_ip_prefix" = "0.0.0.0/0"}]
 
 # nodes
 # for debugging purposes we can create nodes with floating ip
