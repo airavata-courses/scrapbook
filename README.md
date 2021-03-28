@@ -35,7 +35,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ## 🚀 Application Deployment
 
-To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://github.com/zonca/zonca-blog/blob/master/_posts/2021-01-20-jetstream_kubernetes_kubespray_2.15.0.md). Once you have the VMs set up, follow the steps below to deploy scrapbook on the cloud.
+To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://github.com/zonca/zonca-blog/blob/master/_posts/2021-01-20-jetstream_kubernetes_kubespray_2.15.0.md). Once you have the VMs set up, follow the steps below to deploy scrapbook on the cloud. Make sure your current user (eg. ubuntu) has sudo/root access.
 
 ```
 # SSH into the master node of the Kubernetes cluster
@@ -45,7 +45,9 @@ $ chmod +x start.sh
 $ ./start.sh
 ```
 
-Currently deployed at http://149.165.171.229:30000/
+The production version is currently deployed at http://149.165.171.229:30000/
+
+The staging version is currently deployed at 
 
 ## 🎨 Mockups
 
