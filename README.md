@@ -44,6 +44,7 @@ $ chmod +x start.sh
 $ ./start.sh
 ```
 
+Currently deployed at http://149.165.171.229:30000/
 
 ## 🎨 Mockups
 
