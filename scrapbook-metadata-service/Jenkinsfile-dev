@@ -1,7 +1,7 @@
 node {
   def app
-  def registry = 'hrishikeshpaul/scrapbook-metadata-service'
-  def registryCredential = 'docker-hub-credentials'
+  def registry = 'chiragindi/scrapbook-metadata-service'
+  def registryCredential = 'chiragindi'
 
   stage('Clone repository') {
     /* Checking out to the repository */
