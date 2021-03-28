@@ -5,7 +5,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ### 💻 [Demo](http://149.165.171.229:30000/)
 
-![banner](/assets/napkin_diagram.png)
+![banner](/assets/updated-napkin-diagram.png)
 
 ---
 
