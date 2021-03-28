@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sb-auth
+  name: sb-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sb-auth
+  template:
+    metadata:
+      labels:
+        app: sb-auth
+    spec:
+      containers:
+      - image: chiragindi/scrapbook-staging-auth-service
+        name: sb-auth
+        ports:
+        - containerPort: 5000
+        env:
+          - name: DEBUG
+            value: "False"
+          - name: PORT
+            value: "5000"
+          - name: CLIENT_ID
+            value: "6383607950-8vfdgb52qqgfrkin3sonc424qamc5mkc.apps.googleusercontent.com"
+          - name: CLIENT_SECRET
+            value: 3VBr2hLv2ZJ6-jbNHYcXSM0i
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sb-auth
+  name: sb-auth
+spec:
+  type: LoadBalancer
+  selector: 
+    app: sb-auth
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30011
