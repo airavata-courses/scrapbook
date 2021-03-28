@@ -1,9 +1,9 @@
 node {
     def app
-    def registry = 'hrishikeshpaul/scrapbook-googledrive-service'
-    def registryCredential = 'docker-hub-credentials'
+    def registry = 'chiragindi/scrapbook-googledrive-service'
+    def registryCredential = 'chiragindi'
     def file = 'scrapbook-googledrive-service'
-    def masterIP = '149.165.169.58'
+    def masterIP = '149.165.171.246'
     def deploymentName = 'sb-gdrive'
     def user = 'ubuntu'
 
