@@ -5,7 +5,7 @@ metadata:
     app: sb-ui
   name: sb-ui
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: sb-ui
