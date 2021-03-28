@@ -1,6 +1,6 @@
 node {
   def app
-  def registry = 'chiragindi/scrapbook-gateway-service'
+  def registry = 'chiragindi/scrapbook-staging-gateway-service'
   def registryCredential = 'chiragindi'
   def file = 'scrapbook-gateway-service'
   def masterIP = '149.165.171.246'
