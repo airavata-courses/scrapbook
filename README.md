@@ -7,6 +7,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ![banner](/assets/updated-napkin-diagram.png)
 
+<br>
 
 ## 📦 Technology Stack
 
