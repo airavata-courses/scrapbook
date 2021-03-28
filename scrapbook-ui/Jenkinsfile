@@ -3,7 +3,7 @@ node {
     def registry = 'hrishikeshpaul/scrapbook-ui'
     def registryCredential = 'docker-hub-credentials'
     def file = 'scrapbook-ui'
-    def masterIP = '149.165.169.58'
+    def masterIP = ''
     def deploymentName = 'sb-ui'
     def user = 'ubuntu'
 
