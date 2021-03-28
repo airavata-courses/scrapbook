@@ -19,6 +19,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 - Google Cloud Storage
 - Apache Kafka
 - RESTful Webservices
+- Docker
 - Jenkins
 - Kubernetes
 - Terraform
