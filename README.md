@@ -3,7 +3,7 @@
 
 Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share images by introducing various roles. The users also have access to an intuitive dashboard to view different metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
 
-##### 💻 [Demo](http://149.165.171.229:30000/)
+#### 💻 [Demo](http://149.165.171.229:30000/)
 
 ![banner](/assets/napkin_diagram.png)
 
@@ -69,81 +69,9 @@ $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 ```
 
-### How to run
+### Local Installation
 
-Start a service either by going to their respective folders or using the start script
-
-### Installation
-
-#### scrapbook-ui
-- Port: 4200
-
-```shell
-$ cd scrapbook-ui
-$ npm install
-$ npm start
-```
-
-#### scrapbook-auth-service
-- Port: 5000
-
-```shell
-$ cd scrapbook-auth-service
-$ python3 -m env env # creating a virtual environment
-$ source env/bin/activate
-$ pip install -r requirements.txt
-$ python app.py
-```
-
-#### scrapbook-session-service
-- Port: 3500
-
-```shell
-$ cd scrapbook-session-service
-$ npm install
-$ npm run dev
-```
-
-#### scrapbook-user-service
-- Port: 3000
-
-```shell
-$ cd scrapbook-user-service
-$ npm install
-$ npm run dev
-```
-
-#### scrapbook-gateway-service
-- Port: 8081
-
-```shell
-$ cd scrapbook-gateway-service
-$ python3 -m env env # creating a virtual environment
-$ source env/bin/activate
-$ pip install -r requirements.txt
-$ python app.py
-```
-
-
-#### scrapbook-google-drive-service
-- Port: 9090
-
-```shell
-$ cd scrapbook-google-drive-service
-$ mvn clean install
-$ cd target
-$ java -jar -Dspring.profiles.active=local googledrive-service-0.0.1-SNAPSHOT.jar
-```
-
-#### scrapbook-image-service
-- Port: 8080
-
-```shell
-$ cd scrapbook-image-service
-$ mvn clean install
-$ cd target
-$ java -jar -Dspring.profiles.active=local image-service-0.0.1-SNAPSHOT.jar
-```
+Follow the guide in our wiki [here](https://github.com/airavata-courses/scrapbook/wiki/Local-Installation) to locally install scrapbook (all services).
 
 
 ## Documentation
