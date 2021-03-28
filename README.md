@@ -1,7 +1,6 @@
 ![banner](/assets/banners/banner_primary.png)
 ---
 
-update
 
 Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share images by introducing various roles. The users also have access to an intuitive dashboard to view different metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
 
