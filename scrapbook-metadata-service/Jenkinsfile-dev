@@ -1,0 +1,46 @@
+node {
+  def app
+  def registry = 'hrishikeshpaul/scrapbook-metadata-service'
+  def registryCredential = 'docker-hub-credentials'
+
+  stage('Clone repository') {
+    /* Checking out to the repository */
+    checkout scm
+  }
+
+  stage('Prepare repository') {
+    /* Copying the subdir to the parent */
+    sh "cp -a ./scrapbook-metadata-service/. ."
+    /* Removing sub directory */
+    sh "rm -rf ./scrapbook-metadata-service"
+  }
+
+  stage('Build repository') {
+    /* Installing application dependencies */
+		sh 'pip3 install -r requirements.txt'
+	}
+
+	stage('Test repository') {
+        /* Testing the application */
+		sh 'python3 -m pytest -v'
+	}
+
+    stage('Building image') {
+        /* Building the docker image */
+        app = docker.build(registry)
+	} 
+
+    stage('Pushing image') {
+        /* Pushing image to docker hub */
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+            app.push("latest")
+        }
+	}
+    stage('Deleting local image') {
+        /* Removing locally built images to clear up space */
+        sh "docker rmi ${registry}:latest"
+        sh "docker rmi registry.hub.docker.com/${registry}:latest"
+        sh 'docker ps -q -f status=exited | xargs --no-run-if-empty docker rm'
+        sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
+    }
+}
