@@ -1,7 +1,7 @@
 node {
   def app
   def registry = 'chiragindi/scrapbook-auth-service'
-  def registryCredential = 'docker-hub-credentials'
+  def registryCredential = 'chiragindi'
   def file = 'scrapbook-auth-service'
   def masterIP = '149.165.171.246'
   def deploymentName = 'sb-auth'
