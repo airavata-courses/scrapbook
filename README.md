@@ -62,6 +62,7 @@ Make sure you have these dependencies installed in your machine before installin
 - Redis
 - Angular CLI
 - Maven
+- Docker
 
 ### Repository 
 ```
@@ -71,7 +72,18 @@ $ cd scrapbook
 
 ### Local Installation
 
+#### Manual
+
 Follow the guide in our wiki [here](https://github.com/airavata-courses/scrapbook/wiki/Local-Installation) to locally install scrapbook (all services).
+
+#### Docker
+
+```
+$ git checkout docker
+$ docker-compose up
+```
+
+Navigate to http://localhost:4200/
 
 
 ## Documentation
