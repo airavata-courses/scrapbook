@@ -1,6 +1,6 @@
 node {
     def app
-    def registry = 'chiragindi/scrapbook-session-service'
+    def registry = 'chiragindi/scrapbook-staging-session-service'
     def registryCredential = 'chiragindi'
     def file = 'scrapbook-session-service'
     def masterIP = '149.165.171.246'
@@ -52,9 +52,9 @@ node {
     stage('Deploy on Kubernetes'){
       /* SSH-ing to Kubernetes master and applying config */
       sshagent(["kube-ssh"]) {
-      sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
+      sh "scp ${file}.dev.yaml ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
-      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
+      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.dev.yaml"
     }
   }
 }
