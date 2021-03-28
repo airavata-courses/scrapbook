@@ -1,9 +1,9 @@
 node {
     def app
-    def registry = 'hrishikeshpaul/scrapbook-image-service'
+    def registry = 'chiragindi/scrapbook-image-service'
     def registryCredential = 'docker-hub-credentials'
     def file = 'scrapbook-image-service'
-    def masterIP = '149.165.169.58'
+    def masterIP = '149.165.171.246'
     def deploymentName = 'sb-image'
     def user = 'ubuntu'
 
