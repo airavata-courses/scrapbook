@@ -1,7 +1,7 @@
 node {
   def app
   def file = 'scrapbook-kafka'
-  def masterIP = '149.165.169.58'
+  def masterIP = '149.165.171.246'
   def user = 'ubuntu'
 
   stage('Clone repository') {
