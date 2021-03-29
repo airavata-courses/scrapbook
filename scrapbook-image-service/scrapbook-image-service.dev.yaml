@@ -28,7 +28,7 @@ spec:
           - name: MDE
             value:  "http://sb-metadata:12000/metadata/match"
           - name: MONGO
-            value: "mongodb+srv://admin:scrapbook_admin@cluster0.0usgc.mongodb.net/scrapbook?retryWrites=true&w=majority"
+            value: "mongodb+srv://admin:EA5URTvI5eh0e6cp@cluster0.zn4pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
       restartPolicy: Always
 ---
 apiVersion: v1
