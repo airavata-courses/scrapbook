@@ -28,7 +28,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ## 🏰 System Architecture
 
-![architecture](/assets/updated-architecture.png)
+![architecture](/assets/new-architecture.png)
 
 ## 👨‍💻 System Workflow
 
