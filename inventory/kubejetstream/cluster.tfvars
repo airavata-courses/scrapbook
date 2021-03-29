@@ -1,5 +1,5 @@
 # your Kubernetes cluster name here
-cluster_name = "scrapbook"
+cluster_name = "scrapbook-prod"
 
 # list of availability zones available in your OpenStack cluster
 #az_list = ["nova"]
@@ -58,7 +58,7 @@ flavor_k8s_node = "3"
 #flavor_gfs_node = "<UUID>"
 
 # networking
-network_name = "scrapbook-network"
+network_name = "scrapbook-prod-network"
 
 # IU
 external_net = "4367cd20-722f-4dc2-97e8-90d98c25f12e"

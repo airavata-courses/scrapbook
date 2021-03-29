@@ -213,7 +213,14 @@ variable "k8s_allowed_egress_ips" {
 variable "master_allowed_ports" {
   type = list(any)
 
-  default = []
+  default = [
+    {
+      "protocol"         = "tcp"
+      "port_range_min"   = 30000
+      "port_range_max"   = 30000
+      "remote_ip_prefix" = "0.0.0.0/0"
+    }
+  ]
 }
 
 variable "worker_allowed_ports" {
