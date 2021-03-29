@@ -36,20 +36,29 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ## 🚀 Application Deployment
 
-To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://github.com/zonca/zonca-blog/blob/master/_posts/2021-01-20-jetstream_kubernetes_kubespray_2.15.0.md). Once you have the VMs set up, follow the steps below to deploy scrapbook on the cloud. Make sure your current user (eg. ubuntu) has sudo/root access.
+To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://github.com/zonca/zonca-blog/blob/master/_posts/2021-01-20-jetstream_kubernetes_kubespray_2.15.0.md). Once you have the VMs set up, follow the steps below to deploy scrapbook on the cloud.
 
 ```
 # SSH into the master node of the Kubernetes cluster
 $ sudo su
 $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
-$ chmod +x start.sh
-$ ./start.sh
+$ chmod +x deploy.sh
+$ ./deploy.sh
 ```
 
 - The production version is currently deployed at http://scrapbook.rocks/
 
-The staging version is currently deployed at http://staging.scrapbook.rocks/
+- The staging version is currently deployed at http://staging.scrapbook.rocks/
+
+#### Trigger a Production build
+
+Make a push to the `main` branch and Jenkins will automatically deploy the whole application
+
+#### Trigger a Staging build
+
+Make a push to the `develop` branch and Jenkins will automatically deploy the whole application
+
 
 ## 🎨 Mockups
 
