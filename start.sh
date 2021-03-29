@@ -1,4 +1,10 @@
 #!/bin/bash
+rm -rf scrapbook
+git clone https://github.com/airavata-courses/scrapbook.git
+cd scrapbook
+
+kubectl delete deployments --ignore-not-found=true kafka-broker0 sb-auth sb-gateway sb-gdrive sb-image sb-session sb-ui sb-user zookeeper-deployment-1
+kubectl delete services --ignore-not-found=true sb-auth sb-gatetway sb-gdrive sb-image sb-kafka sb-session sb-ui sb-user zoo1
 
 echo '\nDeploy Kafka\n'
 git checkout main-kafka
@@ -36,3 +42,7 @@ kubectl apply -f scrapbook-metadata-service/scrapbook-metadata-service.yaml
 echo '\nDeploy UI\n'
 git checkout main-UI
 kubectl apply -f scrapbook-ui/scrapbook-ui.yaml
+
+echo '\nDeploy Ingress\n'
+git checkout main
+kubectl apply -f scrapbook-prod.yaml -n default
