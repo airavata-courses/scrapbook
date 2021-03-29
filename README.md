@@ -39,15 +39,16 @@ To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://
 
 ```
 # SSH into the master node of the Kubernetes cluster
+$ sudo su
 $ git clone https://github.com/airavata-courses/scrapbook.git
 $ cd scrapbook
 $ chmod +x start.sh
 $ ./start.sh
 ```
 
-The production version is currently deployed at http://149.165.171.229:30000/
+The production version is currently deployed at http://149.165.169.58:30000/
 
-The staging version is currently deployed at 
+The staging version is currently deployed at http://149.165.171.246:30000/
 
 ## 🎨 Mockups
 
