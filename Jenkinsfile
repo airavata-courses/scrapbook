@@ -12,6 +12,7 @@ node {
   stage('Deploy on Kubernetes'){
     /* SSH-ing to Kubernetes master and applying config */
     sshagent(["kube-ssh-staging"]) {
+      sh "ssh ${user}@${masterIP} rm -rf start.sh"
       sh "scp start.sh ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} chmod +x start.sh"
       sh "ssh ${user}@${masterIP} ./start.sh"

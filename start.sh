@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -rf scrapbook
 git clone https://github.com/airavata-courses/scrapbook.git
 cd scrapbook
 
