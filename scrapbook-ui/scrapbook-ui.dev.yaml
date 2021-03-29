@@ -29,7 +29,7 @@ metadata:
     app: sb-ui
   name: sb-ui
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 80
     targetPort: 80
