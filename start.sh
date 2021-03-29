@@ -14,36 +14,35 @@ kubectl apply -f scrapbook-kafka/scrapbook-broker.yaml
 
 echo '\nDeploy Gateway\n'
 git checkout dev-gateway
-kubectl apply -f scrapbook-gateway-service/scrapbook-gateway-service.yaml
+kubectl apply -f scrapbook-gateway-service/scrapbook-gateway-service.dev.yaml
 
 echo '\nDeploy Auth Service\n'
 git checkout dev-auth-service
-kubectl apply -f scrapbook-auth-service/scrapbook-auth-service.yaml
+kubectl apply -f scrapbook-auth-service/scrapbook-auth-service.dev.yaml
 
 echo '\nDeploy Session Service\n'
 git checkout dev-session-service
-kubectl apply -f scrapbook-session-service/scrapbook-session-service.yaml
+kubectl apply -f scrapbook-session-service/scrapbook-session-service.dev.yaml
 
 echo '\nDeploy User Service\n'
 git checkout dev-user-service
-kubectl apply -f scrapbook-user-service/scrapbook-user-service.yaml
+kubectl apply -f scrapbook-user-service/scrapbook-user-service.dev.yaml
 
 echo '\nDeploy Image Service\n' 
 git checkout dev-image-service
-kubectl apply -f scrapbook-image-service/scrapbook-image-service.yaml
+kubectl apply -f scrapbook-image-service/scrapbook-image-service.dev.yaml
 
 echo '\nDeploy Google Drive Service\n'
 git checkout dev-gdrive-service
-kubectl apply -f scrapbook-googledrive-service/scrapbook-googledrive-service.yaml
+kubectl apply -f scrapbook-googledrive-service/scrapbook-googledrive-service.dev.yaml
 
 echo '\nDeploy MDE Service\n'
 git checkout dev-mde-service
-kubectl apply -f scrapbook-metadata-service/scrapbook-metadata-service.yaml
+kubectl apply -f scrapbook-metadata-service/scrapbook-metadata-service.dev.yaml
 
 echo '\nDeploy UI\n'
 git checkout dev-UI
-kubectl apply -f scrapbook-ui/scrapbook-ui.yaml
-
+kubectl apply -f scrapbook-ui/scrapbook-ui.dev.yaml
 
 echo '\nDeploy Ingress\n'
 git checkout develop
