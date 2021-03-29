@@ -15,7 +15,7 @@ spec:
         app: sb-user
     spec:
       containers:
-      - image: chriagindi/scrapbook-staging-user-service
+      - image: chiragindi/scrapbook-staging-user-service
         name: sb-user
         imagePullPolicy: Always
         ports:
