@@ -85,6 +85,7 @@ Follow the guide in our wiki [here](https://github.com/airavata-courses/scrapboo
 #### Docker
 
 ```
+# in the scrapbook root directory
 $ git checkout docker
 $ docker-compose up
 ```
