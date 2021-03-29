@@ -22,13 +22,13 @@ spec:
         - containerPort: 3500
         env:
           - name: REDIS_PORT
-            value: "12063"
+            value: "12036"
           - name: REDIS_HOST
             value: "redis-12036.c258.us-east-1-4.ec2.cloud.redislabs.com"
           - name: REDIS_PASSWORD
             value: "yB9mUW4ewuSwoVmhlD3UaobRWWrWoLgX"
           - name: MONGO_URI
-            value: "mongodb+srv://admin:scrapbook_admin@cluster0.zn4pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+            value: "mongodb+srv://admin:EA5URTvI5eh0e6cp@cluster0.zn4pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
       restartPolicy: Always
 ---
 apiVersion: v1
