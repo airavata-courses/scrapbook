@@ -5,7 +5,7 @@ metadata:
     app: sb-gdrive
   name: sb-gdrive
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: sb-gdrive
