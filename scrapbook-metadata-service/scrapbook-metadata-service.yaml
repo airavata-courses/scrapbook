@@ -5,7 +5,7 @@ metadata:
     app: sb-metadata
   name: sb-metadata
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: sb-metadata
