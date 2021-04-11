@@ -13,8 +13,10 @@ node {
     /* SSH-ing to Kubernetes master and applying config */
     sshagent(["kube-ssh"]) {
       sh "ssh ${user}@${masterIP} rm -rf start.sh"
+      sh "ssh ${user}@${masterIP} rm -rf scale.sh"
       sh "scp start.sh ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} chmod +x start.sh"
+      sh "ssh ${user}@${masterIP} chmod +x scale.sh"
       sh "ssh ${user}@${masterIP} ./start.sh"
     }
   }
