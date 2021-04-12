@@ -22,7 +22,7 @@ spec:
         - containerPort: 3000
         env:
           - name: MONGO_URI
-            value: "mongodb+srv://admin:scrapbook_admin@cluster0.0usgc.mongodb.net/scrapbook?retryWrites=true&w=majority"
+            value: "mongodb://149.165.172.158:27017/scrapbook-user"
       restartPolicy: Always
 ---
 apiVersion: v1
