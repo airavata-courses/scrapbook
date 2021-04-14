@@ -28,11 +28,11 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ## 🏰 System Architecture
 
-![architecture](/assets/new-architecture.png)
+![architecture](https://raw.githubusercontent.com/airavata-courses/scrapbook/assets/assets/new-architecture.png)
 
 ## 👨‍💻 System Workflow
 
-![workflow](/assets/updated-workflow.png)
+![workflow](https://raw.githubusercontent.com/airavata-courses/scrapbook/assets/assets/updated-workflow.png)
 
 ## Performance
 > TODO
