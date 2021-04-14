@@ -34,6 +34,9 @@ Scrapbook is a micro-service architecture based application that enables users t
 
 ![workflow](/assets/updated-workflow.png)
 
+## Performance
+> TODO
+
 ## 🚀 Application Deployment
 
 To create VMs and configure kubernetes on the VMs follow [zonca's blog](https://github.com/zonca/zonca-blog/blob/master/_posts/2021-01-20-jetstream_kubernetes_kubespray_2.15.0.md). Once you have the VMs set up, follow the steps below to deploy scrapbook on the cloud.
@@ -48,8 +51,10 @@ $ ./deploy.sh
 ```
 
 - The production version is currently deployed at http://scrapbook.rocks/
-
 - The staging version is currently deployed at http://staging.scrapbook.rocks/
+- Jenkins is currently deployed at http://149.165.171.239:8080/
+- Redis instance is deployed at http://149.165.157.223:6379/
+- MongoDB instance is deployed at http://149.165.172.158:27017/
 
 #### Trigger a Production build
 
@@ -58,11 +63,6 @@ Make a push to the `main` branch and Jenkins will automatically deploy the whole
 #### Trigger a Staging build
 
 Make a push to the `develop` branch and Jenkins will automatically deploy the whole application
-
-
-## 🎨 Mockups
-
-Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/wiki/Mockups) to see our mockup designs.
 
 ## 🧱 Project Installation (Local)
 
@@ -102,6 +102,10 @@ $ docker-compose up
 Navigate to http://localhost:4200/
 
 
+## 🎨 Mockups
+
+Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/wiki/Mockups) to see our mockup designs.
+
 ## 📖 Documentation
 
 - [Wiki](https://github.com/airavata-courses/scrapbook/wiki)
@@ -110,7 +114,8 @@ Navigate to http://localhost:4200/
 
 - [Project Milestone 1](https://github.com/airavata-courses/scrapbook/wiki/Project-1)
 - [Project Milestone 2](https://github.com/airavata-courses/scrapbook/wiki/Project-2)
-- [Project Milestore 3](https://github.com/airavata-courses/scrapbook/wiki/Project-3)
+- [Project Milestone 3](https://github.com/airavata-courses/scrapbook/wiki/Project-3)
+- [Project Milestone 4](https://github.com/airavata-courses/scrapbook/wiki/Project-4)
 
 ## 💪🏽 Team 
 
