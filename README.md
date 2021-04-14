@@ -1,4 +1,4 @@
-![banner](/assets/banners/banner_primary.png)
+![banner](https://raw.githubusercontent.com/airavata-courses/scrapbook/assets/assets/banners/banner_primary.png)
 ---
 
 Scrapbook is a micro-service architecture based application that enables users to upload and manage images. It empowers the users to securely share images by introducing various roles. The users also have access to an intuitive dashboard to view different metrics and monitor various activities. Scrapbook aims to introduce simplicity in photo management.
@@ -6,7 +6,7 @@ Scrapbook is a micro-service architecture based application that enables users t
 ### 💻 [Production Demo](http://scrapbook.rocks/)
 ### 💡 [Staging Demo](http://staging.scrapbook.rocks/)
 
-![banner](/assets/updated-napkin-diagram.png)
+![banner](https://raw.githubusercontent.com/airavata-courses/scrapbook/assets/assets/updated-napkin-diagram.png)
 
 <br>
 
@@ -33,9 +33,6 @@ Scrapbook is a micro-service architecture based application that enables users t
 ## 👨‍💻 System Workflow
 
 ![workflow](https://raw.githubusercontent.com/airavata-courses/scrapbook/assets/assets/updated-workflow.png)
-
-## Performance
-> TODO
 
 ## 🚀 Application Deployment
 
