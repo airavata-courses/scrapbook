@@ -99,6 +99,11 @@ $ docker-compose up
 
 Navigate to http://localhost:4200/
 
+## 🎨 Performance
+
+These are the load testing results for a few features
+
+![results - load test](https://raw.githubusercontent.com/airavata-courses/scrapbook/jmeter/assets/jmeter_tests/load-test.png)
 
 ## 🎨 Mockups
 
