@@ -23,9 +23,9 @@ spec:
         - name: KAFKA_ADVERTISED_PORT
           value: "9092"
         - name: KAFKA_ADVERTISED_HOST_NAME
-          value: "localhost"
+          value: "sb-kafka"
         - name: KAFKA_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://localhost:9092"
+          value: "PLAINTEXT://sb-kafka:9092"
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: zoo1:2181
         - name: KAFKA_BROKER_ID
