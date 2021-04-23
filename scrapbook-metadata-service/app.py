@@ -149,9 +149,13 @@ def retrieve_metadata():
     """
 
     try:
+        logging.error(request)
         image_id = request.args.get('id')
+        logging.error(image_id)
         tags = mongo.db.metadata.find_one_or_404({"id": image_id})
+        logging.error(tags)
         del tags['_id']
+        logging.error(tags)
         return jsonify(tags), 200
     except Exception as e:
         return "Not Found", 404
