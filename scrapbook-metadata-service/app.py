@@ -133,9 +133,9 @@ def extract_metadata(msg):
                         exif[str(key)] = str(exifData[key])
             except Exception as ex:
                 print(ex)
-        print(str(exif))
+        logging.error(str(exif))
         meta_data = {"id": image_id, "albumid": albumID }
-        print(str({**meta_data, **exif}))
+        logging.error(str({**meta_data, **exif}))
         mongo.db.metadata.insert_one({**meta_data, **exif})
         
     except Exception as e:
@@ -179,12 +179,12 @@ def retrieve_autofill():
     try:
         albumid = request.args.get('albumid')
         album_details = mongo.db.metadata.find({"albumid": albumid})
-        iso = album_details.distinct("ISOSpeedRatings")
+        #iso = album_details.distinct("ISOSpeedRatings")
         aperture = album_details.distinct("ApertureValue")
         focal = album_details.distinct("FocalLength")
         camera = album_details.distinct("Camera")
-        gps = album_details.distinct("GPSInfo")
-        metadata = {"ISO":iso, "Aperture":aperture, "FocalLength":focal, "Camera": camera, "GPS": gps}
+        #gps = album_details.distinct("GPSInfo")
+        metadata = {"ISO":"", "Aperture":aperture, "FocalLength":focal, "Camera": camera, "GPS": ""}
         clean_autofill(metadata)
         return jsonify(metadata), 200
     except Exception as e:
