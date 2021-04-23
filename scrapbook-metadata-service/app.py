@@ -14,7 +14,7 @@ from PIL.ExifTags import TAGS
 from flask_kafka import FlaskKafka
 from kafka import KafkaConsumer
 from mde_utils import starter
-
+import logging
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -51,7 +51,7 @@ def listen_kill_server():
     signal.signal(signal.SIGINT, bus.interrupted_process)
     signal.signal(signal.SIGQUIT, bus.interrupted_process)
     signal.signal(signal.SIGHUP, bus.interrupted_process)
-    print("initiating kafka")
+    logging.info("initiating kafka")
 
 
 def get_decimal_from_dms(dms, ref):
