@@ -54,4 +54,5 @@ node {
       sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
       sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
     }
+    }
 }
