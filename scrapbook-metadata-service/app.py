@@ -179,13 +179,15 @@ def retrieve_autofill():
     try:
         albumid = request.args.get('albumid')
         album_details = mongo.db.metadata.find({"albumid": albumid})
-        #iso = album_details.distinct("ISOSpeedRatings")
+        iso = album_details.distinct("ISOSpeedRatings")
         aperture = album_details.distinct("ApertureValue")
         focal = album_details.distinct("FocalLength")
         camera = album_details.distinct("Camera")
-        #gps = album_details.distinct("GPSInfo")
-        metadata = {"ISO":"", "Aperture":aperture, "FocalLength":focal, "Camera": camera, "GPS": ""}
+        gps = album_details.distinct("GPSInfo")
+        metadata = {"ISO":iso, "Aperture":aperture, "FocalLength":focal, "Camera": camera, "GPS": gps}
+        logging.error(str(metadata))
         clean_autofill(metadata)
+        logging.error(str(metadata))                                    
         return jsonify(metadata), 200
     except Exception as e:
         print(e)
