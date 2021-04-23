@@ -52,7 +52,7 @@ node {
       sshagent(["kube-ssh"]) {
       sh "scp ${file}.dev.yaml ${user}@${masterIP}:/home/${user}"
       sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
-      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
+      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.dev.yaml"
     }
     }
 }
