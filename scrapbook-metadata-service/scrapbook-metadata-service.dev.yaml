@@ -26,7 +26,7 @@ spec:
           - name: PORT
             value: "12000"
           - name: MONGO_URI
-            value: "mongodb+srv://admin:EA5URTvI5eh0e6cp@cluster0.zn4pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+            value: "mongodb://149.165.172.158:27017/scrapbook-staging-mde"
           - name: KAFKA_URI
             value: "sb-kafka:9092"
           - name: KAFKA_TOPIC
