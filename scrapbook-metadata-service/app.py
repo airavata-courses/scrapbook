@@ -23,7 +23,7 @@ app = Flask(__name__)
 CORS(app)
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 mongo = PyMongo(app)
-
+logging.info("prepre-run")
 INTERRUPT_EVENT = Event()
 
 print(os.environ.get('KAFKA_URI'))
@@ -224,6 +224,7 @@ def started():
     return starter()
     
 if __name__ == '__main__':
+    logging.info("pre-run")
     bus.run()
     logging.info("gonna start sig kafka")
     listen_kill_server()
