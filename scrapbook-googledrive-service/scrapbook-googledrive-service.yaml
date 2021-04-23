@@ -24,7 +24,7 @@ spec:
           - name: PORT
             value: "9090"
           - name: KAFKA
-            value: "10.233.32.174:9092"
+            value: "sb-kafka:9092"
           - name: TOPIC
             value: "image"
           - name: IMG
