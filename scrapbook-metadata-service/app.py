@@ -51,6 +51,7 @@ def listen_kill_server():
     signal.signal(signal.SIGINT, bus.interrupted_process)
     signal.signal(signal.SIGQUIT, bus.interrupted_process)
     signal.signal(signal.SIGHUP, bus.interrupted_process)
+    print("initiating kafka")
 
 
 def get_decimal_from_dms(dms, ref):
