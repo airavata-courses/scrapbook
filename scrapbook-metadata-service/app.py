@@ -33,7 +33,8 @@ response = None
 
 bus = FlaskKafka(INTERRUPT_EVENT,
                 bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
-                group_id="consumer-grp-id"
+                group_id=None,
+                auto_offset_reset='earliest'
                 )
 
 # while response is None:
