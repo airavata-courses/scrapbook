@@ -136,9 +136,9 @@ def extract_metadata(msg):
         meta_data = {"id": image_id, "albumid": albumID }
         logging.error(str({**meta_data, **exif}))
         mongo.db.metadata.insert_one({**meta_data, **exif})
-        
+        logging.error("It inserts!")
     except Exception as e:
-        print(e)
+        logging.error(e)
     
    
     
@@ -158,6 +158,7 @@ def retrieve_metadata():
         logging.error(tags)
         return jsonify(tags), 200
     except Exception as e:
+        logging.error(e)
         return "Not Found", 404
 
 
@@ -215,12 +216,12 @@ def retrieve_image_list():
             if counter == len(search):
                 match_list.append(image_id)
 
-        print(match_list)
+        logging.error(match_list)
         return {"imageIds":match_list}, 200
     
     except Exception as e:
 
-        print(e)
+        logging.error(e)
         return "Not Found", 404
 
 @app.route('/')
