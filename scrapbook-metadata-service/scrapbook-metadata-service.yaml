@@ -28,7 +28,7 @@ spec:
           - name: MONGO_URI
             value: "mongodb://149.165.172.158:27017/scrapbook-mde"
           - name: KAFKA_URI
-            value: "10.233.32.174:9092"
+            value: "sb-kafka:9092"
           - name: KAFKA_TOPIC
             value: "image"
           - name: G_DRIVE_SERVICE
