@@ -17,7 +17,7 @@ from mde_utils import starter
 import logging
 import os
 from dotenv import load_dotenv
-load_dotenv()
+#load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
