@@ -121,7 +121,7 @@ $ python app.py
 ```
 
 #### scrapbook-session-service
-- Port: 3500
+- Port: 3500 
 
 ```shell
 $ cd scrapbook-session-service
