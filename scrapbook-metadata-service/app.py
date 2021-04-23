@@ -16,8 +16,8 @@ from kafka import KafkaConsumer
 from mde_utils import starter
 
 import os
-from dotenv import load_dotenv
-load_dotenv()
+#from dotenv import load_dotenv
+#load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -226,4 +226,4 @@ def started():
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
-    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host="0.0.0.0")
+    app.run(port = os.environ.get('PORT'), debug=True, host="0.0.0.0") #os.environ.get('DEBUG')
