@@ -23,7 +23,7 @@ app = Flask(__name__)
 CORS(app)
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 mongo = PyMongo(app)
-logging.info("prepre-run")
+print("prepre-run")
 INTERRUPT_EVENT = Event()
 
 print(os.environ.get('KAFKA_URI'))
@@ -32,7 +32,7 @@ response = None
 # global bus
 
 bus = FlaskKafka(INTERRUPT_EVENT,
-                bootstrap_servers=",".join(['10.233.32.174:9092']),
+                bootstrap_servers=",".join([os.environ.get('KAFKA_URI')]),
                 group_id="consumer-grp-id"
                 )
 
@@ -50,7 +50,7 @@ def listen_kill_server():
     signal.signal(signal.SIGINT, bus.interrupted_process)
     signal.signal(signal.SIGQUIT, bus.interrupted_process)
     signal.signal(signal.SIGHUP, bus.interrupted_process)
-    logging.info("initiating kafka")
+    print("initiating kafka")
 
 
 def get_decimal_from_dms(dms, ref):
@@ -133,7 +133,9 @@ def extract_metadata(msg):
                         exif[str(key)] = str(exifData[key])
             except Exception as ex:
                 print(ex)
+        print(str(exif))
         meta_data = {"id": image_id, "albumid": albumID }
+        print(str({**meta_data, **exif}))
         mongo.db.metadata.insert_one({**meta_data, **exif})
         
     except Exception as e:
@@ -153,6 +155,7 @@ def retrieve_metadata():
         del tags['_id']
         return jsonify(tags), 200
     except Exception as e:
+        print(e)
         return "Not Found", 404
 
 
@@ -185,6 +188,7 @@ def retrieve_autofill():
         clean_autofill(metadata)
         return jsonify(metadata), 200
     except Exception as e:
+        print(e)
         return "Not Found", 404
 
 @app.route('/metadata/match', methods=["POST"])
@@ -223,8 +227,8 @@ def started():
     return starter()
     
 if __name__ == '__main__':
-    logging.info("pre-run")
+    print("pre-run")
     bus.run()
-    logging.info("gonna start sig kafka")
+    print("gonna start sig kafka")
     listen_kill_server()
     app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host="0.0.0.0")
