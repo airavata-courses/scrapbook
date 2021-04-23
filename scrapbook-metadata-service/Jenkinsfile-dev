@@ -2,6 +2,10 @@ node {
   def app
   def registry = 'chiragindi/scrapbook-metadata-service'
   def registryCredential = 'chiragindi'
+  def file = 'scrapbook-metadata-service'
+  def masterIP = '149.165.171.246'
+  def deploymentName = 'sb-metadata'
+  def user = 'ubuntu'
 
   stage('Clone repository') {
     /* Checking out to the repository */
@@ -42,5 +46,12 @@ node {
         sh "docker rmi registry.hub.docker.com/${registry}:latest"
         sh 'docker ps -q -f status=exited | xargs --no-run-if-empty docker rm'
         sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
+    }
+    stage('Deploy on Kubernetes'){
+      /* SSH-ing to Kubernetes master and applying config */
+      sshagent(["kube-ssh"]) {
+      sh "scp ${file}.yaml ${user}@${masterIP}:/home/${user}"
+      sh "ssh ${user}@${masterIP} kubectl delete deployments --ignore-not-found=true ${deploymentName}"
+      sh "ssh ${user}@${masterIP} kubectl apply -f ${file}.yaml"
     }
 }
