@@ -7,6 +7,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 12000
-# CMD ["python", "app.py"]
+CMD ["python", "app.py"]
 
-CMD ["gunicorn", "--workers=1", "--bind=127.0.0.1:12000", "app:app"]
+#CMD ["gunicorn", "--workers=1", "--bind=127.0.0.1:12000", "app:app"]
