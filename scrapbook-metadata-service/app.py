@@ -132,7 +132,9 @@ def extract_metadata(msg):
                         exif[str(key)] = str(exifData[key])
             except Exception as ex:
                 print(ex)
+        logging.error(str(exif))
         meta_data = {"id": image_id, "albumid": albumID }
+        logging.error(str({**meta_data, **exif}))
         mongo.db.metadata.insert_one({**meta_data, **exif})
         
     except Exception as e:
