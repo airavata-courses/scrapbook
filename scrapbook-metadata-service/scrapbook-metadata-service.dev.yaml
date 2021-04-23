@@ -22,7 +22,7 @@ spec:
         - containerPort: 12000
         env:
           - name: DEBUG
-            value: True
+            value: "True"
           - name: PORT
             value: "12000"
           - name: MONGO_URI
