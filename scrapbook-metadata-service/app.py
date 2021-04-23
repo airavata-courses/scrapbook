@@ -14,7 +14,7 @@ from PIL.ExifTags import TAGS
 from flask_kafka import FlaskKafka
 from kafka import KafkaConsumer
 from mde_utils import starter
-
+import logging
 import os
 #from dotenv import load_dotenv
 #load_dotenv()
@@ -86,7 +86,7 @@ def get_geotagging(exif):
 
 @bus.handle('image')
 def extract_metadata(msg):
-    print(msg)
+    logging.error(msg)
     json_msg = json.loads(msg.value)
     def fetch_image(image_id):
         with app.test_request_context():
@@ -94,7 +94,7 @@ def extract_metadata(msg):
             response.raise_for_status()
             return response.content
     image_id = json_msg['imageId']
-    
+    logging.error(image_id)
     image = Image.open(io.BytesIO(fetch_image(image_id)))
     filename = json_msg['imageName']
     albumID = json_msg['albumId']
@@ -226,4 +226,4 @@ def started():
 if __name__ == '__main__':
     bus.run()
     listen_kill_server()
-    app.run(port = os.environ.get('PORT'), debug=True, host="0.0.0.0") #os.environ.get('DEBUG')
+    app.run(port = os.environ.get('PORT'), debug=os.environ.get('DEBUG'), host="0.0.0.0") #
