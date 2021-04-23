@@ -28,7 +28,7 @@ spec:
           - name: MDE
             value:  "http://sb-metadata:12000/metadata/match"
           - name: MONGO
-            value: "mongodb://149.165.172.158:27017/scrapbook-staging-mde"
+            value: "mongodb://149.165.172.158:27017/scrapbook-staging-image"
       restartPolicy: Always
 ---
 apiVersion: v1
