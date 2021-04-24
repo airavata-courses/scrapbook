@@ -47,7 +47,7 @@ metadata:
     app: sb-gateway
   name: sb-gateway
 spec: 
-  type: NodePort
+  type: LoadBalancer
   selector: 
     app: sb-gateway
   ports:
