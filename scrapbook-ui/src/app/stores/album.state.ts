@@ -50,8 +50,8 @@ export class AlbumStateModel {
     loading: true,
     filters: null,
     searchText: null,
-    imageFilters: {Aperture: [], FocalLength: [], ISO: [], GPS: [], Camera: []},
-    selectedFilters: {Aperture: '', FocalLength: '', ISO: '', GPS: '', Camera: ''}
+    imageFilters: {Aperture: [], FocalLength: [], ISOSpeedRatings: [], GPS: [], Camera: []},
+    selectedFilters: {Aperture: '', FocalLength: '', ISOSpeedRatings: '', GPS: '', Camera: ''}
   }
 })
 @Injectable()
@@ -135,7 +135,7 @@ export class AlbumState {
           setState({
             ...state,
             albumInfoOpen: true,
-            albumInfoModalData: {...data, metaData: {Aperture: [], FocalLength: [], ISO: [], GPS: [], Camera: []}}
+            albumInfoModalData: {...data, metaData: {Aperture: [], FocalLength: [], ISOSpeedRatings: [], GPS: [], Camera: []}}
           });
           return of(JSON.stringify(err))
         })
@@ -670,7 +670,7 @@ export class AlbumState {
       ...state,
       searchText: null,
       filters: null,
-      selectedFilters: {Aperture: '', FocalLength: '', ISO: '', GPS: '', Camera: ''}
+      selectedFilters: {Aperture: '', FocalLength: '', ISOSpeedRatings: '', GPS: '', Camera: ''}
     })
   }
 

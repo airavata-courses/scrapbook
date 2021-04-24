@@ -10,7 +10,7 @@ export interface ImageFilters {
   Camera: any[];
   FocalLength: any[];
   GPS: any[];
-  ISO: any[];
+  ISOSpeedRatings: any[];
 }
 
 export interface SelectedImageFilters {
@@ -18,5 +18,5 @@ export interface SelectedImageFilters {
   Camera: '';
   FocalLength: '';
   GPS: '';
-  ISO: '';
+  ISOSpeedRatings: '';
 }
