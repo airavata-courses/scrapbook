@@ -42,7 +42,7 @@ metadata:
 spec:
   ports:
     - port: 9092
-      name: kafka-port
+      name: http-kafka-port
       protocol: TCP
   selector:
     app: http-kafka
