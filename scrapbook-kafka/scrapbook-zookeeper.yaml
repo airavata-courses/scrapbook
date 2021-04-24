@@ -3,7 +3,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: http-zookeeper-deployment-1
+  name: zookeeper-deployment-1
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
         app: zookeeper-1
     spec:
       containers:
-        - name: http-zoo1
+        - name: zoo1
           image: digitalwonderland/zookeeper
           ports:
             - containerPort: 2181
@@ -28,18 +28,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: http-zoo1
+  name: zoo1
   labels:
     app: zookeeper-1
 spec:
   ports:
-    - name: http-client
+    - name: client
       port: 2181
       protocol: TCP
-    - name: http-follower
+    - name: follower
       port: 2888
       protocol: TCP
-    - name: http-leader
+    - name: leader
       port: 3888
       protocol: TCP
   selector:
