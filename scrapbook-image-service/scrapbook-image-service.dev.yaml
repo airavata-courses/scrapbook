@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: http-sb-image
-  name: http-sb-image
+    app: http-image
+  name: http-image
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: http-sb-image
+      app: http-image
   template:
     metadata:
       labels:
-        app: http-sb-image
+        app: http-image
     spec:
       containers:
       - image: chiragindi/scrapbook-staging-image-service
-        name: http-sb-image
+        name: http-image
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -35,11 +35,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: http-sb-image
-  name: http-sb-image
+    app: http-image
+  name: http-image
 spec: 
   selector: 
-    app: http-sb-image
+    app: http-image
   ports:
   - port: 8080
     targetPort: 8080
