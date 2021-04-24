@@ -33,13 +33,13 @@ metadata:
     app: zookeeper-1
 spec:
   ports:
-    - name: client
+    - name: http-client
       port: 2181
       protocol: TCP
-    - name: follower
+    - name: http-follower
       port: 2888
       protocol: TCP
-    - name: leader
+    - name: http-leader
       port: 3888
       protocol: TCP
   selector:
