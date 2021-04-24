@@ -37,7 +37,7 @@ metadata:
     app: sb-auth
   name: sb-auth
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector: 
     app: sb-auth
   ports:
