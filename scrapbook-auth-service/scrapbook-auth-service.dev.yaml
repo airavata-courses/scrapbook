@@ -37,7 +37,7 @@ metadata:
     app: sb-auth
   name: sb-auth
 spec:
-  type: ClusterIP
+  type: NodePort
   selector: 
     app: sb-auth
   ports:
