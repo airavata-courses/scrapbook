@@ -27,10 +27,10 @@ export class FiltersComponent implements OnInit {
   createdDateFilter = ''
   modifiedDateFilter = ''
   filters: Filters = {startCreatedDate: '', startModifiedDate: '', endCreatedDate: '', endModifiedDate: ''}
-  imageFilters: ImageFilters = {FocalLength: [], Aperture: [], Camera: [], GPS: [], ISO: []}
+  imageFilters: ImageFilters = {FocalLength: [], Aperture: [], Camera: [], GPS: [], ISOSpeedRatings: []}
   mode: number;
-  selectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISO: ''};
-  onSelectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISO: ''}
+  selectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISOSpeedRatings: ''};
+  onSelectedFilters: SelectedImageFilters = {FocalLength:'', Aperture: '', Camera: '', GPS: '', ISOSpeedRatings: ''}
 
   @Select(AlbumState.getFilters) filters$: Observable<any>;
   @Select(AlbumState.getImageFilters) imageFilters$: Observable<ImageFilters>;
@@ -138,7 +138,7 @@ export class FiltersComponent implements OnInit {
     // switch(key) {
     //   case 'Aperture': 
     //     this.onSelectedFilters = val.value; break;
-    //   case 'ISO': 
+    //   case 'ISOSpeedRatings': 
     //    this.onSelectedFilters = val.value; break;
     //   case 'FocalLength': 
     //    this.onSelectedFilters = val.value; break;

@@ -22,12 +22,7 @@ export class HomeComponent implements OnInit, OnChanges {
   selectedAlbum: Album;
   openSettings;
 
-  constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) {
-    
-
-    
-
-  }
+  constructor(public store: Store, public albumListService: AlbumListService, public router: Router, public albumViewService: AlbumViewService) { }
 
   ngOnChanges(): void { }
 

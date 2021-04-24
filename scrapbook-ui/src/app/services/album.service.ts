@@ -192,8 +192,8 @@ export class AlbumService {
       payload["metadata"]['focalLength'] = payload["metadata"].FocalLength;
       if(payload["metadata"].Camera)
       payload["metadata"]['camera'] = payload["metadata"].Camera;
-      if(payload["metadata"].ISO)
-      payload["metadata"]['iso'] = payload["metadata"].ISO;
+      if(payload["metadata"].ISOSpeedRatings)
+      payload["metadata"]['iso'] = payload["metadata"].ISOSpeedRatings;
 
     }
 
