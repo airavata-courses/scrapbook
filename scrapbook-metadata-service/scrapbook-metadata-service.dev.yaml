@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: sb-metadata
-  name: sb-metadata
+    app: http-sb-metadata
+  name: http-sb-metadata
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sb-metadata
+      app: http-sb-metadata
   template:
     metadata:
       labels:
-        app: sb-metadata
+        app: http-sb-metadata
     spec:
       containers:
       - image: chiragindi/scrapbook-staging-metadata-service
-        name: sb-metadata
+        name: http-sb-metadata
         imagePullPolicy: Always
         ports:
         - containerPort: 12000
@@ -28,23 +28,23 @@ spec:
           - name: MONGO_URI
             value: "mongodb://149.165.172.158:27017/scrapbook-staging-mde"
           - name: KAFKA_URI
-            value: "sb-kafka:9092"
+            value: "http-sb-kafka:9092"
           - name: KAFKA_TOPIC
             value: "image"
           - name: G_DRIVE_SERVICE
-            value: "http://sb-gdrive:9090"
+            value: "http://http-sb-gdrive:9090"
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-metadata
-  name: sb-metadata
+    app: http-sb-metadata
+  name: http-sb-metadata
 spec: 
-  type: LoadBalancer
+  type: ClusterIP
   selector: 
-    app: sb-metadata
+    app: http-sb-metadata
   ports:
   - port: 12000
     targetPort: 12000
