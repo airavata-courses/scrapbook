@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: http-sb-auth
-  name: http-sb-auth
+    app: sb-auth
+  name: sb-auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: http-sb-auth
+      app: sb-auth
   template:
     metadata:
       labels:
-        app: http-sb-auth
+        app: sb-auth
     spec:
       containers:
       - image: chiragindi/scrapbook-staging-auth-service
-        name: http-sb-auth
+        name: sb-auth
         ports:
         - containerPort: 5000
         env:
@@ -34,12 +34,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: http-sb-auth
-  name: http-sb-auth
+    app: sb-auth
+  name: sb-auth
 spec:
   type: ClusterIP
   selector: 
-    app: http-sb-auth
+    app: sb-auth
   ports:
   - port: 5000
     targetPort: 5000
