@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: sb-image
-  name: sb-image
+    app: http-sb-image
+  name: http-sb-image
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sb-image
+      app: http-sb-image
   template:
     metadata:
       labels:
-        app: sb-image
+        app: http-sb-image
     spec:
       containers:
       - image: chiragindi/scrapbook-staging-image-service
-        name: sb-image
+        name: http-sb-image
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -24,9 +24,9 @@ spec:
           - name: PORT
             value: "8080"
           - name: DRIVE
-            value: "http://sb-gdrive:9090"
+            value: "http://http-sb-gdrive:9090"
           - name: MDE
-            value:  "http://sb-metadata:12000/metadata/match"
+            value:  "http://http-sb-metadata:12000/metadata/match"
           - name: MONGO
             value: "mongodb://149.165.172.158:27017/scrapbook-staging-image"
       restartPolicy: Always
@@ -35,11 +35,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: sb-image
-  name: sb-image
+    app: http-sb-image
+  name: http-sb-image
 spec: 
   selector: 
-    app: sb-image
+    app: http-sb-image
   ports:
   - port: 8080
     targetPort: 8080
