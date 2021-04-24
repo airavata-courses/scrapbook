@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: http-sb-ui
-  name: http-sb-ui
+    app: sb-ui
+  name: sb-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: http-sb-ui
+      app: sb-ui
   template:
     metadata:
       labels:
-        app: http-sb-ui
+        app: sb-ui
     spec:
       containers:
       - image: chiragindi/scrapbook-staging-ui
-        name: http-sb-ui
+        name: sb-ui
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -26,8 +26,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: http-sb-ui
-  name: http-sb-ui
+    app: sb-ui
+  name: sb-ui
 spec:
   type: NodePort
   ports:
@@ -35,4 +35,4 @@ spec:
     targetPort: 80
     nodePort: 30000
   selector:
-    app: http-sb-ui
+    app: sb-ui
