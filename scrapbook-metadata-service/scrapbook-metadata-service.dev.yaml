@@ -42,7 +42,7 @@ metadata:
     app: sb-metadata
   name: sb-metadata
 spec: 
-  type: ClusterIP
+  type: NodePort
   selector: 
     app: sb-metadata
   ports:
