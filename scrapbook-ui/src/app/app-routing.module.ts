@@ -22,7 +22,7 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-        canActivate: [AuthGuardService],
+        // canActivate: [AuthGuardService],
         children: [
           {
             path: ':album',
