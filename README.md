@@ -139,6 +139,7 @@ Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/
    [<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />](https://github.com/jbhushan791)
 
 - **Vivek Karna**: Vivek is a first year Master's student at Indiana University, majoring in Data Science. He has experience working as a Data Scientist on developing various Machine Learning based solutions and also developing a data platform to deploy these models for inference.
+
    [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/vivekka93)
    [<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />](https://github.com/vivekka93)
 
