@@ -119,6 +119,7 @@ Please visit our wiki page [here](https://github.com/airavata-courses/scrapbook/
 - [Project Milestone 2](https://github.com/airavata-courses/scrapbook/wiki/Project-2)
 - [Project Milestone 3](https://github.com/airavata-courses/scrapbook/wiki/Project-3)
 - [Project Milestone 4](https://github.com/airavata-courses/scrapbook/wiki/Project-4)
+- [Project Milestone 5](https://github.com/airavata-courses/scrapbook/wiki/Project-5)
 
 ## 💪🏽 Team 
 
