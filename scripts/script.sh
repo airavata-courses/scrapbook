@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ssh centos@149.165.172.4
-scp myfile.txt centos@149.165.172.4
-systemctl restart haproxy
+sudo scp ./$1/haproxy.cfg centos@149.165.172.4:etc/haproxy/haproxy.cfg
+sudo systemctl restart haproxy
