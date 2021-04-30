@@ -28,7 +28,7 @@ spec:
           - name: REDIS_PASSWORD
             value: ""
           - name: MONGO_URI
-            value: "mongodb://149.165.172.158:27017/scrapbook-session"
+            value: "mongodb+srv://admin:EA5URTvI5eh0e6cp@cluster0.zn4pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
       restartPolicy: Always
 ---
 apiVersion: v1
